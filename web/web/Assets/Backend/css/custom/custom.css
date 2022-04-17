@@ -1,0 +1,13 @@
+﻿.table-image {
+    height: 100px;
+    width: 25%;
+}
+
+.wizard-image-div {
+    display: none;
+}
+
+    .wizard-image-div img {
+        height: 20%;
+        width: 50%
+    }
