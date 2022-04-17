@@ -1,0 +1,348 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_FrontLayout.cshtml";
+}
+
+<!-- karya yojana section -->
+<section class="w-full bg-gray-100 py-8">
+    <div class="mx-auto max-w-4xl py-16 px-6">
+        <h3 class="my-6 pb-4 text-3xl font-semibold">कार्य योजना</h3>
+        <div class="grid gap-8 md:grid-cols-3">
+            <div class="relative flex min-h-[130px] items-center justify-center rounded bg-white p-9 shadow">
+                <svg class="absolute h-12 w-12 -top-3 -left-3" width="32" viewBox="0 0 82 82" fill="none"
+                     xmlns="http://www.w3.org/2000/svg" data-aos="zoom-in" data-aos-easing="ease-in-out" data-aos-delay="100">
+                    <path d="M82 41C82 63.6437 63.6437 82 41 82C18.3563 82 0 63.6437 0 41C0 18.3563 18.3563 0 41 0C63.6437 0 82 18.3563 82 41Z"
+                          fill="#1FC604" />
+                    <path d="M42.775 59.634C42.775 58.0887 41.8193 56.4417 39.908 54.693C37.9967 52.9443 34.8857 51.0127 30.575 48.898V43.835C31.8357 43.469 33.076 43.0217 34.296 42.493C35.5567 41.9643 36.736 41.4153 37.834 40.846C36.858 40.3173 35.9227 39.748 35.028 39.138C34.1333 38.4873 33.3607 37.735 32.71 36.881C32.0593 36.027 31.5307 35.0713 31.124 34.014C30.758 32.916 30.575 31.6757 30.575 30.293C30.575 29.0323 30.819 27.8123 31.307 26.633C31.8357 25.4537 32.5677 24.4167 33.503 23.522C34.4383 22.6273 35.5973 21.9157 36.98 21.387C38.3627 20.8583 39.9283 20.594 41.677 20.594C43.4663 20.594 45.0727 20.8787 46.496 21.448C47.9193 21.9767 49.119 22.729 50.095 23.705C51.1117 24.6403 51.8843 25.7587 52.413 27.06C52.9417 28.3613 53.206 29.744 53.206 31.208C53.206 33.3227 52.7587 35.234 51.864 36.942C50.9693 38.6093 49.8103 40.114 48.387 41.456C46.9637 42.7573 45.3777 43.896 43.629 44.872C41.8803 45.848 40.1723 46.6613 38.505 47.312C42.531 49.4267 45.337 51.521 46.923 53.595C48.5497 55.669 49.363 57.7837 49.363 59.939C49.363 60.5083 49.2817 61.1793 49.119 61.952C48.9563 62.7247 48.7123 63.3347 48.387 63.782L42.409 61.22C42.653 60.6913 42.775 60.1627 42.775 59.634ZM36.98 30.72C36.98 32.55 37.5087 34.014 38.566 35.112C39.6233 36.1693 40.9247 37.1047 42.47 37.918C43.3647 37.3487 44.239 36.515 45.093 35.417C45.947 34.2783 46.374 32.855 46.374 31.147C46.374 29.6017 45.9673 28.341 45.154 27.365C44.3407 26.3483 43.2427 25.84 41.86 25.84C40.4367 25.84 39.2573 26.3077 38.322 27.243C37.4273 28.1377 36.98 29.2967 36.98 30.72Z"
+                          fill="white" />
+                </svg>
+                <a href="#punji">
+                    <p class="text-center text-xl font-bold">पुंजि वृद्धि</p>
+                </a>
+            </div>
+            <div class="relative flex min-h-[130px] items-center justify-center rounded bg-white p-9 shadow">
+                <svg class="absolute h-12 w-12 -top-3 -left-3" width="32" viewBox="0 0 82 82" fill="none"
+                     xmlns="http://www.w3.org/2000/svg" data-aos="zoom-in" data-aos-easing="ease-in-out" data-aos-delay="200">
+                    <path d="M82 41C82 63.6437 63.6437 82 41 82C18.3563 82 0 63.6437 0 41C0 18.3563 18.3563 0 41 0C63.6437 0 82 18.3563 82 41Z"
+                          fill="#1FC604" />
+                    <path d="M38.627 43.347C40.0503 43.0217 41.3516 42.5743 42.531 42.005C43.751 41.395 44.8083 40.6833 45.703 39.87C46.5976 39.0567 47.289 38.101 47.777 37.003C48.265 35.905 48.509 34.6647 48.509 33.282C48.509 31.9807 48.265 30.8827 47.777 29.988C47.289 29.0527 46.6586 28.3207 45.886 27.792C45.1133 27.2227 44.239 26.816 43.263 26.572C42.3276 26.328 41.4126 26.206 40.518 26.206C39.2166 26.206 37.956 26.3483 36.736 26.633C35.5566 26.9177 34.296 27.3853 32.954 28.036L30.758 23.034C32.1813 22.2207 33.7266 21.6107 35.394 21.204C37.102 20.7973 38.871 20.594 40.701 20.594C42.897 20.594 44.8896 20.9193 46.679 21.57C48.4683 22.18 50.0136 23.0543 51.315 24.193C52.6163 25.3317 53.6126 26.694 54.304 28.28C55.036 29.866 55.402 31.5943 55.402 33.465C55.402 35.3763 55.097 37.125 54.487 38.711C53.877 40.297 53.0026 41.7203 51.864 42.981C50.766 44.2417 49.4443 45.3397 47.899 46.275C46.3943 47.2103 44.727 48.0033 42.897 48.654L53.084 59.939L47.96 63.66L36.858 49.386C34.54 49.1827 32.7506 48.532 31.49 47.434C30.27 46.336 29.66 45.116 29.66 43.774C29.66 42.676 30.0666 41.7407 30.88 40.968C31.6933 40.1547 33.0353 39.7277 34.906 39.687L38.627 43.347Z"
+                          fill="white" />
+                </svg>
+                <a href="#bypar">
+                    <p class="text-center text-xl font-bold">ब्यापार तथा ब्यावसाय वृद्धि</p>
+                </a>
+            </div>
+            <div class="relative flex min-h-[130px] items-center justify-center rounded bg-white p-9 shadow">
+                <svg class="h-12 w-12 absolute -top-3 -left-3" viewBox="0 0 82 82" fill="none"
+                     xmlns="http://www.w3.org/2000/svg" data-aos="zoom-in" data-aos-easing="ease-in-out" data-aos-delay="300">
+                    <path d="M82 41C82 63.6437 63.6437 82 41 82C18.3563 82 0 63.6437 0 41C0 18.3563 18.3563 0 41 0C63.6437 0 82 18.3563 82 41Z"
+                          fill="#1FC604" />
+                    <path d="M37.834 53.046C38.444 53.168 39.0134 53.229 39.542 53.229C42.104 53.229 43.9544 52.68 45.0931 51.582C46.2724 50.4433 46.862 49.1013 46.862 47.556C46.862 45.6853 46.1504 44.3027 44.7271 43.408C43.3037 42.5133 41.372 42.066 38.932 42.066H34.113V36.82H37.773C40.0504 36.82 41.9211 36.3523 43.3851 35.417C44.8897 34.441 45.6421 32.977 45.6421 31.025C45.6421 29.317 45.0727 28.036 43.934 27.182C42.7954 26.328 41.3517 25.901 39.6031 25.901C38.6271 25.901 37.5494 26.0637 36.37 26.389C35.2314 26.6737 34.0521 27.182 32.8321 27.914L30.27 23.4C31.49 22.5053 33.015 21.814 34.845 21.326C36.675 20.838 38.383 20.594 39.969 20.594C41.5957 20.594 43.1614 20.8177 44.666 21.265C46.2114 21.6717 47.5534 22.302 48.6921 23.156C49.8307 24.01 50.7457 25.0673 51.437 26.328C52.1284 27.5887 52.4741 29.0323 52.4741 30.659C52.4741 32.611 51.9657 34.2987 50.9491 35.722C49.9324 37.1453 48.509 38.223 46.6791 38.955C47.6144 39.199 48.5091 39.5853 49.3631 40.114C50.2171 40.6427 50.9491 41.2933 51.5591 42.066C52.2097 42.798 52.7181 43.6723 53.0841 44.689C53.4907 45.665 53.6941 46.7427 53.6941 47.922C53.6941 49.508 53.3891 50.9517 52.7791 52.253C52.1691 53.5137 51.3354 54.6117 50.2781 55.547C49.2207 56.4823 47.9601 57.2143 46.4961 57.743C45.0727 58.2717 43.5477 58.5767 41.9211 58.658L48.021 64.087L43.08 67.747L35.943 58.536C35.089 58.414 34.2351 58.2107 33.3811 57.926C32.5677 57.6007 31.8357 57.2143 31.185 56.767C30.575 56.279 30.0667 55.7097 29.66 55.059C29.2534 54.3677 29.05 53.595 29.05 52.741C29.05 51.5617 29.477 50.6467 30.331 49.996C31.185 49.3047 32.3237 48.959 33.747 48.959L37.834 53.046Z"
+                          fill="white" />
+                </svg>
+                <a href="#pariyojana">
+                    <p class="text-center text-xl font-bold"> परियोजना वृद्धि</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end of karya -->
+<div class="bg-gray-100 space-y-6">
+    <section class="bg-gray-100 text-lg" id="punji">
+        <div class="bg-white max-w-5xl mx-auto grid md:grid-cols-2">
+            <div class="hidden sm:flex justify-center " data-aos="slide-right" data-aos-easing="ease-in-out" data-aos-delay="100">
+                <img loading="lazy" class="object-cover object-center"
+                     src="~/Assets/Frontend/images/punji-bridhi.png" alt="punji bridhi">
+            </div>
+            <div class="font-natosans p-6">
+                <h4 class="mb-4 text-2xl font-semibold">पुंजि वृद्धि</h4>
+                <ul class="p-2 space-y-3 border border-gray-100  rounded hover:shadow">
+                    <li>
+                        <svg class="float-right mr-2" width="18" viewBox="0 0 22 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10.0857V11.0057C20.9988 13.1621 20.3005 15.2604 19.0093 16.9875C17.7182 18.7147 15.9033 19.9782 13.8354 20.5896C11.7674 21.201 9.55726 21.1276 7.53447 20.3803C5.51168 19.633 3.78465 18.2518 2.61096 16.4428C1.43727 14.6338 0.879791 12.4938 1.02168 10.342C1.16356 8.19029 1.99721 6.14205 3.39828 4.5028C4.79935 2.86354 6.69279 1.72111 8.79619 1.24587C10.8996 0.770634 13.1003 0.988061 15.07 1.86572"
+                                  stroke="#797979" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 3.00574L11 13.0157L8 10.0157" stroke="#797979" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                        <span>आर्थिक बर्ष ०७८-०७९ मा कंम्पनी लाई एकलबाट बहुलमा लगिने । </span>
+                    </li>
+                    <li>
+                        <svg class="float-right mr-2" width="18" viewBox="0 0 22 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10.0857V11.0057C20.9988 13.1621 20.3005 15.2604 19.0093 16.9875C17.7182 18.7147 15.9033 19.9782 13.8354 20.5896C11.7674 21.201 9.55726 21.1276 7.53447 20.3803C5.51168 19.633 3.78465 18.2518 2.61096 16.4428C1.43727 14.6338 0.879791 12.4938 1.02168 10.342C1.16356 8.19029 1.99721 6.14205 3.39828 4.5028C4.79935 2.86354 6.69279 1.72111 8.79619 1.24587C10.8996 0.770634 13.1003 0.988061 15.07 1.86572"
+                                  stroke="#797979" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 3.00574L11 13.0157L8 10.0157" stroke="#797979" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                        <span>कंम्पनीको पुंजि २५ लाख देखी २.५ करोड सम्म पुर्‍याउने ।</span>
+                    </li>
+                    <li>
+                        <svg class="float-right mr-2" width="18" viewBox="0 0 22 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10.0857V11.0057C20.9988 13.1621 20.3005 15.2604 19.0093 16.9875C17.7182 18.7147 15.9033 19.9782 13.8354 20.5896C11.7674 21.201 9.55726 21.1276 7.53447 20.3803C5.51168 19.633 3.78465 18.2518 2.61096 16.4428C1.43727 14.6338 0.879791 12.4938 1.02168 10.342C1.16356 8.19029 1.99721 6.14205 3.39828 4.5028C4.79935 2.86354 6.69279 1.72111 8.79619 1.24587C10.8996 0.770634 13.1003 0.988061 15.07 1.86572"
+                                  stroke="#797979" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 3.00574L11 13.0157L8 10.0157" stroke="#797979" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                        <span>संस्थापक शेयर सदस्य एक सय जना थप गरि एक सय एक जनाको स्वामित्वमा कंम्पनी संचालन गर्ने ।</span>
+                    </li>
+
+                </ul>
+                <ul class="p-2 mt-4 mb-4 space-y-3 border border-gray-100 rounded hover:shadow">
+                    <li>
+                        <svg class="float-right mr-2" width="18" viewBox="0 0 22 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10.0857V11.0057C20.9988 13.1621 20.3005 15.2604 19.0093 16.9875C17.7182 18.7147 15.9033 19.9782 13.8354 20.5896C11.7674 21.201 9.55726 21.1276 7.53447 20.3803C5.51168 19.633 3.78465 18.2518 2.61096 16.4428C1.43727 14.6338 0.879791 12.4938 1.02168 10.342C1.16356 8.19029 1.99721 6.14205 3.39828 4.5028C4.79935 2.86354 6.69279 1.72111 8.79619 1.24587C10.8996 0.770634 13.1003 0.988061 15.07 1.86572"
+                                  stroke="#797979" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 3.00574L11 13.0157L8 10.0157" stroke="#797979" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                        <span>आर्थिक बर्ष ०७९-०८० मा कंम्पनीको पुंजि २५ करोड सम्म पुर्‍याउने । </span>
+                    </li>
+                    <li>
+                        <svg class="float-right mr-2" width="18" viewBox="0 0 22 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10.0857V11.0057C20.9988 13.1621 20.3005 15.2604 19.0093 16.9875C17.7182 18.7147 15.9033 19.9782 13.8354 20.5896C11.7674 21.201 9.55726 21.1276 7.53447 20.3803C5.51168 19.633 3.78465 18.2518 2.61096 16.4428C1.43727 14.6338 0.879791 12.4938 1.02168 10.342C1.16356 8.19029 1.99721 6.14205 3.39828 4.5028C4.79935 2.86354 6.69279 1.72111 8.79619 1.24587C10.8996 0.770634 13.1003 0.988061 15.07 1.86572"
+                                  stroke="#797979" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 3.00574L11 13.0157L8 10.0157" stroke="#797979" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                        <span>कंम्पनीलाई प्राइभेट बाट पब्लिक लिमिटेडमा परिणत गर्ने ।</span>
+                    </li>
+                    <li>
+                        <svg class="float-right mr-2" width="18" viewBox="0 0 22 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10.0857V11.0057C20.9988 13.1621 20.3005 15.2604 19.0093 16.9875C17.7182 18.7147 15.9033 19.9782 13.8354 20.5896C11.7674 21.201 9.55726 21.1276 7.53447 20.3803C5.51168 19.633 3.78465 18.2518 2.61096 16.4428C1.43727 14.6338 0.879791 12.4938 1.02168 10.342C1.16356 8.19029 1.99721 6.14205 3.39828 4.5028C4.79935 2.86354 6.69279 1.72111 8.79619 1.24587C10.8996 0.770634 13.1003 0.988061 15.07 1.86572"
+                                  stroke="#797979" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 3.00574L11 13.0157L8 10.0157" stroke="#797979" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                        <span>कंम्पनीमा एक हजार वा सो भन्दा शेयर सदस्य थप्ने।</span>
+                    </li>
+
+                </ul>
+                <ul class="p-2 space-y-3 border border-gray-100 rounded hover:shadow">
+                    <li>
+                        <svg class="float-right mr-2" width="18" viewBox="0 0 22 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10.0857V11.0057C20.9988 13.1621 20.3005 15.2604 19.0093 16.9875C17.7182 18.7147 15.9033 19.9782 13.8354 20.5896C11.7674 21.201 9.55726 21.1276 7.53447 20.3803C5.51168 19.633 3.78465 18.2518 2.61096 16.4428C1.43727 14.6338 0.879791 12.4938 1.02168 10.342C1.16356 8.19029 1.99721 6.14205 3.39828 4.5028C4.79935 2.86354 6.69279 1.72111 8.79619 1.24587C10.8996 0.770634 13.1003 0.988061 15.07 1.86572"
+                                  stroke="#797979" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 3.00574L11 13.0157L8 10.0157" stroke="#797979" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                        <span>
+                            आर्थिक बर्ष ०८०-०८१ मा कंम्पनीको पुंजि २५० करोड सम्म पुर्‍याउने र दश हजार वा सो भन्दा बढी शेयर सदस्य
+                            थप्ने ।
+                        </span>
+                    </li>
+                    <li>
+                        <svg class="float-right mr-2" width="18" viewBox="0 0 22 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10.0857V11.0057C20.9988 13.1621 20.3005 15.2604 19.0093 16.9875C17.7182 18.7147 15.9033 19.9782 13.8354 20.5896C11.7674 21.201 9.55726 21.1276 7.53447 20.3803C5.51168 19.633 3.78465 18.2518 2.61096 16.4428C1.43727 14.6338 0.879791 12.4938 1.02168 10.342C1.16356 8.19029 1.99721 6.14205 3.39828 4.5028C4.79935 2.86354 6.69279 1.72111 8.79619 1.24587C10.8996 0.770634 13.1003 0.988061 15.07 1.86572"
+                                  stroke="#797979" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 3.00574L11 13.0157L8 10.0157" stroke="#797979" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                        <span>
+                            आर्थिक बर्ष ०८१-०८२मा कंम्पनी पुंजि २५०० करोड सम्म पुर्‍याउने र एक लाख वा शो भन्दा बढी शेयर सदस्य
+                            थप्ने ।
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section class="bg-gray-100" id="bypar">
+        <div class="bg-white max-w-5xl mx-auto grid md:grid-cols-2">
+            <div class="order-2 hidden sm:flex justify-center" data-aos="slide-left" data-aos-easing="ease-in-out" data-aos-delay="100">
+                <img loading="lazy" class="object-cover object-right-top"
+                     src="~/Assets/Frontend/images/bypar.png" alt="punji bridhi">
+            </div>
+            <div class="font-natosans p-6">
+                <h4 class="mb-4 text-2xl font-semibold">ब्यापार तथा ब्यावसाय वृद्धि</h4>
+                <ul class="p-2 mt-4 mb-4 text-lg space-y-3 border border-gray-100 rounded hover:shadow">
+                    <li>
+                        <svg class="float-right mr-2" width="18" viewBox="0 0 22 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10.0857V11.0057C20.9988 13.1621 20.3005 15.2604 19.0093 16.9875C17.7182 18.7147 15.9033 19.9782 13.8354 20.5896C11.7674 21.201 9.55726 21.1276 7.53447 20.3803C5.51168 19.633 3.78465 18.2518 2.61096 16.4428C1.43727 14.6338 0.879791 12.4938 1.02168 10.342C1.16356 8.19029 1.99721 6.14205 3.39828 4.5028C4.79935 2.86354 6.69279 1.72111 8.79619 1.24587C10.8996 0.770634 13.1003 0.988061 15.07 1.86572"
+                                  stroke="#797979" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 3.00574L11 13.0157L8 10.0157" stroke="#797979" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                        <span>
+                            कंम्पनीको चालू ब्यापारलाई आर्थिक बर्ष ०७८-०७९ को माघ मसान्त देखी BKP स्टोर मार्फत कारोबार संचालनमा
+                            ल्याउने । ग्राहक वर्ग लाई थप सुबिधा प्रदान गर्न कंम्पनीको वेबसाईट प्रयोगमा ल्याउने र कंम्पनीको बार्षिक
+                            ब्यापार ४० करोड सम्म पुर्‍याउने ।
+                        </span>
+                    </li>
+                    <li>
+                        <svg class="float-right mr-2" width="18" viewBox="0 0 22 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10.0857V11.0057C20.9988 13.1621 20.3005 15.2604 19.0093 16.9875C17.7182 18.7147 15.9033 19.9782 13.8354 20.5896C11.7674 21.201 9.55726 21.1276 7.53447 20.3803C5.51168 19.633 3.78465 18.2518 2.61096 16.4428C1.43727 14.6338 0.879791 12.4938 1.02168 10.342C1.16356 8.19029 1.99721 6.14205 3.39828 4.5028C4.79935 2.86354 6.69279 1.72111 8.79619 1.24587C10.8996 0.770634 13.1003 0.988061 15.07 1.86572"
+                                  stroke="#797979" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 3.00574L11 13.0157L8 10.0157" stroke="#797979" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                        <span>आर्थिक बर्ष ०७९-०८० BKP स्टोरलाई क्रमिक रुपमा बिस्तार गर्दै लैजाने ।</span>
+                    </li>
+                    <li>
+                        <svg class="float-right mr-2" width="18" viewBox="0 0 22 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10.0857V11.0057C20.9988 13.1621 20.3005 15.2604 19.0093 16.9875C17.7182 18.7147 15.9033 19.9782 13.8354 20.5896C11.7674 21.201 9.55726 21.1276 7.53447 20.3803C5.51168 19.633 3.78465 18.2518 2.61096 16.4428C1.43727 14.6338 0.879791 12.4938 1.02168 10.342C1.16356 8.19029 1.99721 6.14205 3.39828 4.5028C4.79935 2.86354 6.69279 1.72111 8.79619 1.24587C10.8996 0.770634 13.1003 0.988061 15.07 1.86572"
+                                  stroke="#797979" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 3.00574L11 13.0157L8 10.0157" stroke="#797979" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                        <span>आर्थिक बर्ष ०८०-०८१ देखी BKP स्टोरका अन्य डिभिजन पनि क्रमश संचालनमा ल्याउने ।</span>
+                    </li>
+                    <li class="flex ml-4">
+                        <svg class="float-left mr-2" width="6" viewBox="0 0 8 14" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 13L7 7L1 1" stroke="black" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+
+                        <span>BKP एग्रो एण्ड अर्गानिक स्टोर ।</span>
+                    </li>
+                    <li class="flex ml-4">
+                        <svg class="float-left mr-2" width="6" viewBox="0 0 8 14" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 13L7 7L1 1" stroke="black" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+
+                        <span>BKP फैशन एण्ड कस्मेटिक स्टोर ।</span>
+                    </li>
+                    <li class="flex ml-4">
+                        <svg class="float-left mr-2" width="6" viewBox="0 0 8 14" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 13L7 7L1 1" stroke="black" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+
+                        <span>इलेक्ट्रोनिक्स स्टोर ।</span>
+                    </li>
+                    <li class="flex ml-4">
+                        <svg class="float-left mr-2" width="6" viewBox="0 0 8 14" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 13L7 7L1 1" stroke="black" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+
+                        <span>फर्निचर तथा इण्टियर शोरुम।</span>
+                    </li>
+                    <li class="ml-4">
+                        <svg class="float-left mr-2 mt-2" width="6" viewBox="0 0 8 14" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 13L7 7L1 1" stroke="black" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+
+                        <span>हाड्वेर तथा शेनेटरी स्टोर ।<br>&nbsp;&nbsp;&nbsp;&nbsp;आदि इत्यादि ।</span>
+                    </li>
+                    <li>
+                        <svg class="float-right mr-2 stroke-green-500" width="18" viewBox="0 0 22 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10.0857V11.0057C20.9988 13.1621 20.3005 15.2604 19.0093 16.9875C17.7182 18.7147 15.9033 19.9782 13.8354 20.5896C11.7674 21.201 9.55726 21.1276 7.53447 20.3803C5.51168 19.633 3.78465 18.2518 2.61096 16.4428C1.43727 14.6338 0.879791 12.4938 1.02168 10.342C1.16356 8.19029 1.99721 6.14205 3.39828 4.5028C4.79935 2.86354 6.69279 1.72111 8.79619 1.24587C10.8996 0.770634 13.1003 0.988061 15.07 1.86572"
+                                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 3.00574L11 13.0157L8 10.0157" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                        <span>
+                            कम्पनीको ब्यापार हरेक आर्थिक बर्ष दश गुणा ले बढाएर आर्थिक बर्षा ०८१-०८२सम्म ४० हजार करोड सम्म
+                            पुर्‍याउने ।
+                        </span>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section class="bg-gray-100" id="pariyojana">
+        <div class="bg-white max-w-5xl mx-auto grid md:grid-cols-2">
+            <div class="hidden sm:flex" data-aos="slide-right" data-aos-easing="ease-in-out" data-aos-delay="100">
+                <img loading="lazy" class="object-cover object-center"
+                     src="~/Assets/Frontend/images/pariyojana.png" alt="punji bridhi">
+            </div>
+            <div class="font-natosans p-6 flex justify-center flex-col">
+                <h4 class="mb-4 text-2xl font-semibold">परियोजना वृद्धि</h4>
+                <ul class="p-2 space-y-3 border border-gray-100 text-lg  rounded hover:shadow">
+                    <li>
+                        <svg class="float-right mr-2" width="18" viewBox="0 0 22 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10.0857V11.0057C20.9988 13.1621 20.3005 15.2604 19.0093 16.9875C17.7182 18.7147 15.9033 19.9782 13.8354 20.5896C11.7674 21.201 9.55726 21.1276 7.53447 20.3803C5.51168 19.633 3.78465 18.2518 2.61096 16.4428C1.43727 14.6338 0.879791 12.4938 1.02168 10.342C1.16356 8.19029 1.99721 6.14205 3.39828 4.5028C4.79935 2.86354 6.69279 1.72111 8.79619 1.24587C10.8996 0.770634 13.1003 0.988061 15.07 1.86572"
+                                  stroke="#797979" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 3.00574L11 13.0157L8 10.0157" stroke="#797979" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                        <span>आर्थिक बर्ष ०७८-०७९-BKP स्टोर ।</span>
+                    </li>
+                    <li>
+                        <svg class="float-right mr-2" width="18" viewBox="0 0 22 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10.0857V11.0057C20.9988 13.1621 20.3005 15.2604 19.0093 16.9875C17.7182 18.7147 15.9033 19.9782 13.8354 20.5896C11.7674 21.201 9.55726 21.1276 7.53447 20.3803C5.51168 19.633 3.78465 18.2518 2.61096 16.4428C1.43727 14.6338 0.879791 12.4938 1.02168 10.342C1.16356 8.19029 1.99721 6.14205 3.39828 4.5028C4.79935 2.86354 6.69279 1.72111 8.79619 1.24587C10.8996 0.770634 13.1003 0.988061 15.07 1.86572"
+                                  stroke="#797979" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 3.00574L11 13.0157L8 10.0157" stroke="#797979" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                        <span>आर्थिक बर्ष ०७९-०८०- BKP एग्रो लिमिटेड ।</span>
+                    </li>
+                    <li>
+                        <svg class="float-right mr-2" width="18" viewBox="0 0 22 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10.0857V11.0057C20.9988 13.1621 20.3005 15.2604 19.0093 16.9875C17.7182 18.7147 15.9033 19.9782 13.8354 20.5896C11.7674 21.201 9.55726 21.1276 7.53447 20.3803C5.51168 19.633 3.78465 18.2518 2.61096 16.4428C1.43727 14.6338 0.879791 12.4938 1.02168 10.342C1.16356 8.19029 1.99721 6.14205 3.39828 4.5028C4.79935 2.86354 6.69279 1.72111 8.79619 1.24587C10.8996 0.770634 13.1003 0.988061 15.07 1.86572"
+                                  stroke="#797979" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 3.00574L11 13.0157L8 10.0157" stroke="#797979" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                        <span>
+                            आर्थिक बर्ष ०८०-०८१ देखी BKP स्टोरका अन्य डिभिजन पनि क्रमश संचालनमा ल्याउने । BKP इन्फोशिस लिमिटेड
+                            ।
+                        </span>
+                    </li>
+                    <li>
+                        <svg class="float-right mr-2" width="18" viewBox="0 0 22 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10.0857V11.0057C20.9988 13.1621 20.3005 15.2604 19.0093 16.9875C17.7182 18.7147 15.9033 19.9782 13.8354 20.5896C11.7674 21.201 9.55726 21.1276 7.53447 20.3803C5.51168 19.633 3.78465 18.2518 2.61096 16.4428C1.43727 14.6338 0.879791 12.4938 1.02168 10.342C1.16356 8.19029 1.99721 6.14205 3.39828 4.5028C4.79935 2.86354 6.69279 1.72111 8.79619 1.24587C10.8996 0.770634 13.1003 0.988061 15.07 1.86572"
+                                  stroke="#797979" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 3.00574L11 13.0157L8 10.0157" stroke="#797979" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                        <span>आर्थिक बर्ष ०८०-०८१- BKP प्याकेजिङ्ग उद्योग । BKP इण्टरटेण्मेण्ट ।</span>
+                    </li>
+                    <li>
+                        <svg class="float-right mr-2" width="18" viewBox="0 0 22 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10.0857V11.0057C20.9988 13.1621 20.3005 15.2604 19.0093 16.9875C17.7182 18.7147 15.9033 19.9782 13.8354 20.5896C11.7674 21.201 9.55726 21.1276 7.53447 20.3803C5.51168 19.633 3.78465 18.2518 2.61096 16.4428C1.43727 14.6338 0.879791 12.4938 1.02168 10.342C1.16356 8.19029 1.99721 6.14205 3.39828 4.5028C4.79935 2.86354 6.69279 1.72111 8.79619 1.24587C10.8996 0.770634 13.1003 0.988061 15.07 1.86572"
+                                  stroke="#797979" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 3.00574L11 13.0157L8 10.0157" stroke="#797979" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                        <span>आर्थिक बर्ष ०८१-०८२ -BKP डेब्लोपर ।BKP ज्वैलरी । BKP मोटर ।</span>
+                    </li>
+                    <li>
+                        <svg class="float-right mr-2" width="18" viewBox="0 0 22 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10.0857V11.0057C20.9988 13.1621 20.3005 15.2604 19.0093 16.9875C17.7182 18.7147 15.9033 19.9782 13.8354 20.5896C11.7674 21.201 9.55726 21.1276 7.53447 20.3803C5.51168 19.633 3.78465 18.2518 2.61096 16.4428C1.43727 14.6338 0.879791 12.4938 1.02168 10.342C1.16356 8.19029 1.99721 6.14205 3.39828 4.5028C4.79935 2.86354 6.69279 1.72111 8.79619 1.24587C10.8996 0.770634 13.1003 0.988061 15.07 1.86572"
+                                  stroke="#797979" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 3.00574L11 13.0157L8 10.0157" stroke="#797979" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                        </svg>
+                        <span>आर्थिक बर्ष ०८२-०८३ -BKP उर्जा । BKP लाइफ ।</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div class="bg-gray-50 mx-6 p-4 max-w-4xl sm:mx-auto shadow rounded mb-16">
+        <p class="text-center font-natosans">
+            विविध उदेश्य तथा विशाल लक्ष्य र सपना भएको यस कंम्पनीमा जोडिन <a class="text-sky-500 underline font-bold" href="#">यहाँ क्लिक</a> गर्नुहोस् र महत्त्वपूर्ण सय जनाको सुचिमा
+            आफुलाई सुचिकृत गर्नुहोस्।
+        </p>
+    </div>
+    <div class="pb-12 bg-gray-100"></div>
+
+</div>

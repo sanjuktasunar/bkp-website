@@ -13,17 +13,33 @@ namespace web.Controllers
             return View();
         }
 
-        public ActionResult About()
+        [Route("~/action-plan")]
+        public ActionResult ActionPlan()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
-        public ActionResult Contact()
+        [Route("~/upcoming-project")]
+        public ActionResult UpcomingProject()
         {
-            ViewBag.Message = "Your contact page.";
+            return View();
+        }
 
+        [Route("~/about-us")]
+        public ActionResult AboutUs()
+        {
+            return View();
+        }
+
+        [Route("~/contact-us")]
+        public ActionResult ContactUs()
+        {
+            return View();
+        }
+
+        [Route("~/member-register")]
+        public ActionResult MemberRegister()
+        {
             return View();
         }
     }

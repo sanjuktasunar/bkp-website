@@ -1829,20 +1829,28 @@
     <Content Include="Assets\Backend\vendor\jquery\jquery.slim.js" />
     <Content Include="Assets\Backend\vendor\jquery\jquery.slim.min.js" />
     <Content Include="Assets\Custom\css\PagedList.css" />
-    <Content Include="Assets\Frontend\css\templatemo.css" />
-    <Content Include="Assets\Frontend\images\business-grow.jpg" />
-    <Content Include="Assets\Frontend\images\capital.jpg" />
-    <Content Include="Assets\Frontend\images\goal.jpg" />
-    <Content Include="Assets\Frontend\images\img-1.jpg" />
-    <Content Include="Assets\Frontend\images\img-2.jpg" />
-    <Content Include="Assets\Frontend\images\img-3.jpg" />
-    <Content Include="Assets\Frontend\images\logo.jpg" />
-    <Content Include="Assets\Frontend\images\mission.jpg" />
-    <Content Include="Assets\Frontend\images\plan1.jpg" />
-    <Content Include="Assets\Frontend\images\vision.jpg" />
-    <Content Include="Assets\Frontend\js\bootstrap.js" />
-    <Content Include="Assets\Frontend\js\jquery.js" />
-    <Content Include="Assets\Frontend\js\templatemo.js" />
+    <Content Include="Assets\Frontend\css\style.css" />
+    <Content Include="Assets\Frontend\images\bkp-agro.jpg" />
+    <Content Include="Assets\Frontend\images\bkp-developers.jpg" />
+    <Content Include="Assets\Frontend\images\bkp-entertainment.jpg" />
+    <Content Include="Assets\Frontend\images\bkp-icon.svg" />
+    <Content Include="Assets\Frontend\images\bkp-industries.jpg" />
+    <Content Include="Assets\Frontend\images\bkp-infosys.jpg" />
+    <Content Include="Assets\Frontend\images\bkp-jewellery.jpg" />
+    <Content Include="Assets\Frontend\images\bkp-nepal-logo.svg" />
+    <Content Include="Assets\Frontend\images\bkp-store.jpg" />
+    <Content Include="Assets\Frontend\images\bypar.png" />
+    <Content Include="Assets\Frontend\images\compound1.png" />
+    <Content Include="Assets\Frontend\images\favicon.ico" />
+    <Content Include="Assets\Frontend\images\hero.jpg" />
+    <Content Include="Assets\Frontend\images\icon.svg" />
+    <Content Include="Assets\Frontend\images\pariyojana.png" />
+    <Content Include="Assets\Frontend\images\punji-bridhi.png" />
+    <Content Include="Assets\Frontend\images\teamwork.png" />
+    <Content Include="Assets\Frontend\images\technology.png" />
+    <Content Include="Assets\Frontend\js\main.js" />
+    <Content Include="Assets\Frontend\js\registration.js" />
+    <Content Include="Assets\Frontend\src\style.css" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -1855,9 +1863,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_FrontLayout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2037,6 +2042,12 @@
     <Content Include="Assets\Backend\vendor\jquery\jquery.min.map" />
     <Content Include="Assets\Backend\vendor\jquery\jquery.slim.min.map" />
     <None Include="packages.config" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\ActionPlan.cshtml" />
+    <Content Include="Views\Home\AboutUs.cshtml" />
+    <Content Include="Views\Home\UpcomingProject.cshtml" />
+    <Content Include="Views\Home\ContactUs.cshtml" />
+    <Content Include="Views\Home\MemberRegister.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

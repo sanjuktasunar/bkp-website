@@ -1,31 +1,164 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿
+@{
+    Layout = "~/Views/Shared/_FrontLayout.cshtml";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
+<!-- hero section -->
+<section class="w-full bg-[url('../images/hero.jpg')] bg-fixed bg-no-repeat bg-cover overflow-hidden">
+    <div class="w-full min-h-[100vh] bg-black bg-opacity-80 flex flex-col justify-center items-center ">
+        <h1 data-aos="zoom-in" data-aos-easing="ease-in-out" data-aos-delay="200"
+            class="mt-2 px-6 py-2 text-transparent bg-clip-text bg-gradient-to-br from-white via-gray-50 to-brand-700 text-center text-4xl md:text-6xl font-natosans font-black md:max-w-xl"
+            style="line-height: 1.2;">
+            जीवन बदल्ने साझा
+            मंचमा हजुरलाई स्वागत छ।
+        </h1>
+        <div class="mt-6" data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-delay="100">
+            <a href="register.html"
+               class="text-white uppercase  md:text-xl bg-brand  hover:bg-brand-800 mt-6 md:mt-8 px-6 py-3 rounded-md focus:outline  focus:outline-2 focus:outline-brand-200 focus:outline-offset-2">
+                Become
+                a member
+            </a>
+        </div>
+    </div>
+</section>
+<!-- end of hero section -->
+<!-- start of why choose bkp nepal -->
+<section class="">
+    <div class="max-w-5xl mx-auto px-8 py-16 md:py-24">
+        <h3 class="text-3xl font-bold py-2">Why Choose BKP Nepal?</h3>
+        <div class="grid md:grid-cols-4 gap-8 mt-10 content-center">
+            <div class="bg-white relative shadow px-8 py-8 rounded-md " data-aos="slide-up">
+                <svg xmlns="http://www.w3.org/2000/svg" class="absolute -top-5 -left-5 h-12 w-12 fill-green-400"
+                     viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                          d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          clip-rule="evenodd" />
+                </svg>
+                <div class="">
+                    <span class="text-sm">For</span>
+                    <p class="text-2xl">Investment</p>
+                </div>
+
+            </div>
+            <div class="bg-white relative shadow px-8 py-8 rounded-md" data-aos="slide-up" data-aos-delay="200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="absolute -top-5 -left-5 h-12 w-12 fill-green-400"
+                     viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                          d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          clip-rule="evenodd" />
+                </svg>
+                <div>
+                    <span class="text-sm">For</span>
+                    <p class="text-2xl">Business with company</p>
+                </div>
+            </div>
+            <div class="bg-white relative shadow px-8 py-8 rounded-md" data-aos="slide-up" data-aos-delay="300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="absolute -top-5 -left-5 h-12 w-12 fill-green-400"
+                     viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                          d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          clip-rule="evenodd" />
+                </svg>
+                <div>
+                    <span class="text-sm">For</span>
+                    <p class="text-2xl">Employment</p>
+                </div>
+            </div>
+            <div class="bg-white relative shadow px-8 py-8 rounded-md" data-aos="slide-up" data-aos-delay="400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="absolute -top-5 -left-5 h-12 w-12 fill-green-400"
+                     viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                          d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          clip-rule="evenodd" />
+                </svg>
+                <div>
+                    <span class="text-sm">For</span>
+                    <p class="text-2xl">Becoming Agent</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end of why choose bkp nepal section -->
+<!-- about us section -->
+<section class="bg-white">
+    <div class="section font-natosans overflow-hidden" data-aos="slide-up">
+        <h3 class="text-3xl font-semibold">हाम्रो बारेमा</h3>
+        <p class="my-6 text-xl md:max-w-3xl leading-relaxed md:font-normal text-black-600">
+            विविध बस्तु तथा क्षेत्र हरुमा
+            राष्ट्रिय तथा अन्तर्राष्ट्रिय स्तरमा ब्यापार, ब्यापार प्रबर्द्धन, र ब्यवस्थापन गर्ने प्रमुख उदेश्यका साथ मिति
+            २०७३कार्तिक २६ गते कम्पनी रजिस्ट्रार कार्यलयमा दर्ता भई संचालनमा आएको कम्पनी हो बिश्वकर्मा टेडिङ्ग एण्ड
+            प्रमोटर्स प्रा.लि. । यस कम्पनीको एक मात्र संचालक इ.सन्जुक्ता सुनार हुनुहुन्छ । कम्पनीको मुख्य कार्यलय हाल बुटवल
+            -११ रुपन्देही मा रहेको छ।
         </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        <a href="about.html" class="btn bg-brand text-sm ">पुरा पढ्नुस</a>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+
+</section>
+<!-- end of about us section -->
+<!-- hamro mantra section -->
+<section class="bg-gray-200 border-t border-t-black-50">
+    <div class="section text-sm overflow-hidden" data-aos="fade-in">
+        <h3 class="text-3xl font-semibold">हाम्रो मन्त्र</h3>
+        <div class="grid md:grid-cols-3 gap-8 mt-8 text-xl font-semibold overflow-hidden">
+            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-xl flex flex-col justify-center items-center"
+                 data-aos="slide-up" data-aos-delay="100">
+                <img loading="lazy" class="h-16" src="~/Assets/Frontend/images/teamwork.png" 
+                        alt="teamwork">
+                <p class=" py-2">Team Work</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-lg flex flex-col justify-center items-center"
+                 data-aos="slide-up" data-aos-delay="200">
+                <img loading="lazy" class="h-16" src="~/Assets/Frontend/images/technology.png"
+                     alt="technology icon">
+                <p class="py-2">Technology</p>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-lg flex flex-col justify-center items-center overflow-hidden"
+                 data-aos="slide-up" data-aos-delay="300">
+                <img loading="lazy" class="h-16" src="~/Assets/Frontend/images/compound1.png" 
+                    alt="compounding">
+                <p class="py-2">Compounding</p>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+</section>
+<!-- end of hamro mantra -->
+<!-- mission vision goal section -->
+<section class="bg-gray-100">
+    <div class="max-w-5xl mx-auto grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-8 py-16">
+        <div class="card bg-white rounded-lg hover:shadow-lg" data-aos="slide-up" data-aos-delay="100">
+            <div class="px-4 py-4 space-y-2">
+                <h3 class="underline decoration-brand decoration-4 text-black text-2xl font-bold">Vision</h3>
+                <p class="font-natosans text-black-800 text-lg font-semibold">
+                    सानो सानो पुंजीलाई एकीकृत गरि बृहत राष्ट्रिय
+                    पुंजिमा रुपान्तरण गरि उत्पादन ब्यापार प्रबर्द्धन देशलाई आर्थिक समृद्धि मा लैजाने।
+                </p>
+            </div>
+        </div>
+        <div class="card bg-white rounded-lg hover:shadow-lg" data-aos="slide-up" data-aos-delay="200">
+
+            <div class="px-4 py-4 space-y-2">
+                <h3 class="underline decoration-brand decoration-4 text-black text-2xl font-bold">Mission</h3>
+                <p class="font-natosans text-black-800 text-lg font-semibold">
+                    राष्ट्रिय तथा अन्तर्राष्ट्रिय जगतमा एक
+                    प्रतिष्ठित
+                    कम्पनी भइ कारोबार गर्ने।
+                </p>
+            </div>
+        </div>
+
+        <div class="card bg-white rounded-lg hover:shadow-lg" data-aos="slide-up" data-aos-delay="100">
+
+            <div class=" px-4 py-4 space-y-2">
+                <h3 class="underline decoration-brand decoration-4 text-black text-2xl font-bold">Goal</h3>
+                <p class="font-natosans text-black-800 text-lg font-semibold">
+                    सम्पुर्ण नेपाली जन हरु को साझा कम्पनी बनाई
+                    राष्ट्रिय तथा अन्तर्राष्ट्रिय जगत मा ब्यापार ब्यवसाय गर्ने
+                </p>
+            </div>
+        </div>
     </div>
-</div>
+</section>
+<!-- end of main -->
