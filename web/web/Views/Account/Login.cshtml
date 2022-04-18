@@ -1,0 +1,115 @@
+﻿@{
+    Layout = "~/Views/Shared/_FrontLayout.cshtml";
+}
+
+<section class="pt-32 pb-16  bg-gray-100">
+    <main class="max-w-5xl md:px-6 mx-auto grid place-content-center">
+        <div class="bg-white p-4 md:p-6 shadow rounded-md">
+            <h3 class="font-semibold text-black-700 text-xl mb-4 flex items-center gap-2">
+                <svg class="w-6 h-6 stroke-black-700" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                </svg>
+                <span>Login</span>
+            </h3>
+            <form class="md:min-w-[350px] space-y-2 flex flex-col" id="form_validation">
+                <div class="form-group">
+                    <label class="mb-2 block" for="name">
+                        <span>Username</span>
+                        <input class="input" type="text" name="UserName" id="UserName">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="password">
+                        <span>Password</span>
+                        <input class="input" type="password" name="Password" id="Password">
+                    </label>
+                </div>
+                <label for="remember">
+                    <input class="accent-black mt-2" type="checkbox" name="remember" id="remember">
+                    <span>Remember me</span>
+                </label>
+
+                <button class="btn" type="submit">Login</button>
+                <a class="block underline mt-8 text-center" href="#forgot">Forgot Password ?</a>
+            </form>
+        </div>
+    </main>
+</section>
+@Scripts.Render("~/web/back-end/js")
+@*<script src="~/Assets/Backend/vendor/jquery/jquery.min.js"></script>*@
+<script src="~/Assets/Backend/js/custom/plugin/jquery.validate.min.js"></script>
+<script>
+    //var resp = {
+    //    messageType: 'success',
+    //    message:'this is testing'
+    //};
+    //showResultMessage(resp);
+
+    var $checkoutForm = $('#form_validation').validate({
+        ignore: [],
+        rules: {
+            'UserName': {
+                required: true,
+                maxlength: 100
+            },
+            'Password': {
+                required: true,
+                maxlength: 100
+            },
+        },
+        submitHandler: function (form) {
+            $("#btnLogin").prop('disabled', true)
+            $("#btnLogin").html('Processing....')
+
+            $.ajax({
+                type: "POST",
+                url: '/Account/Login',
+                data: $("#form_validation").serialize(),
+                success: function (resp) {
+                    if (resp.messageType == "success") {
+                        window.location.href = "/Dashboard";
+                    }
+                    else {
+                        showMessage_Only(resp)
+                    }
+                    $("#btnLogin").prop('disabled', false)
+                    $("#btnLogin").html('Login')
+                },
+                error: function (resp) {
+                    showMessage_Only(resp)
+                    $("#btnLogin").prop('disabled', false)
+                    $("#btnLogin").html('Login')
+                }
+            })
+        },
+
+        errorPlacement: function errorPlacement(error, element) {
+            var $parent = $(element).parents('.form-group');
+
+            // Do not duplicate errors
+            if ($parent.find('.jquery-validation-error').length) {
+                return false;
+            }
+
+            $parent.append(
+                error.addClass('jquery-validation-error small form-text invalid-feedback')
+            );
+        },
+        highlight: function (element) {
+            var $el = $(element);
+            var $parent = $el.parents('.form-group');
+
+            $el.addClass('is-invalid');
+
+            // Select2 and Tagsinput
+            if ($el.hasClass('select2-hidden-accessible') || $el.attr('data-role') === 'tagsinput') {
+                $el.parent().addClass('is-invalid');
+            }
+
+        },
+        unhighlight: function (element) {
+            $(element).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
+        }
+    });
+</script>

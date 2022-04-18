@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Web.Entity.Dto.DepartmentDto>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h6 class="h6 mb-2 text-gray-800">Department List</h6>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <a href="~/AddDepartment" class="btn btn-success btn-sm">
+            <i class="fas fa-plus"></i> Add New
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>S.N.</th>
+                        <th hidden="hidden"></th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int i = 0; }
+                    @foreach (var x in Model)
+                    {
+                        i++;
+                        <tr>
+                            <td>@i</td>
+                            <td hidden="hidden">@x.DepartmentId</td>
+                            <td>@x.DepartmentName</td>
+                            <td>
+                                @if (x.Status == true)
+                                {
+                                    <span class="badge badge-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-danger">Inactive</span>
+                                }
+                            </td>
+                            <td>
+                                <a href="~/ModifyDepartment/@x.DepartmentId" class="btn btn-success btn-circle btn-sm" id="btnEdit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button class="btn btn-danger btn-circle btn-sm" id="btnDelete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/web/back-end/js")
+
+<script>
+    $(document).ready(function () {
+        $("#dataTable").on('click', '#btnDelete', function () {
+            var currentRow = $(this).closest("tr");
+            var data = currentRow.find("td:eq(1)").html();
+
+            swal({
+                text: "के तपाई यो डाटा मेटाउन चाहनुहुन्छ ?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            type: "POST",
+                            url: '/Department/Delete/' + data,
+                            success: function (message) {
+                                showResultMessage(message, "/DepartmentList")
+                            },
+                            error: function (message) {
+                                showResultMessage(message)
+                            }
+                        });
+                    }
+                });
+        });
+    })
+</script>
+
+

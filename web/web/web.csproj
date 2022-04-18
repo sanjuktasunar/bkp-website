@@ -45,10 +45,34 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper">
+      <HintPath>..\..\..\..\..\SoftlabInc\H2ONew\H2O\H2O\bin\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="DapperExtensions">
+      <HintPath>..\..\..\..\..\SoftlabInc\H2ONew\H2O\H2O\bin\DapperExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentMigrator">
+      <HintPath>..\..\..\..\WEB-MAIN\WEB-main\web\web\bin\FluentMigrator.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentMigrator.Runner">
+      <HintPath>..\..\..\..\WEB-MAIN\WEB-main\web\web\bin\FluentMigrator.Runner.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NDC">
+      <HintPath>..\..\..\..\WEB-MAIN\WEB-main\web\web\bin\NDC.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -102,6 +126,15 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Abstractions, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.1\lib\net47\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.1\lib\net47\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mvc5, Version=1.4.0.0, Culture=neutral, PublicKeyToken=43da31bc42a85347, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Mvc5.1.4.0\lib\net45\Unity.Mvc5.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -121,10 +154,135 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PublicBaseController.cs" />
+    <Compile Include="Controllers\Public\PublicProductController.cs" />
+    <Compile Include="Controllers\Public\RegisterController.cs" />
+    <Compile Include="Controllers\User\AccountController.cs" />
+    <Compile Include="Controllers\User\AccountHeadController.cs" />
+    <Compile Include="Controllers\User\AgentController.cs" />
+    <Compile Include="Controllers\User\AjaxController.cs" />
+    <Compile Include="Controllers\User\BaseController.cs" />
+    <Compile Include="Controllers\User\DashboardController.cs" />
+    <Compile Include="Controllers\User\DepartmentController.cs" />
+    <Compile Include="Controllers\User\DesignationController.cs" />
+    <Compile Include="Controllers\User\FiscalYearController.cs" />
+    <Compile Include="Controllers\User\MemberController.cs" />
+    <Compile Include="Controllers\User\MenusController.cs" />
+    <Compile Include="Controllers\User\RoleController.cs" />
+    <Compile Include="Controllers\User\ShareTypesController.cs" />
+    <Compile Include="Controllers\User\StaffsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Model\BaseDto.cs" />
+    <Compile Include="Model\BaseEntity.cs" />
+    <Compile Include="Model\Dto\AccountHeadDto.cs" />
+    <Compile Include="Model\Dto\AddressDto.cs" />
+    <Compile Include="Model\Dto\AgentDto.cs" />
+    <Compile Include="Model\Dto\BankDepositDto.cs" />
+    <Compile Include="Model\Dto\CustomerInfoDto.cs" />
+    <Compile Include="Model\Dto\DepartmentDto.cs" />
+    <Compile Include="Model\Dto\DesignationDto.cs" />
+    <Compile Include="Model\Dto\DropdownDto.cs" />
+    <Compile Include="Model\Dto\EmailDto.cs" />
+    <Compile Include="Model\Dto\FiscalYearDto.cs" />
+    <Compile Include="Model\Dto\GenderDto.cs" />
+    <Compile Include="Model\Dto\MemberDataDto.cs" />
+    <Compile Include="Model\Dto\MemberDto.cs" />
+    <Compile Include="Model\Dto\MemberTypeDto.cs" />
+    <Compile Include="Model\Dto\MenuAccessPermissionDto.cs" />
+    <Compile Include="Model\Dto\MenusDto.cs" />
+    <Compile Include="Model\Dto\MunicipalityTypeDto.cs" />
+    <Compile Include="Model\Dto\OrganizationInfoDto.cs" />
+    <Compile Include="Model\Dto\PhotoStoragesDto.cs" />
+    <Compile Include="Model\Dto\PratigyaPatraFormFillupsDto.cs" />
+    <Compile Include="Model\Dto\ProductDto.cs" />
+    <Compile Include="Model\Dto\ProductImageDto.cs" />
+    <Compile Include="Model\Dto\ProductPriceDto.cs" />
+    <Compile Include="Model\Dto\ProvinceDto.cs" />
+    <Compile Include="Model\Dto\RoleDto.cs" />
+    <Compile Include="Model\Dto\ShareTypesDto.cs" />
+    <Compile Include="Model\Dto\StaffsDto.cs" />
+    <Compile Include="Model\Dto\SupplierDto.cs" />
+    <Compile Include="Model\Dto\UnitDto.cs" />
+    <Compile Include="Model\Dto\UserDocumentDto.cs" />
+    <Compile Include="Model\Dto\UsersDto.cs" />
+    <Compile Include="Model\Dto\UserSite\CustomerQueryDto.cs" />
+    <Compile Include="Model\Dto\UserSite\DisplayParamters.cs" />
+    <Compile Include="Model\Dto\UserSite\ParameterClass.cs" />
+    <Compile Include="Model\Dto\UserSite\ProductPageDto.cs" />
+    <Compile Include="Model\Dto\UserSite\UserIndexDto.cs" />
+    <Compile Include="Model\Dto\UserStatusDto.cs" />
+    <Compile Include="Model\Dto\VersionInfoDto.cs" />
+    <Compile Include="Model\Entity\AccountHead.cs" />
+    <Compile Include="Model\Entity\Address.cs" />
+    <Compile Include="Model\Entity\Agent.cs" />
+    <Compile Include="Model\Entity\BankDeposit.cs" />
+    <Compile Include="Model\Entity\Country.cs" />
+    <Compile Include="Model\Entity\CustomerInfo.cs" />
+    <Compile Include="Model\Entity\CustomerQuery.cs" />
+    <Compile Include="Model\Entity\Department.cs" />
+    <Compile Include="Model\Entity\Designation.cs" />
+    <Compile Include="Model\Entity\FiscalYear.cs" />
+    <Compile Include="Model\Entity\Gender.cs" />
+    <Compile Include="Model\Entity\Member.cs" />
+    <Compile Include="Model\Entity\MenuAccessPermission.cs" />
+    <Compile Include="Model\Entity\Menus.cs" />
+    <Compile Include="Model\Entity\OrganizationInfo.cs" />
+    <Compile Include="Model\Entity\PhotoStorages.cs" />
+    <Compile Include="Model\Entity\PratigyaPatraFormFillups.cs" />
+    <Compile Include="Model\Entity\Product.cs" />
+    <Compile Include="Model\Entity\ProductImage.cs" />
+    <Compile Include="Model\Entity\ProductPrice.cs" />
+    <Compile Include="Model\Entity\PurchaseRecord.cs" />
+    <Compile Include="Model\Entity\Role.cs" />
+    <Compile Include="Model\Entity\ShareTypes.cs" />
+    <Compile Include="Model\Entity\Staffs.cs" />
+    <Compile Include="Model\Entity\Supplier.cs" />
+    <Compile Include="Model\Entity\Unit.cs" />
+    <Compile Include="Model\Entity\UserDocuments.cs" />
+    <Compile Include="Model\Entity\Users.cs" />
+    <Compile Include="Model\Infrastructure\ApprovalStatus.cs" />
+    <Compile Include="Model\Infrastructure\ConnectionDetails.cs" />
+    <Compile Include="Model\Infrastructure\FormStatus.cs" />
+    <Compile Include="Model\Infrastructure\MemberReport.cs" />
+    <Compile Include="Model\Infrastructure\PaymentStatus.cs" />
+    <Compile Include="Model\Infrastructure\Response.cs" />
+    <Compile Include="Model\Model\DropdownList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Mapping\AccountMapping.cs" />
+    <Compile Include="Services\Mapping\AddressMapping.cs" />
+    <Compile Include="Services\Mapping\AdministrationMapping.cs" />
+    <Compile Include="Services\Mapping\BaseMapping.cs" />
+    <Compile Include="Services\Mapping\CustomerMapping.cs" />
+    <Compile Include="Services\Mapping\DataMapping.cs" />
+    <Compile Include="Services\Mapping\FundDevelopmentMapping.cs" />
+    <Compile Include="Services\Mapping\MemberMapping.cs" />
+    <Compile Include="Services\Mapping\ModelStateMapping.cs" />
+    <Compile Include="Services\Mapping\PublicSiteMapping.cs" />
+    <Compile Include="Services\Mapping\SharesMapping.cs" />
+    <Compile Include="Services\Repository.cs" />
+    <Compile Include="Services\Services\AccountHeadService.cs" />
+    <Compile Include="Services\Services\AgentService.cs" />
+    <Compile Include="Services\Services\DepartmentService.cs" />
+    <Compile Include="Services\Services\DesignationService.cs" />
+    <Compile Include="Services\Services\DropDownService.cs" />
+    <Compile Include="Services\Services\FiscalYearService.cs" />
+    <Compile Include="Services\Services\MemberService.cs" />
+    <Compile Include="Services\Services\MenusService.cs" />
+    <Compile Include="Services\Services\ProductService.cs" />
+    <Compile Include="Services\Services\RoleService.cs" />
+    <Compile Include="Services\Services\ShareTypesService.cs" />
+    <Compile Include="Services\Services\StaffsService.cs" />
+    <Compile Include="Services\Services\UsersService.cs" />
+    <Compile Include="Utility\CacheCodes.cs" />
+    <Compile Include="Utility\CacheManager.cs" />
+    <Compile Include="Utility\DateSettings.cs" />
+    <Compile Include="Utility\ImageSettings.cs" />
+    <Compile Include="Utility\InitialSetupModel.cs" />
+    <Compile Include="Utility\MessageClass.cs" />
+    <Compile Include="Utility\Register_Services.cs" />
+    <Compile Include="Utility\Security.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Backend\css\custom\custom.css" />
@@ -1867,6 +2025,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Assets\Custom\js\" />
+    <Folder Include="Views\PublicBase\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Backend\scss\navs\_global.scss" />
@@ -2048,6 +2207,37 @@
     <Content Include="Views\Home\UpcomingProject.cshtml" />
     <Content Include="Views\Home\ContactUs.cshtml" />
     <Content Include="Views\Home\MemberRegister.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\AccountHead\AccountHeadList.cshtml" />
+    <Content Include="Views\AccountHead\AddModifyAccountHead.cshtml" />
+    <Content Include="Views\Agent\AddModifyAgent.cshtml" />
+    <Content Include="Views\Agent\AgentDetails.cshtml" />
+    <Content Include="Views\Agent\AgentList.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\Department\AddModifyDepartment.cshtml" />
+    <Content Include="Views\Department\Department.cshtml" />
+    <Content Include="Views\Designation\AddModifyDesignation.cshtml" />
+    <Content Include="Views\Designation\Designation.cshtml" />
+    <Content Include="Views\FiscalYear\AddModifyFiscalYear.cshtml" />
+    <Content Include="Views\FiscalYear\FiscalYearList.cshtml" />
+    <Content Include="Views\Member\AddModifyNewMember.cshtml" />
+    <Content Include="Views\Member\FilterMemberList.cshtml" />
+    <Content Include="Views\Member\MemberDetails.cshtml" />
+    <Content Include="Views\Member\MemberList.cshtml" />
+    <Content Include="Views\Member\ModifyMember.cshtml" />
+    <Content Include="Views\Menus\AddModifyMenus.cshtml" />
+    <Content Include="Views\Menus\Menus.cshtml" />
+    <Content Include="Views\PublicProduct\Product.cshtml" />
+    <Content Include="Views\PublicProduct\ProductDetails.cshtml" />
+    <Content Include="Views\Role\AddModifyRole.cshtml" />
+    <Content Include="Views\Role\MenuAccessPermission.cshtml" />
+    <Content Include="Views\Role\Roles.cshtml" />
+    <Content Include="Views\ShareTypes\AddModifyShareType.cshtml" />
+    <Content Include="Views\ShareTypes\ShareTypeList.cshtml" />
+    <Content Include="Views\Staffs\AddModifyStaff.cshtml" />
+    <Content Include="Views\Staffs\MenuAccessPermission.cshtml" />
+    <Content Include="Views\Staffs\Staffs.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

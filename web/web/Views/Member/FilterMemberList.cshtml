@@ -1,0 +1,315 @@
+﻿@model IEnumerable<Web.Entity.Dto.MemberDto>
+
+@{
+    Layout = null;
+    Web.Entity.Dto.MenuAccessPermissionDto menu = ViewBag.Menus;
+}
+
+<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>S.N.</th>
+            <th hidden="hidden"></th>
+            <th>Details</th>
+            <th>Status</th>
+            <th>Referal Code</th>
+            <th>Referred By</th>
+            <th>Status</th>
+            <th>Applied Kitta</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{ int i = 0; }
+        @foreach (var x in Model)
+        {
+            string approvalClassName = "";
+
+            i++;
+            <tr>
+                <td>@i</td>
+                <td hidden="hidden">@x.MemberId</td>
+                <td>
+                    <label>Fullname : @x.FullName </label><br />
+                    <label>Phone : @x.MobileNumber</label><br />
+                    <label>Email : @x.Email </label><br />
+                    <label>Created Date : @x.CreatedDate</label><br />
+                    @if (x.ApprovalStatus == Web.Entity.Infrastructure.ApprovalStatus.Approved)
+                    {
+                        <label>Approval Date : @x.ApprovedDate</label>
+                    }
+
+                </td>
+
+                <td>
+                    <label>Form : @x.FormStatus</label> <br />
+                    <label>
+                        Approval :
+                        @if (x.ApprovalStatus == Web.Entity.Infrastructure.ApprovalStatus.Approved)
+                        {
+                            approvalClassName = "badge badge-success";
+                        }
+                        else if (x.ApprovalStatus == Web.Entity.Infrastructure.ApprovalStatus.Rejected)
+                        {
+                            approvalClassName = "badge badge-danger";
+                        }
+                        else
+                        {
+                            approvalClassName = "badge badge-primary";
+                        }
+                        <span class="@approvalClassName">@x.ApprovalStatus</span>
+                        @if (!string.IsNullOrEmpty(x.ApprovalRemarks))
+                        {
+                            <br />
+                            <span class="badge badge-dark">@x.ApprovalRemarks</span>
+                        }
+                    </label>
+                </td>
+                @*<td>@x.ApprovalStatus</td>*@
+                <td>
+                    <label>Referal Code : @x.ReferalCode</label>
+                </td>
+                <td>@x.ReferenceFullName</td>
+                <td>
+                    @if (x.IsActive == true)
+                    {
+                        <span class="badge badge-success"> Active </span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-danger"> InActive </span>
+                    }
+                </td>
+                <td style="background-color:yellow;">@x.AppliedKitta</td>
+                <td>
+                    @if (x.FormStatus ==
+                        Web.Entity.Infrastructure.FormStatus.Complete &&
+                            menu.ApprovalAccess == true && (x.ApprovalStatus ==
+                            Web.Entity.Infrastructure.ApprovalStatus.UnApproved || x.ApprovalStatus ==
+                            Web.Entity.Infrastructure.ApprovalStatus.Rejected))
+                    {
+                        <button class="btn btn-success btn-circle btn-sm"
+                                id="btnApprove" title="Approve">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    }
+                    @if (menu.RejectAccess == true && x.ApprovalStatus != Web.Entity.Infrastructure.ApprovalStatus.Rejected)
+                    {
+                        <button class="btn btn-danger btn-circle btn-sm"
+                                id="btnReject" title="Reject">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    }
+                    @if (x.IsActive == true)
+                    {
+                        <a class="btn btn-secondary btn-circle btn-sm" href="#"
+                           onclick="SendEmail('@x.MemberId')" title="Send Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    }
+                    <a href="~/MemberDetails/@x.MemberId"
+                       class="btn btn-primary btn-circle btn-sm"
+                       id="btnView" title="View Details">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    @if (menu.ModifyAccess == true || x.UserId == Convert.ToInt32(User.Identity.Name))
+                    {
+                        <a href="~/ModifyMember/@x.MemberId"
+                           class="btn btn-success btn-circle btn-sm"
+                           id="btnEditMember" title="Edit Details">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Approve Member</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="form_validation">
+                            <input type="hidden" name="MemberId"
+                                   id="MemberId" />
+                            <fieldset>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="floating-label">Account Head</label>
+                                            <select name="AccountHeadId" id="AccountHeadId"
+                                                    class="form-control">
+                                                <option value="">Select Account Head</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div style="float:right">
+                                <button type="submit" id="btnSave" class="btn btn-primary" onclick="SaveData(event)">Save</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- reject Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rejectModalLabel">Reject Remarks</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="form_validation">
+                            <input type="hidden"
+                                   id="MemberId1" />
+                            <fieldset>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input type="text" placeholder="Remarks" class="form-control" id="Remarks" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div style="float:right">
+                                <button type="submit" id="btnSave" class="btn btn-primary" onclick="SaveRejectData(event)">Save</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*@Scripts.Render("~/web/back-end/js")*@
+<script src="~/Assets/Backend/vendor/jquery/jquery.min.js"></script>
+<script src="~/Assets/Backend/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<script>
+    //function SendEmail(id) {
+    //    $.get('/Member/GetEmailCredentials?memberId=' + id, function (resp) {
+    //        window.location.href = "mailto:" + resp.ToEmail + "?body=" + resp.Body + "&subject=" + resp.Subject;
+    //    })
+    //}
+</script>
+<script>
+    LoadAccountHead(null, "#AccountHeadId");
+    $("#dataTable").on('click', '#btnApprove', function () {
+        var currentRow = $(this).closest("tr");
+        var data = currentRow.find("td:eq(1)").html();
+        $("#MemberId").val(data);
+        $("#exampleModal").modal();
+        //$.ajax({
+        //    type: 'get',
+        //    url: '/Ajax/GetAccountHead',
+        //    success: function (res) {
+        //        $("#AccountHeadId").empty();
+        //        $("#AccountHeadId").append("<option value=''>Select Account Head</option>");
+        //        $.each(res, function (index, row) {
+        //            $("#AccountHeadId").append("<option value=" + row.Id + ">" + row.Value + "</option>")
+        //        })
+        //    }
+        //})
+    });
+
+    $("#dataTable").on('click', '#btnReject', function () {
+        var currentRow = $(this).closest("tr");
+        var data = currentRow.find("td:eq(1)").html();
+        $("#MemberId1").val(data);
+        $("#rejectModal").modal();
+    });
+    function SaveData(evt) {
+        evt.preventDefault();
+        $("#btnSave").prop('disabled', true)
+        $("#btnSave span").html('Saving...')
+        var MemberId = $("#MemberId").val();
+        var AccountHeadId = $("#AccountHeadId").val();
+        if (AccountHeadId.length == 0) {
+            ShowErrorMessage("Account Head is required");
+            return false;
+
+            var ApprovalStatus = '@ViewBag.ApprovalStatus';
+            var FormStatus = '@ViewBag.FormStatus';
+            var ReferenceId = '@ViewBag.ReferenceId';
+            $("#btnSave").prop('disabled', false)
+            $("#btnSave span").html('Save')
+        }
+        $.ajax({
+            type: "POST",
+            url: '/Member/ApproveMember',
+            data: { MemberId: MemberId, AccountHeadId: AccountHeadId },
+            success: function (message) {
+                showResultMessage(message, "/MemberList?ApprovalStatus=" + ApprovalStatus + "&FormStatus=" + FormStatus + "&ReferenceId=" + ReferenceId)
+            },
+            error: function (message) {
+                showResultMessage(message, "/MemberList?ApprovalStatus=" + ApprovalStatus + "&FormStatus=" + FormStatus + "&ReferenceId=" + ReferenceId)
+            }
+        })
+    }
+    function SaveRejectData(evt) {
+
+        debugger;
+        evt.preventDefault();
+        $("#btnSave").prop('disabled', true)
+        $("#btnSave span").html('Saving...')
+        var MemberId = $("#MemberId1").val();
+        var Remarks = $("#Remarks").val();
+        if (Remarks.length == 0) {
+            ShowErrorMessage("Remarks is required");
+            return false;
+            $("#btnSave").prop('disabled', false)
+            $("#btnSave span").html('Save')
+        }
+        var ApprovalStatus = '@ViewBag.ApprovalStatus';
+        var FormStatus = '@ViewBag.FormStatus';
+        var ReferenceId = '@ViewBag.ReferenceId';
+
+        $.ajax({
+            type: "POST",
+            url: '/Member/RejectMember',
+            data: { MemberId: MemberId, remarks: Remarks },
+            success: function (message) {
+                showResultMessage(message, "/MemberList?ApprovalStatus=" + ApprovalStatus + "&FormStatus=" + FormStatus + "&ReferenceId=" + ReferenceId)
+            },
+            error: function (message) {
+                showResultMessage(message, "/MemberList?ApprovalStatus=" + ApprovalStatus + "&FormStatus=" + FormStatus + "&ReferenceId=" + ReferenceId)
+            }
+        })
+    }
+    function SendMemberApproveEmail(id) {
+        $.ajax({
+            type: 'post',
+            url: '/Member/SendEmailOnApprove',
+            data: { MemberId: id },
+            success: function (resp) {
+
+            },
+            error: function (resp) {
+
+            }
+        })
+    }
+</script>

@@ -1,0 +1,158 @@
+﻿@model Web.Entity.Dto.AccountHeadDto
+@{
+    ViewBag.Title = "AddModifyAccountHead";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h6 class="h6 mb-2 text-gray-800">Add/Modify Account Head</h6>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <form id="form_validation">
+                    <input type="hidden" value="@Model.AccountHeadId" name="AccountHeadId" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" value="@Model.AccountHeadName"
+                                       name="AccountHeadName" placeholder="Account Head Name"
+                                       class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Account Holder Number</label>
+                                <input type="text" value="@Model.AccountHolderName"
+                                       name="AccountHolderName"
+                                       placeholder="Account Holder Name"
+                                       class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Account Number</label>
+                                <input type="text" value="@Model.AccountNumber"
+                                       name="AccountNumber" placeholder="Account Number"
+                                       class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Address</label>
+                                <input type="text" value="@Model.Address"
+                                       name="Address" placeholder="Address"
+                                       class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        @if (Model.Status != true && Model.AccountHeadId > 0)
+                                        {
+                                            <input class="form-check-input"
+                                                   name="Status" value="true"
+                                                   type="checkbox" />
+                                        }
+                                        else
+                                        {
+                                            <input class="form-check-input" name="Status" value="true" type="checkbox" checked="checked" />
+                                        }
+                                        Is Active
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <button type="submit" id="btnSave" name="SaveButton" class="btn btn-primary btn-md"><i class="fa fa-save"></i> <span> Save </span> </button>
+                    <a href="/AccountHeadList" class="btn btn-danger"><i class="fa fa-window-close"></i> Close </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/web/back-end/js")
+<script src="~/Assets/Backend/js/custom/plugin/jquery.validate.min.js"></script>
+
+<script>
+    var $checkoutForm = $('#form_validation').validate({
+        ignore: [],
+        rules: {
+            'AccountHeadName': {
+                required: true,
+                maxlength: 100
+            },
+            'AccountHolderName': {
+                required: true,
+                maxlength: 200
+            },
+            'AccountNumber': {
+                required: true,
+                maxlength: 50
+            },
+            'Address': {
+                required: true,
+                maxlength: 250
+            },
+        },
+        submitHandler: function (form) {
+            $("#btnSave").prop('disabled', true)
+            $("#btnSave span").html('Saving...')
+
+            var id = $('input[name="AccountHeadId"').val();
+            var url = "/AccountHead/Insert";
+            if (parseInt(id) > 0) {
+                url = "/AccountHead/Update";
+            }
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: $("#form_validation").serialize(),
+                success: function (message) {
+                    showResultMessage(message, "/AccountHeadList")
+                },
+                error: function (message) {
+                    showResultMessage(message)
+                }
+            })
+        },
+
+        errorPlacement: function errorPlacement(error, element) {
+            var $parent = $(element).parents('.form-group');
+
+            // Do not duplicate errors
+            if ($parent.find('.jquery-validation-error').length) {
+                return false;
+            }
+
+            $parent.append(
+                error.addClass('jquery-validation-error small form-text invalid-feedback')
+            );
+        },
+        highlight: function (element) {
+            var $el = $(element);
+            var $parent = $el.parents('.form-group');
+
+            $el.addClass('is-invalid');
+
+            // Select2 and Tagsinput
+            if ($el.hasClass('select2-hidden-accessible') || $el.attr('data-role') === 'tagsinput') {
+                $el.parent().addClass('is-invalid');
+            }
+
+        },
+        unhighlight: function (element) {
+            $(element).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
+        }
+    });
+
+    function AllowPositiveNumber(event) {
+        if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+            event.preventDefault();
+        }
+    }
+</script>

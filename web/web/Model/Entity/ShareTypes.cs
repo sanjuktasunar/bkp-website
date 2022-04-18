@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Web.Entity.Entity
+{
+    public class ShareTypes
+    {
+        public int ShareTypeId { get; set; }
+
+        public string ShareTypeName { get; set; }
+
+        public int FiscalYearId { get; set; }
+
+        public long? NumberOfIssuedShares { get; set; }
+
+        public int? MaxSharePerPerson { get; set; }
+
+        public int? MinSharePerPerson { get; set; }
+
+        public bool? Status { get; set; }
+
+        public double? PricePerKitta { get; set; }
+    }
+}

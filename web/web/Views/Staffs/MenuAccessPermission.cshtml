@@ -1,0 +1,304 @@
+﻿@model Web.Entity.Dto.StaffsDto
+@{
+    ViewBag.Title = "MenuAccessPermission";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="h3 mb-2 text-gray-800">Menu Access Permission</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <input type="hidden" value="@Model.StaffId" name="StaffId" />
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th hidden="hidden"></th>
+                        <th hidden="hidden"></th>
+                        <th></th>
+                        <th></th>
+                        @{
+                            int totalrow = Model.MenuAccessPermissions.Count();
+                            int readCount = Model.MenuAccessPermissions.Where(a => a.ReadAccess).Count();
+                            int writeCount = Model.MenuAccessPermissions.Where(a => a.WriteAccess).Count();
+                            int modifyCount = Model.MenuAccessPermissions.Where(a => a.ModifyAccess).Count();
+                            int deleteCount = Model.MenuAccessPermissions.Where(a => a.DeleteAccess).Count();
+                            int adminCount = Model.MenuAccessPermissions.Where(a => a.AdminAccess).Count();
+                        }
+                        <th>
+                            Select All
+                            @if (totalrow == readCount)
+                            {
+                                <input type="checkbox" name="ReadAll" checked="checked" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" name="ReadAll" />
+                            }
+                        </th>
+                        <th>
+                            Select All
+                            @if (totalrow == writeCount)
+                            {
+                                <input type="checkbox" name="WriteAll" checked="checked" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" name="WriteAll" />
+                            }
+                        </th>
+                        <th>
+                            Select All
+                            @if (totalrow == modifyCount)
+                            {
+                                <input type="checkbox" name="ModifyAll" checked="checked" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" name="ModifyAll" />
+                            }
+                        </th>
+                        <th>
+                            Select All
+                            @if (totalrow == deleteCount)
+                            {
+                                <input type="checkbox" name="DeleteAll" checked="checked" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" name="DeleteAll" />
+                            }
+                        </th>
+                        <th>
+                            Select All
+                            @if (totalrow == adminCount)
+                            {
+                                <input type="checkbox" name="AdminAll" checked="checked" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" name="AdminAll" />
+                            }
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>S.N.</th>
+                        <th hidden="hidden"></th>
+                        <th hidden="hidden"></th>
+                        <th>Menu Name</th>
+                        <th>Parent Menu Name</th>
+                        <th>Read Access</th>
+                        <th>Write Access</th>
+                        <th>Modify Access</th>
+                        <th>Delete Access</th>
+                        <th>Admin Access</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int i = 0; }
+                    @foreach (var x in Model.MenuAccessPermissions)
+                    {
+                        i++;
+                        <tr>
+                            <td>@i</td>
+                            <td hidden="hidden">@x.MenuId</td>
+                            <td hidden="hidden">@x.MenuAccessPermissionId</td>
+                            <td>
+                                Menu Name : @x.MenuNameEnglish <br />
+                                Menu Name Nepali: @x.MenuNameNepali <br />
+                            </td>
+                            <td>@x.ParentMenuNameEnglish</td>
+                            <td>
+                                @if (x.ReadAccess)
+                                {
+                                    <input type="checkbox" name="ReadAccess"
+                                           checked="checked" />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" name="ReadAccess" />
+                                }
+                            </td>
+                            <td>
+                                @if (x.WriteAccess)
+                                {
+                                    <input type="checkbox" name="WriteAccess"
+                                           checked="checked" />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" name="WriteAccess" />
+                                }
+                            </td>
+                            <td>
+                                @if (x.ModifyAccess)
+                                {
+                                    <input type="checkbox" name="ModifyAccess"
+                                           checked="checked" />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" name="ModifyAccess" />
+                                }
+                            </td>
+                            <td>
+                                @if (x.DeleteAccess)
+                                {
+                                    <input type="checkbox" name="DeleteAccess"
+                                           checked="checked" />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" name="DeleteAccess" />
+                                }
+                            </td>
+                            <td>
+                                @if (x.AdminAccess)
+                                {
+                                    <input type="checkbox" name="AdminAccess"
+                                           checked="checked" />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" name="AdminAccess" />
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button type="submit" id="btnSave" name="SaveButton" class="btn btn-primary btn-md"><i class="fa fa-save"></i> <span>Save</span> </button>
+            <a href="/StaffList" class="btn btn-danger"><i class="fa fa-window-close"></i> Close</a>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+@Scripts.Render("~/web/back-end/jquery-ui")
+@Scripts.Render("~/web/back-end/message")
+
+
+<script>
+    $(document).ready(function () {
+        $('input[name="ReadAll"]').click(function () {
+            var val = $('input[name="ReadAll"]').is(':checked');
+            if (val) {
+                $("input[name='ReadAccess']").each(function () {
+                    this.checked = true;
+                })
+            }
+            else {
+                $("input[name='ReadAccess']").each(function () {
+                    this.checked = false;
+                })
+            }
+        });
+        $('input[name="WriteAll"]').click(function () {
+            var val = $('input[name="WriteAll"]').is(':checked');
+            if (val) {
+                $("input[name='WriteAccess']").each(function () {
+                    this.checked = true;
+                })
+            }
+            else {
+                $("input[name='WriteAccess']").each(function () {
+                    this.checked = false;
+                })
+            }
+        });
+        $('input[name="ModifyAll"]').click(function () {
+            var val = $('input[name="ModifyAll"]').is(':checked');
+            if (val) {
+                $("input[name='ModifyAccess']").each(function () {
+                    this.checked = true;
+                })
+            }
+            else {
+                $("input[name='ModifyAccess']").each(function () {
+                    this.checked = false;
+                })
+            }
+        });
+        $('input[name="DeleteAll"]').click(function () {
+            var val = $('input[name="DeleteAll"]').is(':checked');
+            if (val) {
+                $("input[name='DeleteAccess']").each(function () {
+                    this.checked = true;
+                })
+            }
+            else {
+                $("input[name='DeleteAccess']").each(function () {
+                    this.checked = false;
+                })
+            }
+        });
+        $('input[name="AdminAll"]').click(function () {
+            var val = $('input[name="AdminAll"]').is(':checked');
+            if (val) {
+                $("input[name='ReadAccess']").each(function () {
+                    this.checked = true;
+                })
+                $("input[name='WriteAccess']").each(function () {
+                    this.checked = true;
+                })
+                $("input[name='ModifyAccess']").each(function () {
+                    this.checked = true;
+                })
+                $("input[name='DeleteAccess']").each(function () {
+                    this.checked = true;
+                })
+                $("input[name='AdminAccess']").each(function () {
+                    this.checked = true;
+                })
+
+                $('input[name="ReadAll"]').prop('checked', true);
+                $('input[name="WriteAll"]').prop('checked', true);
+                $('input[name="ModifyAll"]').prop('checked', true);
+                $('input[name="DeleteAll"]').prop('checked', true);
+                $('input[name="AdminAll"]').prop('checked', true);
+            }
+            else {
+                $("input[name='AdminAccess']").each(function () {
+                    this.checked = false;
+                })
+            }
+        });
+
+        $("#btnSave").click(function () {
+            var MenuAccessPermissions = new Array();
+            $("#btnSave").prop('disabled', true)
+            $("#btnSave span").html('Saving...')
+
+            var staffId = $("input[name='StaffId']").val();
+            $("#dataTable TBODY TR").each(function () {
+                var row = $(this);
+                var Menu = {};
+                Menu.MenuId = row.find("TD").eq(1).html();
+                Menu.MenuAccessPermissionId = row.find("TD").eq(2).html();
+                Menu.StaffId = staffId;
+                Menu.ReadAccess = row.find("TD").eq(5).find('input:checkbox').is(":checked");
+                Menu.WriteAccess = row.find("TD").eq(6).find('input:checkbox').is(":checked");
+                Menu.ModifyAccess = row.find("TD").eq(7).find('input:checkbox').is(":checked");
+                Menu.DeleteAccess = row.find("TD").eq(8).find('input:checkbox').is(":checked");
+                Menu.AdminAccess = row.find("TD").eq(9).find('input:checkbox').is(":checked");
+                MenuAccessPermissions.push(Menu);
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/Staffs/MenuAccessPermission/" + staffId,
+                data: JSON.stringify(MenuAccessPermissions),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (message) {
+                    ShowMessage(message, '/StaffList')
+                },
+                error: function (message) {
+                    ShowMessage(message, '/StaffList')
+                }
+            });
+        })
+    })
+
+</script>

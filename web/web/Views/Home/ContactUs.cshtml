@@ -1,8 +1,95 @@
-﻿
-@{
-    ViewBag.Title = "ContactUs";
+﻿@{
     Layout = "~/Views/Shared/_FrontLayout.cshtml";
 }
 
-<h2>ContactUs</h2>
+<section class="pt-32 pb-16 bg-gray-100">
+    <main class="max-w-3xl mx-auto grid sm:grid-cols-6 gap-8 p-8 min-h-96 bg-white rounded-md shadow" data-aos="zoom-in" data-aos-delay="100">
+        <div class="sm:col-span-3 text-black-700 bg-red-50 p-4 sm:p-0 rounded-md sm:bg-white flex flex-col items-start justify-between">
+            <h2 class="text-2xl mb-4 sm:mb-0 font-semibold">We love to hear <br>from you</h2>
+            <div class="text-gray-700">
+                <h3 class="text-xl text-gray-700 font-semibold mb-2">We are at</h3>
+                <div>
+                    <div class="flex gap-3 items-center font-semibold">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                  d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                                  clip-rule="evenodd" />
+                        </svg>
+                        <span>Location</span>
+                    </div>
+                    <p class="ml-8">
+                        Butwal-11 Buddhanagar,<br> Rupendahi, Nepal
+                    </p>
+                </div>
+                <div class="py-3">
+                    <div class="flex gap-3 items-center font-semibold">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                        </svg>
+                        <span>Phone</span>
+                    </div>
+                    <a class="hover:text-blue-700 underline text-sm ml-8" href="tel:+9779857039526">9857039526</a>
+                </div>
+                <div>
+                    <div class="flex gap-3 items-center font-semibold">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                        </svg>
+                        <span>Email</span>
+                    </div>
+                    <a class="hover:text-blue-700 hover:underline ml-8"
+                       href="mailto: administration@bkpnepal.com">administration@bkpnepal.com</a>
+                </div>
+            </div>
+            <div class="flex flex-col">
+                <h3 class="text-xl text-gray-700 font-semibold my-3">Reach us via</h3>
+                <div class="flex flex-row gap-4">
+                    <!-- faccebook icon -->
+                    <a class="float-left" href="#" target="_blank">
+                        <svg class="w-5 fill-gray-700 hover:fill-gray-600" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M48 24C48 10.7452 37.2548 0 24 0C10.7452 0 0 10.7452 0 24C0 35.9789 8.77641 45.908 20.25 47.7084V30.9375H14.1562V24H20.25V18.7125C20.25 12.6975 23.8331 9.375 29.3152 9.375C31.9402 9.375 34.6875 9.84375 34.6875 9.84375V15.75H31.6613C28.68 15.75 27.75 17.6002 27.75 19.5V24H34.4062L33.3422 30.9375H27.75V47.7084C39.2236 45.908 48 35.9789 48 24Z" />
+                        </svg>
+                    </a>
+                    <!--twitter icon -->
+                    <a href="#" target="_blank">
+                        <svg class="w-5 fill-gray-700 hover:fill-gray-600" viewBox="0 0 48 48" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15.1003 43.5C33.2091 43.5 43.1166 28.4935 43.1166 15.4838C43.1166 15.0619 43.1072 14.6307 43.0884 14.2088C45.0158 12.815 46.679 11.0886 48 9.11066C46.205 9.90926 44.2993 10.4308 42.3478 10.6575C44.4026 9.42588 45.9411 7.491 46.6781 5.21159C44.7451 6.35718 42.6312 7.16528 40.4269 7.60128C38.9417 6.02318 36.978 4.97829 34.8394 4.62816C32.7008 4.27803 30.5064 4.64216 28.5955 5.66425C26.6846 6.68635 25.1636 8.30947 24.2677 10.2827C23.3718 12.2559 23.1509 14.4693 23.6391 16.5807C19.725 16.3842 15.8959 15.3675 12.4 13.5963C8.90405 11.825 5.81939 9.33893 3.34594 6.29909C2.0888 8.46655 1.70411 11.0314 2.27006 13.4722C2.83601 15.9131 4.31013 18.047 6.39281 19.44C4.82926 19.3904 3.29995 18.9694 1.93125 18.2119V18.3338C1.92985 20.6084 2.7162 22.8132 4.15662 24.5736C5.59704 26.334 7.60265 27.5412 9.8325 27.99C8.38411 28.3863 6.86396 28.4441 5.38969 28.1588C6.01891 30.1149 7.24315 31.8258 8.89154 33.0527C10.5399 34.2796 12.5302 34.9613 14.5847 35.0025C11.0968 37.7423 6.78835 39.2283 2.35313 39.2213C1.56657 39.2201 0.780798 39.1719 0 39.0769C4.50571 41.9676 9.74706 43.5028 15.1003 43.5Z" />
+                        </svg>
+                    </a>
+                    <!-- linked icon -->
+                    <a href="#" target="_blank">
+                        <svg class="w-5 fill-gray-700 hover:fill-gray-600" viewBox="0 0 48 48" fill="white"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M44.4469 0H3.54375C1.58437 0 0 1.54688 0 3.45938V44.5312C0 46.4437 1.58437 48 3.54375 48H44.4469C46.4062 48 48 46.4438 48 44.5406V3.45938C48 1.54688 46.4062 0 44.4469 0ZM14.2406 40.9031H7.11563V17.9906H14.2406V40.9031ZM10.6781 14.8688C8.39062 14.8688 6.54375 13.0219 6.54375 10.7437C6.54375 8.46562 8.39062 6.61875 10.6781 6.61875C12.9563 6.61875 14.8031 8.46562 14.8031 10.7437C14.8031 13.0125 12.9563 14.8688 10.6781 14.8688ZM40.9031 40.9031H33.7875V29.7656C33.7875 27.1125 33.7406 23.6906 30.0844 23.6906C26.3812 23.6906 25.8187 26.5875 25.8187 29.5781V40.9031H18.7125V17.9906H25.5375V21.1219H25.6312C26.5781 19.3219 28.9031 17.4188 32.3625 17.4188C39.5719 17.4188 40.9031 22.1625 40.9031 28.3313V40.9031Z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
 
+        </div>
+
+        <div class="row-start-1 sm:row-auto sm:col-span-3">
+            <h3 class="text-3xl font-bold mb-8">Send us a message</h3>
+            <form action="">
+                <label class="mb-4 block" for="fullname">
+                    <input class="input" type="text" name="fullname" id="fullname" placeholder="Full Name" required />
+                </label>
+                <label class="mb-4 block" for="phone">
+                    <input class="input" type="text" name="phone" id="phone" placeholder="Mobile/Phone" required />
+                </label>
+                <label class="mb-4 block" for="email">
+                    <input class="input" type="email" name="email" id="email" placeholder="Email" required />
+                </label>
+                <textarea class="input" name="message" id="message" cols="10" rows="5" required></textarea>
+                <button class="btn mt-4 float-right flex gap-2 items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                    </svg>
+                    <span>Send Message</span>
+                </button>
+            </form>
+        </div>
+    </main>
+</section>

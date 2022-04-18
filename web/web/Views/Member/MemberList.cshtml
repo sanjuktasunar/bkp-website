@@ -1,0 +1,169 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Web.Entity.Dto.MenuAccessPermissionDto menu = ViewBag.Menus;
+}
+<h6 class="h6 mb-2 text-gray-800">Member List</h6>
+<div class="row">
+    <div class="col-md-12">
+        <form id="form_validation">
+            <fieldset>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4">
+                        <div class="form-group">
+                            <label>Approval Status</label>
+                            <select class="form-control" id="ApprovalStatus">
+                                @if (ViewBag.ApprovalStatus == 2)
+                                {
+                                    <option value="1">Approval Pending</option>
+                                    <option value="2" selected="selected">Approved</option>
+                                    <option value="3">Rejected</option>
+                                }
+                                else if (ViewBag.ApprovalStatus == 3)
+                                {
+                                    <option value="1">Approval Pending</option>
+                                    <option value="2">Approved</option>
+                                    <option value="3" selected="selected">Rejected</option>
+                                }
+                                else
+                                {
+                                    <option value="1" selected="selected">Approval Pending</option>
+                                    <option value="2">Approved</option>
+                                    <option value="3">Rejected</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-4" id="FormStatusDiv">
+                        <div class="form-group">
+                            <label>Form Status</label>
+                            <select class="form-control" id="FormStatus">
+                                <option value="0">Select Status</option>
+                                @if (ViewBag.FormStatus == 1)
+                                {
+                                    <option value="1" selected="selected">InComplete</option>
+                                    <option value="2">Complete</option>
+                                }
+                                else
+                                {
+                                    <option value="1">InComplete</option>
+                                    <option value="2" selected="selected">Complete</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <div class="form-group">
+                            <label>Referred By</label>
+                            <select class="form-control" id="select2">
+                                <option value="0">Referred By</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div>
+                <button type="submit" id="btnSearch" class="btn btn-primary">Search</button>
+                <button type="button" id="btnClear" class="btn btn-secondary" data-dismiss="modal">Clear</button>
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <a href="~/AddNewMember" class="btn btn-success btn-sm">
+            <i class="fas fa-plus"></i> Add New
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <div id="result">
+                <i class="fas fa-cog"></i> Loading...............
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/web/back-end/js")
+<script src="~/Assets/Backend/js/custom/plugin/select2/select2.min.js"></script>
+
+<script>
+    function SendEmail(id) {
+        $.get('/Member/GetEmailCredentials?memberId=' + id, function (resp) {
+            window.location.href = "mailto:" + resp.ToEmail + "?body=" + resp.Body + "&subject=" + resp.Subject;
+        })
+
+    }
+</script>
+
+<script>
+    $('#select2').select2();
+    $("#ApprovalStatus").change(function () {
+        var status = $("#ApprovalStatus").val();
+        if (parseInt(status) == 2) {
+            $("#FormStatus").prop("selectedIndex", 0);
+            $("#FormStatusDiv").hide();
+        }
+        else {
+            $("#FormStatusDiv").show();
+        }
+    })
+    $("#btnSearch").click(function (evt) {
+        evt.preventDefault();
+        var ApprovalStatus = $("#ApprovalStatus").val();
+        var FormStatus = $("#FormStatus").val();
+        var ReferenceId = $("#select2").val();
+        loadMemberList(ApprovalStatus, FormStatus, ReferenceId)
+    })
+
+    $("#btnClear").click(function (evt) {
+        evt.preventDefault();
+        $("#FormStatusDiv").show();
+        $("#FormStatus").prop("selectedIndex", 0);
+        $("#ApprovalStatus").prop("selectedIndex", 0);
+        LoadActiveMembers();
+        loadMemberList(null, null, null);
+    });
+    function loadMemberList(ApprovalStatus, FormStatus, ReferenceId) {
+        $.ajax({
+            type: "get",
+            url: "/Member/FilterMemberList",
+            data: { ApprovalStatus: ApprovalStatus, FormStatus: FormStatus, ReferenceId: ReferenceId },
+            success: function (res) {
+                $("#result").html(res);
+            }
+        })
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        var ApprovalStatus = $("#ApprovalStatus").val();
+        var FormStatus = $("#FormStatus").val();
+        var ReferenceId = '@ViewBag.ReferenceId';
+        loadMemberList(ApprovalStatus, FormStatus, ReferenceId)
+        LoadActiveMembers();
+    })
+    function LoadActiveMembers() {
+        $('#select2').empty();
+        $('#select2').append('<option value="0">Referred By</option>');
+        $.ajax({
+            type: 'get',
+            url: "/Member/GetRefernceMember",
+            success: function (resp) {
+                $.each(resp, function (index, row) {
+                    if ('@ViewBag.ReferenceId' == row.Id) {
+                        $('#select2').append('<option value=' + row.Id + ' selected="selected">' + row.Value + '</option>')
+                    }
+                    else {
+                        $('#select2').append('<option value=' + row.Id + '>' + row.Value + '</option>')
+                    }
+                })
+            },
+            error: function (resp) {
+
+            }
+        })
+    }
+</script>

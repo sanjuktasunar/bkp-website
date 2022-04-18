@@ -1,0 +1,185 @@
+﻿@model Web.Entity.Dto.FiscalYearDto
+@{
+    ViewBag.Title = "AddModifyFiscalYear";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h6 class="h6 mb-2 text-gray-800">Add/Modify Fiscal Year</h6>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <form id="form_validation">
+                    <input type="hidden" value="@Model.FiscalYearId" name="FiscalYearId" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" value="@Model.FiscalYearName"
+                                       name="FiscalYearName" placeholder="Fiscal Year Name"
+                                       class="form-control" />
+                            </div>
+                        </div>
+                        @*<div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nepali Name</label>
+                                    <input type="text" value="@Model.NepaliName"
+                                           name="NepaliName" placeholder="Nepali Name"
+                                           class="form-control" />
+                                </div>
+                            </div>*@
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Starting Date</label>
+                                <input type="text" value="@Model.StartDateBS"
+                                       name="StartDateBS" id="StartDateBS"
+                                       placeholder="Starting Date"
+                                       class="form-control" autocomplete="off"
+                                       onkeypress="AllowForDate(event)" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Ending Date</label>
+                                <input type="text" value="@Model.EndDateBS"
+                                       name="EndDateBS" id="EndDateBS"
+                                       placeholder="Ending Date"
+                                       class="form-control" autocomplete="off"
+                                       onkeypress="AllowForDate(event)" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        @if (Model.Status != true && Model.FiscalYearId > 0)
+                                        {
+                                            <input class="form-check-input" name="Status" value="true" type="checkbox" />
+                                        }
+                                        else
+                                        {
+                                            <input class="form-check-input" name="Status" value="true" type="checkbox" checked="checked" />
+                                        }
+                                        Is Active
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        @if (Model.IsCurrent == true)
+                                        {
+                                            <input class="form-check-input" name="IsCurrent"
+                                                   value="true" type="checkbox"
+                                                   checked="checked" />
+                                        }
+                                        else
+                                        {
+                                            <input class="form-check-input" name="IsCurrent"
+                                                   value="true" type="checkbox" />
+                                        }
+                                        Is Current Fiscal Year
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <button type="submit" id="btnSave" name="SaveButton" class="btn btn-primary btn-md"><i class="fa fa-save"></i> <span> Save </span> </button>
+                    <a href="/FiscalYearList" class="btn btn-danger"><i class="fa fa-window-close"></i> Close </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/web/back-end/js")
+<script src="~/Assets/Backend/js/custom/plugin/jquery.validate.min.js"></script>
+<script>
+    var $checkoutForm = $('#form_validation').validate({
+        ignore: [],
+        rules: {
+            'FiscalYearName': {
+                required: true,
+                maxlength: 20
+            },
+            'StartDateBS': {
+                required: true,
+                maxlength: 10
+            },
+            'EndDateBS': {
+                required: true,
+                maxlength: 10
+            },
+        },
+        submitHandler: function (form) {
+            $("#btnSave").prop('disabled', true)
+            $("#btnSave span").html('Saving...')
+
+            var id = $('input[name="FiscalYearId"').val();
+            var url = "/FiscalYear/Post";
+            if (parseInt(id) > 0) {
+                url = "/FiscalYear/Put";
+            }
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: $("#form_validation").serialize(),
+                success: function (message) {
+                    showResultMessage(message, "/FiscalYearList")
+                },
+                error: function (message) {
+                    showResultMessage(message)
+                }
+            })
+        },
+
+        errorPlacement: function errorPlacement(error, element) {
+            var $parent = $(element).parents('.form-group');
+
+            // Do not duplicate errors
+            if ($parent.find('.jquery-validation-error').length) {
+                return false;
+            }
+
+            $parent.append(
+                error.addClass('jquery-validation-error small form-text invalid-feedback')
+            );
+        },
+        highlight: function (element) {
+            var $el = $(element);
+            var $parent = $el.parents('.form-group');
+
+            $el.addClass('is-invalid');
+
+            // Select2 and Tagsinput
+            if ($el.hasClass('select2-hidden-accessible') || $el.attr('data-role') === 'tagsinput') {
+                $el.parent().addClass('is-invalid');
+            }
+
+        },
+        unhighlight: function (element) {
+            $(element).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    window.onload = function () {
+        $("#StartDateBS").nepaliDatePicker({
+            ndpYear: true,
+            ndpMonth: true,
+            ndpYearCount: 10
+        });
+        $("#EndDateBS").nepaliDatePicker({
+            ndpYear: true,
+            ndpMonth: true,
+            ndpYearCount: 10
+        });
+    };
+</script>

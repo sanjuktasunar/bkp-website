@@ -1,0 +1,110 @@
+﻿@model Web.Entity.Dto.UserSite.ProductPageDto
+@{
+    ViewBag.Title = "ProductDetails";
+    Layout = "~/Views/Shared/_FrontLayout.cshtml";
+}
+<!-- Start Work Sigle -->
+@{
+    var obj = new Web.Entity.Dto.UserSite.DisplayParamters();
+    var param = obj.GetParameters();
+    var link = obj.GetMenuLink();
+}
+<section class="container py-5">
+
+    <div class="row pt-5">
+        <div class="worksingle-content col-lg-8 m-auto text-left justify-content-center">
+            <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line"> @Model.Product.ProductNameNepali</h2>
+            <p class="worksingle-footer py-3 text-muted light-300">
+                @foreach (var price in Model.ProductPrice)
+                {
+                    <span>@param.Per @price.UnitName : @param.Rs @price.SellingPrice</span> <br />
+                }
+            </p>
+        </div>
+    </div><!-- End Blog Cover -->
+
+    @{
+        var primaryImage = new Web.Entity.Dto.ProductImageDto();
+        if (Model.ProductImages != null)
+        {
+            if (Model.ProductImages.Count() > 0)
+            {
+                primaryImage = Model.ProductImages.Where(a => a.IsPrimary == true).Count() > 0 ? Model.ProductImages.Where(a => a.IsPrimary == true).FirstOrDefault() : Model.ProductImages.FirstOrDefault();
+            }
+        }
+    }
+
+    <div class="row justify-content-center pb-4">
+        <div class="col-lg-8">
+            <div id="templatemo-slide-link-target" class="card mb-3">
+                <img class="img-fluid border rounded" src="data:image;base64,@Convert.ToBase64String(primaryImage.Photo)" alt="Card image cap">
+            </div>
+            <div class="worksingle-slide-footer row">
+                <!--Start Controls-->
+                <div class="col-1 align-self-center">
+                    <a href="#multi-item-example" role="button" data-bs-slide="prev">
+                        <i class='bx bxs-chevron-left bx-sm text-dark'></i>
+                    </a>
+                </div>
+                <!--End Controls-->
+                <!--Start Carousel Wrapper-->
+                <div id="multi-item-example" class="col-10 carousel slide" data-bs-ride="carousel">
+                    <!--Start Slides-->
+                    <div class="carousel-inner" role="listbox">
+                        <!--First slide-->
+                        <div class="carousel-item active">
+                            <div class="row">
+                                @foreach (var image in Model.ProductImages)
+                                {
+                                    <div class="col">
+                                        <a class="templatemo-slide-link" href="data:image;base64,@Convert.ToBase64String(image.Photo)">
+                                            <img class="img-fluid border rounded" src="data:image;base64,@Convert.ToBase64String(image.Photo)" alt="Product Image">
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <!--/.First slide-->
+                        <!--Second slide-->
+                        <div class="carousel-item">
+                            <div class="row">
+                                @foreach (var image in Model.ProductImages)
+                                {
+                                    <div class="col">
+                                        <a class="templatemo-slide-link" href="data:image;base64,@Convert.ToBase64String(image.Photo)">
+                                            <img class="img-fluid border rounded" src="data:image;base64,@Convert.ToBase64String(image.Photo)" alt="Product Image">
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <!--/.Second slide-->
+
+                    </div>
+                    <!--End Slides-->
+                </div>
+                <!--End Carousel Wrapper-->
+                <!--Start Controls-->
+                <div class="col-1 align-self-center text-end">
+                    <a href="#multi-item-example" role="button" data-bs-slide="next">
+                        <i class='bx bxs-chevron-right bx-sm text-dark'></i>
+                    </a>
+                </div>
+                <!--End Controls-->
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Work Sigle -->
+<script src="~/front-end/js/jquery.min.js"></script>
+<script>
+    $(window).load(function () {
+        $('.templatemo-slide-link').click(function () {
+            var this_href = $(this).attr('href');
+            $('#templatemo-slide-link-target img').attr('src', this_href);
+            return false;
+        });
+    });
+</script>
+

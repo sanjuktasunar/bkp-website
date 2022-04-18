@@ -1,0 +1,211 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model Web.Entity.Dto.UserSite.ProductPageDto
+@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_FrontLayout.cshtml";
+}
+
+@{
+    var obj = new Web.Entity.Dto.UserSite.DisplayParamters();
+    var param = obj.GetParameters();
+    var link = obj.GetMenuLink();
+}
+
+<style>
+    .py-5 {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+    }
+
+    .text-decoration-none {
+        margin-bottom: 2%;
+    }
+</style>
+
+<!-- Start Service -->
+<section class="service-wrapper py-3">
+    <h3 class="h3 text-center col-12 py-5 semi-bold-600">@param.OurProducts</h3>
+
+    <div class="service-tag py-5 bg-secondary">
+        <div class="col-md-12">
+            <ul class="nav d-flex justify-content-center">
+                <li class="nav-item mx-lg-4">
+                    @if (Model.ParentProductId > 0)
+                    {
+                        <a class="filter-btn nav-link btn-outline-primary rounded-pill text-light px-4 light-300" href="#" data-filter=".project">
+                            All
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="filter-btn nav-link btn-outline-primary active shadow rounded-pill text-light px-4 light-300" href="#" data-filter=".project">
+                            All
+                        </a>
+                    }
+
+                </li>
+                @{
+                    var parentProducts = Model.GetParentProducts;
+                    int i1 = 0;
+                }
+                @foreach (var parentProduct in parentProducts)
+                {
+                    i1 = i1 + 1;
+                    var idName = "parentId" + i1;
+                    string className = "filter-btn nav-link btn-outline-primary rounded-pill text-light px-4 light-300";
+                    if (parentProduct.ProductId == Model.ParentProductId)
+                    {
+                        className = "filter-btn nav-link btn-outline-primary active shadow rounded-pill text-light px-4 light-300";
+                    }
+
+                    string dataFilter = "." + parentProduct.ProductId;
+                    <li class="filter-btn nav-item mx-lg-4">
+                        <a class="@className" href="#" id="@idName"
+                           data-filter="@dataFilter">@parentProduct.ProductName</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</section>
+
+<section class="container py-5">
+    <div class="input-group">
+        <div class="form-outline">
+            <input type="search" id="query" value="@Model.query" class="form-control" placeholder="@param.Search ........" />
+        </div>
+        <button type="button" id="btnSearch" class="btn btn-primary">
+            <i class="bx bx-search text-white"></i>
+        </button>
+    </div><br />
+    @if (Model.GetAllProducts.Count() > 0)
+    {
+        <div class="row projects gx-lg-5">
+            @foreach (var x in Model.GetAllProducts)
+            {
+                <a href="~/ProductDetails/@x.ProductId" class="col-sm-6 col-lg-3 text-decoration-none project marketing social business">
+                    <div class="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
+                        <img class="card-img-top" src="data:image;base64,@Convert.ToBase64String(x.Photo)" alt="..." style="width:100%;height:200px;">
+                        <div class="card-body">
+                            <h5 class="card-title light-300 text-dark">@x.ProductNameNepali</h5>
+                            <p class="card-text light-300 text-dark">
+                                @foreach (var price in x.GetProductPrice.Where(a => a.IsPrimary == true).Take(3))
+                                {
+                                    <span class="card-text">@param.Per @price.UnitName - @param.Rs                       @price.SellingPrice</span> <br />
+                                }
+                            </p>
+                            <span class="text-decoration-none text-primary light-300">
+                                Read more <i class='bx bxs-hand-right ms-1'></i>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+
+        <br />
+        <div class="row">
+            <div class="btn-toolbar justify-content-center pb-4" role="toolbar" aria-label="Toolbar with button groups">
+
+                @{
+                    int pageNumber = Model.GetAllProducts.PageNumber;
+                    if (Model.page > 0)
+                    {
+                        pageNumber = Convert.ToInt32(Model.page);
+                    }
+                    int previousPage = pageNumber - 1;
+                    int nextPage = pageNumber + 1;
+                }
+
+                <div class="btn-group me-2" role="group" aria-label="First group">
+                    @if (pageNumber == 1)
+                    {
+                        <button type="button" class="btn btn-secondary text-white" disabled>Previous</button>
+                    }
+                    else
+                    {
+                        <a href="~/Products?page=@previousPage" class="btn btn-secondary text-white search">Previous</a>
+                    }
+                </div>
+                @for (int i = 1; i <= Model.GetAllProducts.PageCount; i++)
+                {
+                    if (i == pageNumber)
+                    {
+                        <div class="btn-group me-2" role="group" aria-label="Second group">
+                            <a href="#" class="btn btn-light">@i</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="btn-group me-2" role="group" aria-label="Second group">
+                            <a href="~/Products?page=@i" class="btn btn-secondary text-white search">@i</a>
+                        </div>
+                    }
+
+                }
+
+                <div class="btn-group" role="group" aria-label="Third group">
+                    @if (pageNumber == Model.GetAllProducts.PageCount)
+                    {
+                        <button type="button" class="btn btn-secondary text-white" disabled>Next</button>
+                    }
+                    else
+                    {
+                        <a href="~/Products?page=@nextPage" class="btn btn-secondary text-white search">Next</a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    else
+    {
+        <p style="color:red">Sorry! Product cannot Found...!!</p>
+    }
+</section>
+@Scripts.Render("~/web/front-end")
+
+<script>
+    $("#btnSearch").click(function () {
+        SearchProduct(1);
+    })
+
+    $(".search").click(function (evt) {
+        evt.preventDefault();
+        var pageNumber = $(this).html();
+        if (pageNumber.trim() == 'Next') {
+            pageNumber = parseInt('@Model.GetAllProducts.PageNumber') + 1;
+        }
+        else  if (pageNumber.trim() == 'Previous') {
+            pageNumber = parseInt('@Model.GetAllProducts.PageNumber') - 1;
+        }
+        SearchProduct(pageNumber);
+    });
+
+    $('.filter-btn').click(function (event) {
+        event.preventDefault();
+        $(".filter-btn").removeClass("active");
+        $(".filter-btn").removeClass("shadow");
+        $(this).addClass("active");
+        $(this).addClass("shadow");
+        SearchProduct(1);
+    })
+
+    function SearchProduct(pageNumber) {
+        var query = $("#query").val();
+        var $target = $('.justify-content-center').find('li').find('.active');
+        var data_filter = $target.attr('data-filter')
+        var parentProduct = data_filter.split('.');
+        var parentProductId = parentProduct[1];
+        if (parentProductId == 'project') {
+            parentProductId = null;
+        }
+        window.location.href = "/Products?query=" + query + "&parentProductId=" + parentProductId + "&page=" + pageNumber;
+    }
+
+</script>
+
+

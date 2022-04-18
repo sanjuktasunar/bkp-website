@@ -3,4 +3,575 @@
     Layout = "~/Views/Shared/_FrontLayout.cshtml";
 }
 
+<!-- register -->
 
+<section class="min-h-screen w-full bg-gray-200 py-16">
+    <h3 class="my-8 p-3 text-center text-3xl font-bold">Registration Form</h3>
+    <div class="mx-auto flex max-w-2xl flex-col items-center justify-center">
+        <h4 class="mb-2 text-center">Search your incomplete form</h4>
+        <form class="flex flex-col items-center gap-1 md:flex-row">
+            <label class="block w-64" for="search-inc-form">
+                <input class=" h-8 w-full rounded-sm py-1 px-2 text-sm placeholder-gray-500" type="text"
+                       name="search-inc-form" id="search-inc-form"
+                       placeholder="Email / Mobile no. / Citizenship no." />
+            </label>
+            <button class="flex h-8 items-center gap-2 rounded-sm bg-gray-800 hover:bg-gray-700 px-4 py-1 text-sm text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2h-1.528A6 6 0 004 9.528V4z" />
+                    <path fill-rule="evenodd"
+                          d="M8 10a4 4 0 00-3.446 6.032l-1.261 1.26a1 1 0 101.414 1.415l1.261-1.261A4 4 0 108 10zm-2 4a2 2 0 114 0 2 2 0 01-4 0z"
+                          clip-rule="evenodd" />
+                </svg>
+                <span>Search</span>
+            </button>
+        </form>
+    </div>
+    <!--end of search form  -->
+    <!-- multistep form and info box grid -->
+    <div class="mx-auto mt-12 max-w-4xl grid md:grid-cols-3">
+        <!-- multipart forms wrapper -->
+        <div class="bg-white p-6 md:col-span-2 md:order-2 overflow-hidden">
+            <div class="step step-1">
+                <div class="flex justify-between py-4 mb-8">
+                    <span class="font-semibold text-2xl">Basic information</span>
+                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 1 of 7</span>
+                </div>
+                <form class="space-y-2 flex flex-col">
+                    <label class="mb-2 block" for="first-name">
+                        <span>First Name</span>
+                        <input class="input" type="text" name="first-name" id="first-name">
+                    </label>
+                    <label class="mb-4 block" for="middle-name">
+                        <span>Middle Name</span>
+                        <input class="input" type="text" name="middle-name" id="middle-name">
+                    </label>
+                    <label class="mb-2 block" for="last-name">
+                        <span>Last Name</span>
+                        <input class="input mb-2" type="text" name="last-name" id="last-name">
+                    </label>
+                    <div class="flex flex-col md:flex-row gap-4 mb-2">
+                        <label class="mb-2 block" for="dob">
+                            <span>Date of Birth ( B.S ) (eg. 2046-01-2) </span>
+                            <input class="input" type="text" name="dob" id="dob">
+                        </label>
+
+                        <label class="mb-2 block" for="citizenship">
+                            <span>Citizenship no.</span>
+                            <input class="input" type="text" name="citizenship" id="citizenship">
+                        </label>
+                    </div>
+                    <label class="mb-2 block" for="citizenship">
+                        <span>Gender</span>
+                        <select class="input" name="gender" id="gender-select">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="others">Others</option>
+                        </select>
+                    </label>
+
+                    <div class="flex justify-end w-full py-4 space-x-4">
+
+                        <button class="next-btn btn flex items-center gap-1" type="submit">
+                            <span>Next</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                 fill="currentColor">
+                                <path fill-rule="evenodd"
+                                      d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                                      clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- end of step 1 -->
+            <!-- step-2 form -->
+            <div class="hidden step step-2">
+                <div class="flex justify-between py-4">
+                    <span class="font-semibold text-2xl">Contact Details</span>
+                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 2 of 7</span>
+                </div>
+
+                <form class="space-y-2 flex flex-col">
+                    <label class="mb-2 block" for="mobile">
+                        <span>Mobile Number</span>
+                        <input class="input" inputmode="numeric" type="text" name="mobile" id="mobile"
+                               maxlength="10" minlength="10" required>
+                    </label>
+                    <label class="mb-2 block" for="email">
+                        <span>Email ( Only Gmail ID accepted</span>
+                        <input class="input" type="email" name="email" id="email" required>
+                    </label>
+
+                    <div class="flex justify-end w-full py-4 space-x-4">
+                        <button class="prev-btn bg-gray-200 hover:bg-gray-300 py-2 px-5  text-sm rounded flex items-center gap-1"
+                                type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                 fill="currentColor">
+                                <path fill-rule="evenodd"
+                                      d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z"
+                                      clip-rule="evenodd" />
+                            </svg>
+                            <span>Back</span>
+                        </button>
+                        <button class="next-btn btn flex items-center gap-1" type="submit">
+                            <span>Next</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                 fill="currentColor">
+                                <path fill-rule="evenodd"
+                                      d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                                      clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- end of step 2 -->
+            <!-- step 3 form -->
+            <div class="hidden step step-3">
+                <div class="flex justify-between py-4">
+                    <span class="font-semibold text-2xl">Address Details</span>
+                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 3 of 7</span>
+                </div>
+                <h3 class="mb-4 font-semibold text-gray-600">Permanent Address</h3>
+                <form class="space-y-2 flex flex-col">
+                    <div class="flex flex-row space-x-4">
+                        <span>Is Outside Nepal? </span>
+                        <label for="outside-nepal">
+                            <span>Yes</span>
+                            <input class="accent-black-800 form-check-input" type="radio" id="PermanentRadio"
+                                   name="PermanentIsOutsideNepal" "
+                                   value=" true">
+                        </label>
+                        <label for="inside-nepal">
+                            <span>No</span>
+                            <input class="accent-black-800 form-check-input" type="radio" checked="checked"
+                                   id="PermanentRadio" name="PermanentIsOutsideNepal" "
+                                   value=" false">
+                        </label>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-2 md:gap-6">
+                        <lable class="mb-2 block">
+                            <span>Province</span>
+                            <select class="input" name="PermanentProvinceId" id="PermanentProvinceId">
+                                <option value="">Select Province</option>
+                                <option value="1">Province 1</option>
+                                <option value="2">Province 2</option>
+                                <option value="3">Province 3</option>
+                                <option value="6">Province 4</option>
+                                <option value="7">Province 5</option>
+                                <option value="8">Province 6</option>
+                                <option value="9">Province 7</option>
+                            </select>
+                        </lable>
+                        <lable class="mb-2 block">
+                            <span>District</span>
+                            <select class="input" name="PermanentDistrictId" id="PermanentDistrictId">
+                                <option value="">Select District</option>
+                                <option value="56">Baglung</option>
+                                <option value="57">Gorkha</option>
+                                <option value="58">Kaski</option>
+                                <option value="59">Lamjung</option>
+                                <option value="60">Manang</option>
+                                <option value="61">Mustang</option>
+                                <option value="62">Myagdi</option>
+                                <option value="63">Nawalparasi</option>
+                                <option value="64">Parbat</option>
+                                <option value="65">Syangja</option>
+                                <option value="66">Tanahu</option>
+                            </select>
+                        </lable>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <lable class="mb-2 block">
+                            <span> Municipality/RM:</span>
+                            <select class="input" name="PermanentMunicipalityTypeId"
+                                    id="PermanentMunicipalityTypeId">
+                                <option value="">Select Type</option>
+                                <option value="1">Rular Municipality</option>
+                                <option value="2">Municipality</option>
+                                <option value="3">Sub-metropolis</option>
+                                <option value="4">Metropolitan</option>
+                            </select>
+                        </lable>
+                        <lable class="mb-2 block">
+                            <span>RM/Municipality Name:</span>
+                            <input type="text" id="PermanentMunicipality" class="input" name="PermanentMunicipality"
+                                   placeholder="RM/Municipality Name">
+                        </lable>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-2 md:gap-6">
+                        <lable class="mb-2 block">
+                            <span>Ward Number:</span>
+                            <input type="text" id="PermanentWardNumber" name="PermanentWardNumber"
+                                   placeholder="Ward Number" class="input" onkeypress="AllowNumberOnly(event)">
+                        </lable>
+                        <lable class="mb-2 block">
+                            <span>Tole Name:</span>
+                            <input type="text" id="PermanentToleName" name="PermanentToleName" class="input"
+                                   placeholder="Tole Name">
+                        </lable>
+                    </div>
+
+                    <h3 class="py-4 font-semibold text-gray-600">Temporary Address</h3>
+                    <div class="flex flex-row space-x-4">
+                        <span>Is Outside Nepal? </span>
+                        <label for="outside-nepal">
+                            <span>Yes</span>
+                            <input class="accent-black-800 form-check-input" type="radio" id="PermanentRadio"
+                                   name="PermanentIsOutsideNepal" "
+                                   value=" true">
+                        </label>
+                        <label for="inside-nepal">
+                            <span>No</span>
+                            <input class="accent-black-800 form-check-input" type="radio" checked="checked"
+                                   id="PermanentRadio" name="PermanentIsOutsideNepal" "
+                                   value=" false">
+                        </label>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-2 md:gap-6">
+                        <lable class="mb-2 block">
+                            <span>Province</span>
+                            <select class="input" name="PermanentProvinceId" id="PermanentProvinceId">
+                                <option value="">Select Province</option>
+                                <option value="1">Province 1</option>
+                                <option value="2">Province 2</option>
+                                <option value="3">Province 3</option>
+                                <option value="6">Province 4</option>
+                                <option value="7">Province 5</option>
+                                <option value="8">Province 6</option>
+                                <option value="9">Province 7</option>
+                            </select>
+                        </lable>
+                        <lable class="mb-2 block">
+                            <span>District</span>
+                            <select class="input" name="PermanentDistrictId" id="PermanentDistrictId">
+                                <option value="">Select District</option>
+                                <option value="56">Baglung</option>
+                                <option value="57">Gorkha</option>
+                                <option value="58">Kaski</option>
+                                <option value="59">Lamjung</option>
+                                <option value="60">Manang</option>
+                                <option value="61">Mustang</option>
+                                <option value="62">Myagdi</option>
+                                <option value="63">Nawalparasi</option>
+                                <option value="64">Parbat</option>
+                                <option value="65">Syangja</option>
+                                <option value="66">Tanahu</option>
+                            </select>
+                        </lable>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-2 md:gap-6">
+                        <lable class="mb-2 block">
+                            <span> Municipality/RM:</span>
+                            <select class="input" name="PermanentMunicipalityTypeId"
+                                    id="PermanentMunicipalityTypeId">
+                                <option value="">Select Type</option>
+                                <option value="1">Rular Municipality</option>
+                                <option value="2">Municipality</option>
+                                <option value="3">Sub-metropolis</option>
+                                <option value="4">Metropolitan</option>
+                            </select>
+                        </lable>
+                        <lable class="mb-2 block">
+                            <span>RM/Municipality Name:</span>
+                            <input type="text" id="PermanentMunicipality" class="input" name="PermanentMunicipality"
+                                   placeholder="RM/Municipality Name">
+                        </lable>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-2 md:gap-6">
+                        <lable class="mb-2 block">
+                            <span>Ward Number:</span>
+                            <input type="text" id="PermanentWardNumber" name="PermanentWardNumber"
+                                   placeholder="Ward Number" class="input" onkeypress="AllowNumberOnly(event)">
+                        </lable>
+                        <lable class="mb-2 block">
+                            <span>Tole Name:</span>
+                            <input type="text" id="PermanentToleName" name="PermanentToleName" class="input"
+                                   placeholder="Tole Name">
+                        </lable>
+                    </div>
+
+                    <div class="flex justify-end w-full py-4 space-x-4">
+                        <button class="prev-btn bg-gray-200 hover:bg-gray-300 py-2 px-5  text-sm rounded flex items-center gap-1"
+                                type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                 fill="currentColor">
+                                <path fill-rule="evenodd"
+                                      d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z"
+                                      clip-rule="evenodd" />
+                            </svg>
+                            <span>Back</span>
+                        </button>
+                        <button class="next-btn btn flex items-center gap-1" type="submit">
+                            <span>Next</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                 fill="currentColor">
+                                <path fill-rule="evenodd"
+                                      d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                                      clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+            <!-- step 3 ends here -->
+            <!-- step 4 form -->
+            <div class="hidden step step-4">
+                <div class="flex justify-between py-4">
+                    <span class="font-semibold text-2xl">Occupation</span>
+                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 4 of 7</span>
+                </div>
+                <form class="space-y-2 flex flex-col">
+                    <div class="md:grid md:grid-cols-2 gap-2 md:gap-6">
+                        <lable class="mb-2 block">
+                            <span>Occupation</span>
+                            <select class="input" name="OccupationId" id="OccupationId">
+                                <option value="">Select Occupation</option>
+                                <option value="1">Doctor</option>
+                                <option value="2">Engineer</option>
+                                <option value="3">Businessman</option>
+                                <option value="4">Nurse</option>
+                                <option value="5">Housewife</option>
+                                <option value="6">Government Job</option>
+                                <option value="7">Teacher</option>
+                                <option value="8">Other</option>
+                            </select>
+                        </lable>
+                        <lable class="mb-2 block">
+                            <span>Interested In</span>
+                            <select class="input" name="MemberFieldId" id="MemberFieldId">
+                                <option value="">Interested Field</option>
+                                <option value="1">Business Management and Grow</option>
+                                <option value="2">Administration And Accounting</option>
+                                <option value="3">Capital Increase</option>
+                                <option value="4">Project Increase</option>
+                            </select>
+                        </lable>
+                    </div>
+                    <div class="flex justify-end w-full py-4 space-x-4">
+                        <button class="prev-btn bg-gray-200 hover:bg-gray-300 py-2 px-5  text-sm rounded flex items-center gap-1"
+                                type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                 fill="currentColor">
+                                <path fill-rule="evenodd"
+                                      d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z"
+                                      clip-rule="evenodd" />
+                            </svg>
+                            <span>Back</span>
+                        </button>
+                        <button class="next-btn btn flex items-center gap-1" type="submit">
+                            <span>Next</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                 fill="currentColor">
+                                <path fill-rule="evenodd"
+                                      d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                                      clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- end of step 4 -->
+            <!-- step 5 form -->
+            <div class="hidden step step-5">
+                <div class="flex justify-between py-4">
+                    <span class="font-semibold text-2xl">Upload documents</span>
+                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 5 of 7</span>
+                </div>
+                <p class="bg-amber-100 mb-4 px-2 w-fit rounded text-xs md:text-sm font-semibold border border-yellow-200">
+                    Note
+                    : all
+                    document must be in .jpg , .png or .jpeg format
+                </p>
+                <form class="space-y-2 flex flex-col">
+                    <label class="mb-2 block" for="MemberImage">
+                        <span>Upload your photo</span>
+                        <input type="file" name="MemberImage" id="MemberImage" class="input MemberPhotoString">
+                    </label>
+                    <label class="mb-2 block" for="CitizenshipFrontImage">
+                        <span>Citizenship Front:</span>
+                        <input type="file" class="input CitizenshipFrontImageString" id="CitizenshipFrontImage"
+                               name="CitizenshipFrontImage">
+                    </label>
+                    <label class="mb-2 block" for="CitizenshipBackImage">
+                        <span>Citizenship Front:</span>
+                        <input type="file" name="CitizenshipBackImage" class="input CitizenshipBackImageString"
+                               id="CitizenshipBackImage">
+                    </label>
+                    <div class="flex justify-end w-full py-4 space-x-4">
+                        <button class="prev-btn bg-gray-200 hover:bg-gray-300 py-2 px-5  text-sm rounded flex items-center gap-1"
+                                type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                 fill="currentColor">
+                                <path fill-rule="evenodd"
+                                      d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z"
+                                      clip-rule="evenodd" />
+                            </svg>
+                            <span>Back</span>
+                        </button>
+                        <button class="next-btn btn flex items-center gap-1" type="submit">
+                            <span>Next</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                 fill="currentColor">
+                                <path fill-rule="evenodd"
+                                      d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                                      clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- end of step 5 -->
+            <!-- step-6 form -->
+            <div class="hidden step step-6">
+                <div class="flex justify-between py-4">
+                    <span class="font-semibold text-2xl">Payment</span>
+                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 6 of 7</span>
+                </div>
+
+                <form class="space-y-2 flex flex-col">
+                    <label class="mb-2 block" for="Amount">
+                        <span>Amount</span>
+                        <input type="text" name="Amount" class="input" id="Amount" placeholder="Amount"
+                               onkeypress="AllowPositiveNumber(event)">
+                    </label>
+                    <label class="mb-2 block" for="VoucherImageFile">
+                        <span>
+                            Upload voucher Photo / Online payment
+                            proof Screenshot or Photo:
+                        </span>
+                        <input type="file" name="VoucherImageFile" class="input VoucherImageString"
+                               id="VoucherImageFile">
+                    </label>
+                    <label class="mb-2 block" for="ReferalCode">
+                        <span>Referal Code</span>
+                        <input type="text" name="ReferalCode" class="input" id="ReferalCode"
+                               placeholder="Referal Code">
+                    </label>
+                    <div class="flex justify-end w-full py-4 space-x-4">
+                        <button class=" prev-btn bg-gray-200 hover:bg-gray-300 py-2 px-5  text-sm rounded flex items-center gap-1"
+                                type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                 fill="currentColor">
+                                <path fill-rule="evenodd"
+                                      d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z"
+                                      clip-rule="evenodd" />
+                            </svg>
+                            <span>Back</span>
+                        </button>
+                        <button class="next-btn btn flex items-center gap-1" type="submit">
+                            <span>Next</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                 fill="currentColor">
+                                <path fill-rule="evenodd"
+                                      d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                                      clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- end of step-6 form -->
+            <!-- step 7 form -->
+
+            <div class="hidden step step-7">
+                <div class="flex justify-between py-4">
+                    <span class="font-semibold text-2xl">Complete</span>
+                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 7 of 7</span>
+                </div>
+                <form class="flex  flex-col space-y-2 p-6 ">
+                    <div class="success flex flex-col items-center transition-transform scale-0 justify-center rounded-md bg-gray-100 py-20" data-aos="zoom-in" data-aos-delay="200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 fill-green-500" viewBox="0 0 20 20"
+                             fill="currentColor">
+                            <path fill-rule="evenodd"
+                                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                  clip-rule="evenodd" />
+                        </svg>
+                        <h3 class="font-semibold">Success</h3>
+                        <p class="text-center">You Have Successfully Submit the form</p>
+                    </div>
+                    <div class="flex w-full justify-center space-x-4 py-4">
+                        <button class="prev-btn flex items-center gap-1 rounded bg-gray-200 py-2 px-5 text-sm hover:bg-gray-300"
+                                type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                 fill="currentColor">
+                                <path fill-rule="evenodd"
+                                      d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z"
+                                      clip-rule="evenodd" />
+                            </svg>
+                            <span>Back</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- end ofstep 7 form -->
+
+        </div>
+        <!-- end of multi step form -->
+        <!-- bank details -->
+        <div class="bg-gray-100 p-4 md:col-span-1 order-1">
+            <div class="w-full col-span-2">
+                <div class="flex items-center gap-2">
+                    <svg class="float-left w-8 fill-gray-600" viewBox="0 0 45 45" fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                              d="M23.616 4.79701C23.2761 4.60285 22.8914 4.50073 22.5 4.50073C22.1086 4.50073 21.7239 4.60285 21.384 4.79701L5.634 13.797C5.20351 14.0433 4.86645 14.4249 4.67523 14.8825C4.48401 15.3401 4.44934 15.8481 4.57662 16.3274C4.7039 16.8068 4.98599 17.2306 5.37903 17.5331C5.77208 17.8356 6.25404 17.9997 6.75 18V33.75C6.15326 33.75 5.58097 33.9871 5.15901 34.409C4.73705 34.831 4.5 35.4033 4.5 36C4.5 36.5967 4.73705 37.169 5.15901 37.591C5.58097 38.013 6.15326 38.25 6.75 38.25H38.25C38.8467 38.25 39.419 38.013 39.841 37.591C40.2629 37.169 40.5 36.5967 40.5 36C40.5 35.4033 40.2629 34.831 39.841 34.409C39.419 33.9871 38.8467 33.75 38.25 33.75V18C38.746 17.9997 39.2279 17.8356 39.621 17.5331C40.014 17.2306 40.2961 16.8068 40.4234 16.3274C40.5507 15.8481 40.516 15.3401 40.3248 14.8825C40.1335 14.4249 39.7965 14.0433 39.366 13.797L23.616 4.79701V4.79701ZM13.5 20.25C12.9033 20.25 12.331 20.4871 11.909 20.909C11.4871 21.331 11.25 21.9033 11.25 22.5V29.25C11.25 29.8467 11.4871 30.419 11.909 30.841C12.331 31.263 12.9033 31.5 13.5 31.5C14.0967 31.5 14.669 31.263 15.091 30.841C15.5129 30.419 15.75 29.8467 15.75 29.25V22.5C15.75 21.9033 15.5129 21.331 15.091 20.909C14.669 20.4871 14.0967 20.25 13.5 20.25ZM20.25 22.5C20.25 21.9033 20.4871 21.331 20.909 20.909C21.331 20.4871 21.9033 20.25 22.5 20.25C23.0967 20.25 23.669 20.4871 24.091 20.909C24.5129 21.331 24.75 21.9033 24.75 22.5V29.25C24.75 29.8467 24.5129 30.419 24.091 30.841C23.669 31.263 23.0967 31.5 22.5 31.5C21.9033 31.5 21.331 31.263 20.909 30.841C20.4871 30.419 20.25 29.8467 20.25 29.25V22.5ZM31.5 20.25C30.9033 20.25 30.331 20.4871 29.909 20.909C29.4871 21.331 29.25 21.9033 29.25 22.5V29.25C29.25 29.8467 29.4871 30.419 29.909 30.841C30.331 31.263 30.9033 31.5 31.5 31.5C32.0967 31.5 32.669 31.263 33.091 30.841C33.5129 30.419 33.75 29.8467 33.75 29.25V22.5C33.75 21.9033 33.5129 21.331 33.091 20.909C32.669 20.4871 32.0967 20.25 31.5 20.25Z" />
+                    </svg>
+                    <h4 class="font-bold text-xl">Bank Details</h4>
+                </div>
+                <ul class="py-4 space-y-2 text-sm">
+                    <li class="font-bold">Agricultural Development Bank Ltd.</li>
+                    <li>Account Number : 0414801835081014</li>
+                    <li>
+                        Account Holder Name :<br />
+                        Bishwokarma Trading And Promotors
+                    </li>
+                    <li>Branch : Butwal</li>
+                </ul>
+            </div>
+            <ul class="hidden sm:block  py-4 space-y-6 text-sm">
+                <li class="flex items-center space-x-4 font-semibold">
+                    <span class="step-indicator-icon flex items-center justify-center h-8 w-8 rounded-full bg-green-500 text-white">1</span>
+                    <span class="step-indicator-text">Basic information</span>
+                </li>
+                <li class="flex items-center space-x-4">
+                    <span class="step-indicator-icon flex items-center justify-center h-8 w-8 rounded-full bg-gray-300 text-white">2</span>
+                    <span class="step-indicator-text">Contact Details</span>
+                </li>
+                <li class="flex items-center space-x-4">
+                    <span class="step-indicator-icon flex items-center justify-center h-8 w-8 rounded-full bg-gray-300 text-white">3</span>
+                    <span class="step-indicator-text">Address</span>
+                </li>
+                <li class="flex items-center space-x-4">
+                    <span class="step-indicator-icon flex items-center justify-center h-8 w-8 rounded-full bg-gray-300 text-white">4</span>
+                    <span class="step-indicator-text">Occupation</span>
+                </li>
+                <li class="flex items-center space-x-4">
+                    <span class="step-indicator-icon flex items-center justify-center h-8 w-8 rounded-full bg-gray-300 text-white">5</span>
+                    <span class="step-indicator-text">Document upload</span>
+                </li>
+                <li class="flex items-center space-x-4">
+                    <span class="step-indicator-icon flex items-center justify-center h-8 w-8 rounded-full bg-gray-300 text-white">6</span>
+                    <span class="step-indicator-text">Payment</span>
+                </li>
+                <li class="flex items-center space-x-4">
+                    <span class="step-indicator-icon flex items-center justify-center h-8 w-8 rounded-full bg-gray-300 text-white">7</span>
+                    <span class="step-indicator-text">Confirmation</span>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</section>
+<!-- end of registration -->
+<script src="~/Assets/Frontend/js/main.js" type="module"></script>
+@*<script src="~/Assets/Frontend/js/registration.js"></script>*@
+<script>
+    AOS.init({
+        offset: 100,
+    });
+</script>

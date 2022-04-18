@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Web.Entity.Dto.AccountHeadDto>
+@{
+    ViewBag.Title = "AccountHeadList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h6 class="h6 mb-2 text-gray-800">Account Head List</h6>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <a href="~/AddAccountHead" class="btn btn-success btn-sm">
+            <i class="fas fa-plus"></i> Add New
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>S.N.</th>
+                        <th hidden="hidden"></th>
+                        <th>Name</th>
+                        <th>Account Holder's Name</th>
+                        <th>Account Number</th>
+                        <th>Address</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int i = 0; }
+                    @foreach (var x in Model)
+                    {
+                        i++;
+                        <tr>
+                            <td>@i</td>
+                            <td hidden="hidden">@x.AccountHeadId</td>
+                            <td>@x.AccountHeadName</td>
+                            <td>@x.AccountHolderName</td>
+                            <td>@x.AccountNumber</td>
+                            <td>@x.Address</td>
+                            <td>
+                                @if (x.Status == true)
+                                {
+                                    <span class="badge badge-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-danger">Inactive</span>
+                                }
+                            </td>
+                            <td>
+                                <a href="~/ModifyAccountHead/@x.AccountHeadId" class="btn btn-success btn-circle btn-sm" id="btnEdit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button class="btn btn-danger btn-circle btn-sm" id="btnDelete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/web/back-end/js")
+<script>
+    $(document).ready(function () {
+        $("#dataTable").on('click', '#btnDelete', function () {
+            var currentRow = $(this).closest("tr");
+            var data = currentRow.find("td:eq(1)").html();
+
+            swal({
+                text: getDeleteConfirmationMessage(),
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            type: "POST",
+                            url: '/AccountHead/Delete/' + data,
+                            success: function (message) {
+                                showResultMessage(message, "/AccountHeadList");
+                            },
+                            error: function (message) {
+                                showResultMessage(message)
+                            }
+                        });
+                    }
+                });
+        });
+    })
+</script>
+
+

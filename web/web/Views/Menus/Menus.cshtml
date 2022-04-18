@@ -1,0 +1,103 @@
+﻿@model IEnumerable<Web.Entity.Dto.MenusDto>
+@{
+    ViewBag.Title = "Menus";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = null;
+}
+<h1 class="h3 mb-2 text-gray-800">Menus List</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <a href="~/AddModifyMenus" class="btn btn-success btn-sm">
+            <i class="fas fa-plus"></i> Add New
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>S.N.</th>
+                        <th hidden="hidden"></th>
+                        <th>Menu Name</th>
+                        <th>Check Menu Name</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int i = 0; }
+                    @foreach (var x in Model)
+                    {
+                        i++;
+                        <tr>
+                            <td>@i</td>
+                            <td hidden="hidden">@x.MenuId</td>
+                            <td>@x.MenuNameEnglish</td>
+                            <td>@x.CheckMenuName</td>
+                            @*<td>@x.ParentMenuNameEnglish</td>
+                            <td>@x.MenuLink</td>
+                            <td><i class="@x.MenuIcon"></i></td>
+                            <td>@x.MenuOrder</td>*@
+                            <td>
+                                @if (x.Status == true)
+                                {
+                                    <span class="badge badge-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-danger">Inactive</span>
+                                }
+                            </td>
+                            <td>
+                                <a href="~/AddModifyMenus/@x.MenuId" class="btn btn-success btn-circle btn-sm" id="btnEdit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button class="btn btn-danger btn-circle btn-sm" id="btnDelete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+@Scripts.Render("~/web/back-end/js")
+
+<script>
+    $('#dataTable').DataTable();
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#dataTable").on('click', '#btnDelete', function () {
+            var currentRow = $(this).closest("tr");
+            var data = currentRow.find("td:eq(1)").html();
+
+            swal({
+                text: "के तपाई यो डाटा मेटाउन चाहनुहुन्छ ?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            type: "POST",
+                            url: '/Menus/Delete/' + data,
+                            success: function (resp) {
+                                showResultMessage(resp, "/MenuList")
+                            },
+                            error: function (resp) {
+                                showResultMessage(resp)
+                            }
+                        });
+                    }
+                });
+        });
+    })
+</script>
