@@ -88,14 +88,6 @@
 @Scripts.Render("~/web/back-end/js")
 <script src="~/Assets/Backend/js/custom/plugin/select2/select2.min.js"></script>
 
-<script>
-    function SendEmail(id) {
-        $.get('/Member/GetEmailCredentials?memberId=' + id, function (resp) {
-            window.location.href = "mailto:" + resp.ToEmail + "?body=" + resp.Body + "&subject=" + resp.Subject;
-        })
-
-    }
-</script>
 
 <script>
     $('#select2').select2();
@@ -111,6 +103,9 @@
     })
     $("#btnSearch").click(function (evt) {
         evt.preventDefault();
+
+
+        //$("#btnSearch").html('Searching......')
         var ApprovalStatus = $("#ApprovalStatus").val();
         var FormStatus = $("#FormStatus").val();
         var ReferenceId = $("#select2").val();
@@ -132,6 +127,10 @@
             data: { ApprovalStatus: ApprovalStatus, FormStatus: FormStatus, ReferenceId: ReferenceId },
             success: function (res) {
                 $("#result").html(res);
+            },
+            error: function(res){
+                alert('err');
+                console.log(res)
             }
         })
     }

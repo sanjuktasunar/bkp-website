@@ -38,6 +38,7 @@ namespace web.Controllers.User
             return View();
         }
 
+        [HttpGet]
         public async Task<ActionResult> FilterMemberList(int? ApprovalStatus, int? FormStatus, int? ReferenceId)
         {
             if (!menu.ReadAccess)
@@ -47,7 +48,7 @@ namespace web.Controllers.User
             ViewBag.FormStatus = FormStatus;
             ViewBag.ReferenceId = ReferenceId;
             var obj = await _memberService.Filter(ApprovalStatus, FormStatus, ReferenceId);
-            return View(obj);
+            return PartialView("FilterMemberList", obj);
         }
 
         [Route("~/MemberDetails/{id}")]
@@ -103,6 +104,13 @@ namespace web.Controllers.User
             if (menu.RejectAccess != true)
                 return null;
             var obj = await _memberService.RejectMember(MemberId, remarks);
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetRefernceMember()
+        {
+            var obj = await _memberService.GetRefernceMemberDropdown();
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
     }

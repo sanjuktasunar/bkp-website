@@ -2222,7 +2222,7 @@
     <Content Include="Views\FiscalYear\AddModifyFiscalYear.cshtml" />
     <Content Include="Views\FiscalYear\FiscalYearList.cshtml" />
     <Content Include="Views\Member\AddModifyNewMember.cshtml" />
-    <Content Include="Views\Member\FilterMemberList.cshtml" />
+    <Content Include="Views\Member\FilterMemberList1.cshtml" />
     <Content Include="Views\Member\MemberDetails.cshtml" />
     <Content Include="Views\Member\MemberList.cshtml" />
     <Content Include="Views\Member\ModifyMember.cshtml" />
@@ -2238,6 +2238,7 @@
     <Content Include="Views\Staffs\AddModifyStaff.cshtml" />
     <Content Include="Views\Staffs\MenuAccessPermission.cshtml" />
     <Content Include="Views\Staffs\Staffs.cshtml" />
+    <Content Include="Views\Member\FilterMemberList.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

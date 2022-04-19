@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using web.Utility;
+using web.Web.Entity.Dto;
 using web.Web.Entity.Infrastructure;
 using web.Web.Services;
 using Web.Entity.Dto;
@@ -23,6 +24,7 @@ namespace web.Web.Services.Services
         Task<MemberDto> GetMemberByReferalCode(string ReferalCode);
         Task<Response> ApproveMember(int MemberId, int AccountHeadId);
         Task<Response> RejectMember(int MemberId, string remarks);
+        Task<IEnumerable<DropdownDto>> GetRefernceMemberDropdown();
     }
 
     public class MemberService:IMemberService
@@ -466,6 +468,12 @@ namespace web.Web.Services.Services
             }
             referalCode = "REF-" + currentDate.Year + "-" + i;
             return referalCode;
+        }
+
+        public async Task<IEnumerable<DropdownDto>> GetRefernceMemberDropdown()
+        {
+            var obj = await _repository.StoredProcedureAsync<DropdownDto>("[dbo].[Sp_GetReferenceMembers]");
+            return obj;
         }
     }
 }
