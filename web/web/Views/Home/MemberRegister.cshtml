@@ -3,8 +3,22 @@
     Layout = "~/Views/Shared/_FrontLayout.cshtml";
 }
 
-<!-- register -->
+<style>
+    .error-message {
+        width: 100%;
+        margin-top: 0.25rem;
+        font-size: 80%;
+        color: #ff5252;
+    }
 
+    .error input {
+        border-color: #ff5252;
+        padding-right: calc(1.5em + 1.25rem);
+        background-position: center right calc(0.375em + 0.3125rem);
+        background-size: calc(0.75em + 0.625rem) calc(0.75em + 0.625rem);
+    }
+</style>
+<!-- register -->
 <section class="min-h-screen w-full bg-gray-200 py-16">
     <h3 class="my-8 p-3 text-center text-3xl font-bold">Registration Form</h3>
     <div class="mx-auto flex max-w-2xl flex-col items-center justify-center">
@@ -33,48 +47,24 @@
         <div class="bg-white p-6 md:col-span-2 md:order-2 overflow-hidden">
             <div class="step step-1">
                 <div class="flex justify-between py-4 mb-8">
-                    <span class="font-semibold text-2xl">Basic information</span>
-                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 1 of 7</span>
+                    <span class="font-semibold text-2xl">ID Verification</span>
+                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 1 of 6</span>
                 </div>
-                <form class="space-y-2 flex flex-col">
-                    <label class="mb-2 block" for="first-name">
-                        <span>First Name</span>
-                        <input class="input" type="text" name="first-name" id="first-name">
-                    </label>
-                    <label class="mb-4 block" for="middle-name">
-                        <span>Middle Name</span>
-                        <input class="input" type="text" name="middle-name" id="middle-name">
-                    </label>
-                    <label class="mb-2 block" for="last-name">
-                        <span>Last Name</span>
-                        <input class="input mb-2" type="text" name="last-name" id="last-name">
-                    </label>
-                    <div class="flex flex-col md:flex-row gap-4 mb-2">
-                        <label class="mb-2 block" for="dob">
-                            <span>Date of Birth ( B.S ) (eg. 2046-01-2) </span>
-                            <input class="input" type="text" name="dob" id="dob">
-                        </label>
-
-                        <label class="mb-2 block" for="citizenship">
-                            <span>Citizenship no.</span>
-                            <input class="input" type="text" name="citizenship" id="citizenship">
+                <form class="space-y-2 flex flex-col" id="form_step_1">
+                    <div class="form-group">
+                        <label class="mb-2 block" for="first-name">
+                            <span>Citizenship Number(e.g. 30321/9989)</span>
+                            <input class="input" type="text" name="CitizenshipNumber"
+                                   onkeypress="ValidateCitizenshipNumber(event)"
+                                   id="CitizenshipNumber">
                         </label>
                     </div>
-                    <label class="mb-2 block" for="citizenship">
-                        <span>Gender</span>
-                        <select class="input" name="gender" id="gender-select">
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="others">Others</option>
-                        </select>
-                    </label>
-
                     <div class="flex justify-end w-full py-4 space-x-4">
-
-                        <button class="next-btn btn flex items-center gap-1" type="submit">
+                        <button class="next-btn btn flex items-center gap-1"
+                             type="button">
                             <span>Next</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                 fill="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
+                                 viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd"
                                       d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
                                       clip-rule="evenodd" />
@@ -87,24 +77,82 @@
             <!-- step-2 form -->
             <div class="hidden step step-2">
                 <div class="flex justify-between py-4">
-                    <span class="font-semibold text-2xl">Contact Details</span>
-                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 2 of 7</span>
+                    <span class="font-semibold text-2xl">Basic Information</span>
+                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 2 of 6</span>
                 </div>
-
-                <form class="space-y-2 flex flex-col">
-                    <label class="mb-2 block" for="mobile">
-                        <span>Mobile Number</span>
-                        <input class="input" inputmode="numeric" type="text" name="mobile" id="mobile"
-                               maxlength="10" minlength="10" required>
-                    </label>
-                    <label class="mb-2 block" for="email">
-                        <span>Email ( Only Gmail ID accepted</span>
-                        <input class="input" type="email" name="email" id="email" required>
-                    </label>
-
+                <form class="space-y-2 flex flex-col" id="form_step_2">
+                    <div class="md:grid md:grid-cols-2 gap-2 md:gap-6">
+                        <lable class="mb-2 block" for="FirstName">
+                            <span>First Name</span>
+                            <input class="input" type="text" name="FirstName" id="FirstName">
+                        </lable>
+                        <lable class="mb-4 block" for="MiddleName">
+                            <span>Middle Name</span>
+                            <input class="input" type="text" name="MiddleName" id="MiddleName">
+                        </lable>
+                    </div>
+                    <div class="md:grid md:grid-cols-2 gap-2 md:gap-6">
+                        <lable class="mb-2 block" for="LastName">
+                            <span>Last Name</span>
+                            <input class="input mb-2" type="text" name="LastName" id="LastName">
+                        </lable>
+                        <lable class="mb-4 block" for="DateOfBirthBS">
+                            <span>DOB in B.S. (eg. 2046-01-20) </span>
+                            <input class="input" type="text" name="DateOfBirthBS"
+                                   id="DateOfBirthBS">
+                        </lable>
+                    </div>
+                    <div class="md:grid md:grid-cols-2 gap-2 md:gap-6">
+                        <lable class="mb-2 block" for="GenderId">
+                            <span>Gender</span>
+                            <select class="input" name="GenderId" id="GenderId">
+                                <option value="">Select Value</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="others">Others</option>
+                            </select>
+                        </lable>
+                        <lable class="mb-4 block" for="MaritalStatusId">
+                            <span>Marital Status</span>
+                            <select class="input" name="MaritalStatusId" id="MaritalStatusId">
+                                <option value="">Select Value</option>
+                                <option value="1">Married</option>
+                                <option value="2">Unmarried</option>
+                                <option value="3">Others</option>
+                            </select>
+                        </lable>
+                    </div>
+                    <div class="md:grid md:grid-cols-2 gap-2 md:gap-6">
+                        <lable class="mb-2 block" for="MobileNumber">
+                            <span>Mobile Number</span>
+                            <input class="input" inputmode="numeric" type="text"
+                                   name="MobileNumber" id="MobileNumber" />
+                                   
+                        </lable>
+                        <lable class="mb-2 block" for="Email">
+                            <span>Email ( Only Gmail ID accepted)</span>
+                            <input class="input" type="text" name="Email" id="Email">
+                        </lable>
+                    </div>
+                    <div class="md:grid md:grid-cols-2 gap-2 md:gap-6">
+                        <lable class="mb-2 block" for="OccupationId">
+                            <span>Occupation : </span>
+                            <select class="input" name="OccupationId" id="OccupationId">
+                                <option value="1">Doctor</option>
+                                <option value="2">Enginner</option>
+                                <option value="3">Other</option>
+                            </select>
+                        </lable>
+                        <lable class="mb-2 block" for="OtherOccupationRemarks">
+                            <span>Occupation Remarks</span>
+                            <input class="input" type="text" name="OtherOccupationRemarks"
+                                   id="OtherOccupationRemarks"
+                                   readonly="readonly" disabled="disabled">
+                        </lable>
+                    </div>
                     <div class="flex justify-end w-full py-4 space-x-4">
                         <button class="prev-btn bg-gray-200 hover:bg-gray-300 py-2 px-5  text-sm rounded flex items-center gap-1"
-                                type="submit">
+                                type="button">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                  fill="currentColor">
                                 <path fill-rule="evenodd"
@@ -130,39 +178,14 @@
             <div class="hidden step step-3">
                 <div class="flex justify-between py-4">
                     <span class="font-semibold text-2xl">Address Details</span>
-                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 3 of 7</span>
+                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 3 of 6</span>
                 </div>
-                <h3 class="mb-4 font-semibold text-gray-600">Permanent Address</h3>
+                <h3 class="mb-4 font-semibold text-gray-600">Citizenship Issued Zone</h3>
                 <form class="space-y-2 flex flex-col">
                     <div class="flex flex-row space-x-4">
-                        <span>Is Outside Nepal? </span>
-                        <label for="outside-nepal">
-                            <span>Yes</span>
-                            <input class="accent-black-800 form-check-input" type="radio" id="PermanentRadio"
-                                   name="PermanentIsOutsideNepal" "
-                                   value=" true">
-                        </label>
-                        <label for="inside-nepal">
-                            <span>No</span>
-                            <input class="accent-black-800 form-check-input" type="radio" checked="checked"
-                                   id="PermanentRadio" name="PermanentIsOutsideNepal" "
-                                   value=" false">
-                        </label>
+                        <span>Former Address </span>
                     </div>
                     <div class="grid md:grid-cols-2 gap-2 md:gap-6">
-                        <lable class="mb-2 block">
-                            <span>Province</span>
-                            <select class="input" name="PermanentProvinceId" id="PermanentProvinceId">
-                                <option value="">Select Province</option>
-                                <option value="1">Province 1</option>
-                                <option value="2">Province 2</option>
-                                <option value="3">Province 3</option>
-                                <option value="6">Province 4</option>
-                                <option value="7">Province 5</option>
-                                <option value="8">Province 6</option>
-                                <option value="9">Province 7</option>
-                            </select>
-                        </lable>
                         <lable class="mb-2 block">
                             <span>District</span>
                             <select class="input" name="PermanentDistrictId" id="PermanentDistrictId">
@@ -180,36 +203,51 @@
                                 <option value="66">Tanahu</option>
                             </select>
                         </lable>
-                    </div>
-                    <div class="grid md:grid-cols-2 gap-6">
                         <lable class="mb-2 block">
-                            <span> Municipality/RM:</span>
-                            <select class="input" name="PermanentMunicipalityTypeId"
-                                    id="PermanentMunicipalityTypeId">
-                                <option value="">Select Type</option>
-                                <option value="1">Rular Municipality</option>
-                                <option value="2">Municipality</option>
-                                <option value="3">Sub-metropolis</option>
-                                <option value="4">Metropolitan</option>
-                            </select>
-                        </lable>
-                        <lable class="mb-2 block">
-                            <span>RM/Municipality Name:</span>
+                            <span>V.D.C./Muni. Name:</span>
                             <input type="text" id="PermanentMunicipality" class="input" name="PermanentMunicipality"
                                    placeholder="RM/Municipality Name">
                         </lable>
                     </div>
-
                     <div class="grid md:grid-cols-2 gap-2 md:gap-6">
                         <lable class="mb-2 block">
                             <span>Ward Number:</span>
                             <input type="text" id="PermanentWardNumber" name="PermanentWardNumber"
                                    placeholder="Ward Number" class="input" onkeypress="AllowNumberOnly(event)">
                         </lable>
+                    </div>
+                    <div class="flex flex-row space-x-4">
+                        <span>Changed Address </span>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-2 md:gap-6">
                         <lable class="mb-2 block">
-                            <span>Tole Name:</span>
-                            <input type="text" id="PermanentToleName" name="PermanentToleName" class="input"
-                                   placeholder="Tole Name">
+                            <span>District</span>
+                            <select class="input" name="PermanentDistrictId" id="PermanentDistrictId">
+                                <option value="">Select District</option>
+                                <option value="56">Baglung</option>
+                                <option value="57">Gorkha</option>
+                                <option value="58">Kaski</option>
+                                <option value="59">Lamjung</option>
+                                <option value="60">Manang</option>
+                                <option value="61">Mustang</option>
+                                <option value="62">Myagdi</option>
+                                <option value="63">Nawalparasi</option>
+                                <option value="64">Parbat</option>
+                                <option value="65">Syangja</option>
+                                <option value="66">Tanahu</option>
+                            </select>
+                        </lable>
+                        <lable class="mb-2 block">
+                            <span>RM/Muni. Name:</span>
+                            <input type="text" id="PermanentMunicipality" class="input" name="PermanentMunicipality"
+                                   placeholder="RM/Municipality Name">
+                        </lable>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-2 md:gap-6">
+                        <lable class="mb-2 block">
+                            <span>Ward Number:</span>
+                            <input type="text" id="PermanentWardNumber" name="PermanentWardNumber"
+                                   placeholder="Ward Number" class="input" onkeypress="AllowNumberOnly(event)">
                         </lable>
                     </div>
 
@@ -219,7 +257,7 @@
                         <label for="outside-nepal">
                             <span>Yes</span>
                             <input class="accent-black-800 form-check-input" type="radio" id="PermanentRadio"
-                                   name="PermanentIsOutsideNepal" "
+                                   name="PermanentIsOutsideNepal"
                                    value=" true">
                         </label>
                         <label for="inside-nepal">
@@ -230,19 +268,6 @@
                         </label>
                     </div>
                     <div class="grid md:grid-cols-2 gap-2 md:gap-6">
-                        <lable class="mb-2 block">
-                            <span>Province</span>
-                            <select class="input" name="PermanentProvinceId" id="PermanentProvinceId">
-                                <option value="">Select Province</option>
-                                <option value="1">Province 1</option>
-                                <option value="2">Province 2</option>
-                                <option value="3">Province 3</option>
-                                <option value="6">Province 4</option>
-                                <option value="7">Province 5</option>
-                                <option value="8">Province 6</option>
-                                <option value="9">Province 7</option>
-                            </select>
-                        </lable>
                         <lable class="mb-2 block">
                             <span>District</span>
                             <select class="input" name="PermanentDistrictId" id="PermanentDistrictId">
@@ -260,19 +285,6 @@
                                 <option value="66">Tanahu</option>
                             </select>
                         </lable>
-                    </div>
-                    <div class="grid md:grid-cols-2 gap-2 md:gap-6">
-                        <lable class="mb-2 block">
-                            <span> Municipality/RM:</span>
-                            <select class="input" name="PermanentMunicipalityTypeId"
-                                    id="PermanentMunicipalityTypeId">
-                                <option value="">Select Type</option>
-                                <option value="1">Rular Municipality</option>
-                                <option value="2">Municipality</option>
-                                <option value="3">Sub-metropolis</option>
-                                <option value="4">Metropolitan</option>
-                            </select>
-                        </lable>
                         <lable class="mb-2 block">
                             <span>RM/Municipality Name:</span>
                             <input type="text" id="PermanentMunicipality" class="input" name="PermanentMunicipality"
@@ -286,72 +298,8 @@
                             <input type="text" id="PermanentWardNumber" name="PermanentWardNumber"
                                    placeholder="Ward Number" class="input" onkeypress="AllowNumberOnly(event)">
                         </lable>
-                        <lable class="mb-2 block">
-                            <span>Tole Name:</span>
-                            <input type="text" id="PermanentToleName" name="PermanentToleName" class="input"
-                                   placeholder="Tole Name">
-                        </lable>
                     </div>
 
-                    <div class="flex justify-end w-full py-4 space-x-4">
-                        <button class="prev-btn bg-gray-200 hover:bg-gray-300 py-2 px-5  text-sm rounded flex items-center gap-1"
-                                type="submit">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                 fill="currentColor">
-                                <path fill-rule="evenodd"
-                                      d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z"
-                                      clip-rule="evenodd" />
-                            </svg>
-                            <span>Back</span>
-                        </button>
-                        <button class="next-btn btn flex items-center gap-1" type="submit">
-                            <span>Next</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                 fill="currentColor">
-                                <path fill-rule="evenodd"
-                                      d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
-                                      clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                    </div>
-
-                </form>
-
-            </div>
-            <!-- step 3 ends here -->
-            <!-- step 4 form -->
-            <div class="hidden step step-4">
-                <div class="flex justify-between py-4">
-                    <span class="font-semibold text-2xl">Occupation</span>
-                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 4 of 7</span>
-                </div>
-                <form class="space-y-2 flex flex-col">
-                    <div class="md:grid md:grid-cols-2 gap-2 md:gap-6">
-                        <lable class="mb-2 block">
-                            <span>Occupation</span>
-                            <select class="input" name="OccupationId" id="OccupationId">
-                                <option value="">Select Occupation</option>
-                                <option value="1">Doctor</option>
-                                <option value="2">Engineer</option>
-                                <option value="3">Businessman</option>
-                                <option value="4">Nurse</option>
-                                <option value="5">Housewife</option>
-                                <option value="6">Government Job</option>
-                                <option value="7">Teacher</option>
-                                <option value="8">Other</option>
-                            </select>
-                        </lable>
-                        <lable class="mb-2 block">
-                            <span>Interested In</span>
-                            <select class="input" name="MemberFieldId" id="MemberFieldId">
-                                <option value="">Interested Field</option>
-                                <option value="1">Business Management and Grow</option>
-                                <option value="2">Administration And Accounting</option>
-                                <option value="3">Capital Increase</option>
-                                <option value="4">Project Increase</option>
-                            </select>
-                        </lable>
-                    </div>
                     <div class="flex justify-end w-full py-4 space-x-4">
                         <button class="prev-btn bg-gray-200 hover:bg-gray-300 py-2 px-5  text-sm rounded flex items-center gap-1"
                                 type="submit">
@@ -374,13 +322,14 @@
                         </button>
                     </div>
                 </form>
+
             </div>
-            <!-- end of step 4 -->
-            <!-- step 5 form -->
-            <div class="hidden step step-5">
+            <!-- step 3 ends here -->
+            <!-- step 4 form -->
+            <div class="hidden step step-4">
                 <div class="flex justify-between py-4">
                     <span class="font-semibold text-2xl">Upload documents</span>
-                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 5 of 7</span>
+                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 4 of 6</span>
                 </div>
                 <p class="bg-amber-100 mb-4 px-2 w-fit rounded text-xs md:text-sm font-semibold border border-yellow-200">
                     Note
@@ -425,20 +374,14 @@
                     </div>
                 </form>
             </div>
-            <!-- end of step 5 -->
-            <!-- step-6 form -->
-            <div class="hidden step step-6">
+            <!-- end of step 4 -->
+            <!-- step-5 form -->
+            <div class="hidden step step-5">
                 <div class="flex justify-between py-4">
                     <span class="font-semibold text-2xl">Payment</span>
-                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 6 of 7</span>
+                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 5 of 6</span>
                 </div>
-
                 <form class="space-y-2 flex flex-col">
-                    <label class="mb-2 block" for="Amount">
-                        <span>Amount</span>
-                        <input type="text" name="Amount" class="input" id="Amount" placeholder="Amount"
-                               onkeypress="AllowPositiveNumber(event)">
-                    </label>
                     <label class="mb-2 block" for="VoucherImageFile">
                         <span>
                             Upload voucher Photo / Online payment
@@ -475,13 +418,12 @@
                     </div>
                 </form>
             </div>
-            <!-- end of step-6 form -->
-            <!-- step 7 form -->
-
-            <div class="hidden step step-7">
+            <!-- end of step-5 form -->
+            <!-- step 6 form -->
+            <div class="hidden step step-6">
                 <div class="flex justify-between py-4">
                     <span class="font-semibold text-2xl">Complete</span>
-                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 7 of 7</span>
+                    <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 6 of 6</span>
                 </div>
                 <form class="flex  flex-col space-y-2 p-6 ">
                     <div class="success flex flex-col items-center transition-transform scale-0 justify-center rounded-md bg-gray-100 py-20" data-aos="zoom-in" data-aos-delay="200">
@@ -508,7 +450,7 @@
                     </div>
                 </form>
             </div>
-            <!-- end ofstep 7 form -->
+            <!-- end ofstep 6 form -->
 
         </div>
         <!-- end of multi step form -->
@@ -536,30 +478,27 @@
             <ul class="hidden sm:block  py-4 space-y-6 text-sm">
                 <li class="flex items-center space-x-4 font-semibold">
                     <span class="step-indicator-icon flex items-center justify-center h-8 w-8 rounded-full bg-green-500 text-white">1</span>
-                    <span class="step-indicator-text">Basic information</span>
+                    <span class="step-indicator-text">Id Verification</span>
                 </li>
                 <li class="flex items-center space-x-4">
                     <span class="step-indicator-icon flex items-center justify-center h-8 w-8 rounded-full bg-gray-300 text-white">2</span>
-                    <span class="step-indicator-text">Contact Details</span>
+                    <span class="step-indicator-text">Basic information</span>
                 </li>
                 <li class="flex items-center space-x-4">
                     <span class="step-indicator-icon flex items-center justify-center h-8 w-8 rounded-full bg-gray-300 text-white">3</span>
                     <span class="step-indicator-text">Address</span>
                 </li>
+
                 <li class="flex items-center space-x-4">
                     <span class="step-indicator-icon flex items-center justify-center h-8 w-8 rounded-full bg-gray-300 text-white">4</span>
-                    <span class="step-indicator-text">Occupation</span>
-                </li>
-                <li class="flex items-center space-x-4">
-                    <span class="step-indicator-icon flex items-center justify-center h-8 w-8 rounded-full bg-gray-300 text-white">5</span>
                     <span class="step-indicator-text">Document upload</span>
                 </li>
                 <li class="flex items-center space-x-4">
-                    <span class="step-indicator-icon flex items-center justify-center h-8 w-8 rounded-full bg-gray-300 text-white">6</span>
+                    <span class="step-indicator-icon flex items-center justify-center h-8 w-8 rounded-full bg-gray-300 text-white">5</span>
                     <span class="step-indicator-text">Payment</span>
                 </li>
                 <li class="flex items-center space-x-4">
-                    <span class="step-indicator-icon flex items-center justify-center h-8 w-8 rounded-full bg-gray-300 text-white">7</span>
+                    <span class="step-indicator-icon flex items-center justify-center h-8 w-8 rounded-full bg-gray-300 text-white">6</span>
                     <span class="step-indicator-text">Confirmation</span>
                 </li>
             </ul>
@@ -567,11 +506,9 @@
         </div>
     </div>
 </section>
+<input type="hidden" id="MemberId" />
 <!-- end of registration -->
 <script src="~/Assets/Frontend/js/main.js" type="module"></script>
-@*<script src="~/Assets/Frontend/js/registration.js"></script>*@
-<script>
-    AOS.init({
-        offset: 100,
-    });
-</script>
+<script src="~/Assets/Backend/vendor/jquery/jquery.min.js"></script>
+@Scripts.Render("~/web/custom/js")
+<script src="~/Assets/Frontend/js/registration.js"></script>

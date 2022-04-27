@@ -1,6 +1,7 @@
 using System.Web.Mvc;
 using Unity;
 using Unity.Mvc5;
+using web.Services.Services;
 using web.Web.Services.Services;
 using Web.Services.Services;
 
@@ -32,6 +33,7 @@ namespace web.Utility
             //container.RegisterType<IDateService, DateService>();
             //container.RegisterType<IDataService, DataService>();
             container.RegisterType<IMemberService, MemberService>();
+            container.RegisterType<IMemberRegisterService, MemberRegisterService>();
             //container.RegisterType<IEmailService, EmailService>();
             //container.RegisterType<IEmailTemplateService, EmailTemplateService>();
             //container.RegisterType<ICountryService, CountryService>();

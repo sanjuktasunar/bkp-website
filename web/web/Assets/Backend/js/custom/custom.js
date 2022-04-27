@@ -79,6 +79,7 @@ function ElementValidation(elementId, required = null, maxlength = null, maxleng
     }
     return true;
 }
+
 function FileHandling(elementId) {
     debugger;
     var element = "#" + elementId;
@@ -124,13 +125,17 @@ function MaxlengthHandling(elementId, length) {
 
 function removeErrorClasses(element) {
     var $el = $(element);
-    $el.parent().addClass('form-group').removeClass('error');
-    $el.parent().removeClass('.error-message');
+    //$el.parent().addClass('form-group').removeClass('error');
+    //$el.parent().removeClass('.error-message');
+    //$el.parent().find('.error-message').remove();
+
+    $el.parent().removeClass('error');
+    $el.parent().removeClass('error');
     $el.parent().find('.error-message').remove();
 }
 function AddErrorClasses(element) {
     var $el = $(element);
-    $el.parent().removeClass('form-group');
+    //$el.parent().removeClass('form-group');
     $el.parent().addClass('error');
 }
 function AddErrorMessage(element, message) {
@@ -140,8 +145,6 @@ function AddErrorMessage(element, message) {
 
 function ValidateCitizenshipNumber(event) {
     var $field_value = event.target.value;
-
-    //alert(event.which)
     if ($field_value == null || $field_value.trim() == '') {
         if (event.which == 47 || event.which == 45) {
             event.preventDefault();
@@ -166,58 +169,7 @@ function ValidateNepaliDate(event) {
         }
     }
     
-    //else if ($field_value.length > 0) {
-    //    if ($field_value.charAt($field_value.length - 1) == "/" && event.which == 47) {
-    //        event.preventDefault();
-    //    }
-    //    else {
-    //        if ($field_value.length == 1) {
-    //            if (parseInt($field_value) == 1) {
-    //                if (event.which != 57) {
-    //                    event.preventDefault();
-    //                }
-    //            }
-    //            if (parseInt($field_value) == 2) {
-    //                if (event.which != 48) {
-    //                    event.preventDefault();
-    //                }
-    //            }
-    //        }
-    //        else if ($field_value.length == 2) {
-    //            if (event.which == 56 || event.which == 57) {
-    //                event.preventDefault();
-    //            }
-    //        }
-    //        else if ($field_value.length == 4) {
-    //            if(event.which != 47) {
-    //                event.preventDefault();
-    //             }
-    //        }
-    //        else if ($field_value.length>4){
-    //            var split = $field_value.split('/');
-    //            var month = split[1];
-    //            if (month.length == 1) {
-    //                if (month > 1) {
-    //                    if (event.which != 47)
-    //                        event.preventDefault();
-    //                    else if (event.which == 47) {
-    //                        event.target.value = split[0] + "/" + "0" + month;
-    //                    }
-    //                }
-    //                else {
-    //                    if (event.which == 48) {
-    //                        event.preventDefault();
-    //                    }
-    //                }
-                    
-    //            }
-    //            else if (month.length > 1 && event.which != 47) {
-    //                event.preventDefault();
-    //            }
-    //        }
-    //    }
-    //}
-
+    
     if ((event.which < 48 || event.which > 57) && (event.which != 47)) {
         event.preventDefault();
     }

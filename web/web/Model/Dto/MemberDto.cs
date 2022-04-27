@@ -37,7 +37,6 @@ namespace Web.Entity.Dto
         public string RefernceFirstName { get; set; }
         public string ReferenceMiddleName { get; set; }
         public string ReferenceLastName { get; set; }
-        public string s { get; set; }
         public string ReferenceReferalCode { get; set; }
 
         public string PermanentFullAddress { get; set; }

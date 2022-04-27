@@ -42,6 +42,15 @@ namespace web
                     "~/Assets/Backend/js/custom/Dropdown.js",
                     "~/Assets/Backend/js/custom/custom.js"
                     ));
+
+            bundles.Add(new ScriptBundle("~/web/custom/js").Include(
+                   "~/Assets/Backend/js/custom/plugin/sweetalert.min.js",
+                   "~/Assets/Backend/js/custom/LoadMessage.js",
+                   "~/Assets/Backend/js/custom/plugin/nepali.datepicker.v3.6.min.js",
+                   "~/Assets/Backend/js/custom/Dropdown.js",
+                   "~/Assets/Backend/js/custom/NumberTyping.js",
+                   "~/Assets/Backend/js/custom/custom.js"
+                   ));
         }
     }
 }

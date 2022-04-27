@@ -11,6 +11,7 @@ namespace Web.Entity.Infrastructure
         public string messageType { get; set; }
         public string message { get; set; }
         public int id { get; set; }
+        public string value { get; set; }
         public List<string> messageList { get; set; }
     }
 

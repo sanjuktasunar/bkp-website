@@ -32,5 +32,9 @@ namespace Web.Entity.Entity
 
         public int? TemporaryCountryId { get; set; }
         public string TemporaryAddress { get; set; }
+
+        public int? FormerDistrictId { get; set; }
+        public string FormerMunicipalityName { get; set; }
+        public string FormerWardNumber { get; set; }
     }
 }

@@ -25,6 +25,7 @@ namespace web.Web.Services.Services
         Task<Response> ApproveMember(int MemberId, int AccountHeadId);
         Task<Response> RejectMember(int MemberId, string remarks);
         Task<IEnumerable<DropdownDto>> GetRefernceMemberDropdown();
+        Task<MemberDto> GetMemberByCitizenshipNumber(string citizenshipNumber);
     }
 
     public class MemberService:IMemberService
@@ -474,6 +475,13 @@ namespace web.Web.Services.Services
         {
             var obj = await _repository.StoredProcedureAsync<DropdownDto>("[dbo].[Sp_GetReferenceMembers]");
             return obj;
+        }
+
+        public async Task<MemberDto> GetMemberByCitizenshipNumber(string citizenshipNumber)
+        {
+            string _sql = "select * from dbo.[Member] where CitizenshipNumber=@citizenshipNumber";
+            var obj = await _repository.QueryAsync<MemberDto>(_sql, new { citizenshipNumber });
+            return obj.FirstOrDefault();
         }
     }
 }
