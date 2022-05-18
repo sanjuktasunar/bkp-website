@@ -11,8 +11,7 @@ using Web.Entity.Infrastructure;
 
 namespace web.Controllers.User
 {
-    [Authorize]
-    public class AjaxController : BaseController
+    public class AjaxController:Controller
     {
         private IDropDownService _dropDownService;
         private CacheManager cacheManager;
@@ -55,6 +54,18 @@ namespace web.Controllers.User
                     break;
                 case "account_Head_list":
                     dropdown = _dropDownService.GetDropDownAccountHead().ToList();
+                    break;
+                case "marital_Status_List":
+                    dropdown = _dropDownService.GetDropDownMaritalStatus().ToList();
+                    break;
+                case "outside_country_List":
+                    dropdown = _dropDownService.GetOutsideCountry().ToList();
+                    break;
+                case "reference_Agent_List":
+                    dropdown = _dropDownService.GetReferenceAgentList().ToList();
+                    break;
+                case "reference_Member_List":
+                    dropdown = _dropDownService.GetReferenceMemberList().ToList();
                     break;
                 default:
                     break;

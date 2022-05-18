@@ -23,6 +23,18 @@ function LoadGender(id, element = null) {
     LoadAjax($ajax_param);
 }
 
+function LoadMaritalStatus(id, element = null) {
+    if (element == null || element == '')
+        element = "#MaritalStatusId";
+
+    var $ajax_param = {
+        element: element,
+        id: id,
+        type: "marital_Status_List"
+    };
+    LoadAjax($ajax_param);
+}
+
 function LoadProvince(id, element = null) {
     if (element == null || element == '')
         element = "#ProvinceId";
@@ -57,7 +69,7 @@ function LoadOccupation(id, element = null) {
     LoadAjax($ajax_param);
 }
 
-function LoadShareTypes(id, element = null) {
+function LoadShareTypes(id, element = null, not_include = null) {
     if (element == null || element == '')
         element = "#ShareTypeId";
     var $ajax_param = {
@@ -65,7 +77,7 @@ function LoadShareTypes(id, element = null) {
         id: id,
         type: "share_type_list"
     };
-    LoadAjax($ajax_param);
+    LoadAjax($ajax_param, not_include);
 }
 
 function LoadAgentStatus(id, element = null) {
@@ -90,14 +102,54 @@ function LoadAccountHead(id, element = null) {
     LoadAjax($ajax_param);
 }
 
-function LoadAjax($ajax_param) {
+
+function LoadOutsideCountry(id, element = null) {
+    if (element == null || element == '')
+        element = "#OutsideCountryId";
+    var $ajax_param = {
+        element: element,
+        id: id,
+        type: "outside_country_List"
+    };
+    LoadAjax($ajax_param);
+}
+
+function LoadReferenceAgent(id, element = null) {
+    if (element == null || element == '')
+        element = "#ddlAgentId";
+    var $ajax_param = {
+        element: element,
+        id: id,
+        type: "reference_Agent_List"
+    };
+    LoadAjax($ajax_param);
+}
+
+function LoadReferenceMember(id, element = null) {
+    if (element == null || element == '')
+        element = "#ddlMemberId";
+    var $ajax_param = {
+        element: element,
+        id: id,
+        type: "reference_Member_List"
+    };
+    LoadAjax($ajax_param);
+}
+
+
+function LoadAjax($ajax_param, not_include = null) {
     $.ajax({
+        type: "post",
         url: "/Ajax/Index",
         data: $ajax_param,
-        type: "post",
         success: function (resp) {
             $($ajax_param.element).empty();
-            $($ajax_param.element).append("<option value=''> Select Value </option>")
+            if (not_include == null || not_include == false) {
+                $($ajax_param.element).append("<option value=''> Select Value </option>");
+            }
+
+            
+
             $.each(resp, function (index, row) {
                 if ($ajax_param.id == row.Key) {
                     $($ajax_param.element).append("<option value=" + row.Key + " selected='selected'> " + row.Value + " </option>");
@@ -105,6 +157,7 @@ function LoadAjax($ajax_param) {
                 else {
                     $($ajax_param.element).append("<option value=" + row.Key + "> " + row.Value + " </option>");
                 }
+                
             })
         }
     })

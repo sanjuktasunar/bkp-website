@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using web.Model.Dto;
+using web.Model.Entity;
 using web.Utility;
+using web.Web.Entity.Dto;
 using web.Web.Entity.Infrastructure;
 using web.Web.Services;
 using Web.Entity.Dto;
@@ -17,12 +21,27 @@ namespace web.Web.Services.Services
 {
     public interface IMemberService
     {
-        Task<IEnumerable<MemberDto>> Filter(int? ApprovalStatus, int? FormStatus, int? ReferenceId);
+        Task<IEnumerable<MemberDto>> Filter(MemberFilterDto filterDto);
+        Task<IEnumerable<MemberDto>> FilterShareholder(MemberFilterDto filterDto);
         Task<MemberDto> GetMemberByIdAsync(int? id);
         Task<Response> Insert(MemberDto dto);
         Task<MemberDto> GetMemberByReferalCode(string ReferalCode);
-        Task<Response> ApproveMember(int MemberId, int AccountHeadId);
+        Task<Response> ApproveMember(int MemberId, int AccountHeadId, int ShareTypeId);
         Task<Response> RejectMember(int MemberId, string remarks);
+        Task<IEnumerable<DropdownDto>> GetRefernceMemberDropdown();
+        Task<MemberDto> GetMemberByCitizenshipNumber(string citizenshipNumber, int memberId);
+        Task<MemberDto> GetMemberForUpdate(int? MemberId);
+        Task<MemberDto> GetMemberWithRefernceDetailsForUpdate(int? MemberId);
+        Task<MemberDto> GetMemberByMobileNumber(string mobileNumber, int memberId);
+        Task<MemberDto> GetMemberByEmail(string emailAddress, int memberId);
+        Task<MemberDto> GetAddressByMemberId(int memberId);
+        Task<BankDepositDto> GetMemberBankDepositById(int memberId);
+        Task<UserDocumentDto> GetMemberDocuments(int memberId);
+        Task<Response> AddMemberToShareholder(ShareholderDto dto);
+        Task<ShareholderDto> GetShareholderByMemberId(int memberId);
+        Task<ShareholderDto> GetShareholderByShareholderId(int id);
+        Task<Response> ModifyShareholder(ShareholderDto dto);
+        Task<Response> DeleteShareholder(int id);
     }
 
     public class MemberService:IMemberService
@@ -31,6 +50,7 @@ namespace web.Web.Services.Services
         private readonly Repository<Address> _addressRepository;
         private readonly Repository<UserDocuments> _documentRepository;
         private readonly Repository<BankDeposit> _bankDepositRepository;
+        private readonly Repository<Shareholder> _shareholderRepository;
         private readonly Repository<Users> _userRepository;
         private readonly IShareTypesService _shareTypesService;
         private readonly IUsersService _usersService;
@@ -38,6 +58,8 @@ namespace web.Web.Services.Services
         private readonly ImageSettings _imageSettings;
         private readonly SqlConnectionDetails _sql;
         private readonly DateSettings dateSettings;
+        private readonly ImageSettings imageSettings;
+        
         public MemberService(IShareTypesService shareTypesService,
             IUsersService usersService)
         {
@@ -45,6 +67,7 @@ namespace web.Web.Services.Services
             _addressRepository = new Repository<Address>();
             _documentRepository = new Repository<UserDocuments>();
             _bankDepositRepository = new Repository<BankDeposit>();
+            _shareholderRepository = new Repository<Shareholder>();
             _shareTypesService = shareTypesService;
             _messageClass = new MessageClass();
             _imageSettings = new ImageSettings();
@@ -52,27 +75,35 @@ namespace web.Web.Services.Services
             dateSettings = new DateSettings();
             _usersService = usersService;
             _userRepository = new Repository<Users>();
+            imageSettings = new ImageSettings();
         }
-        public async Task<IEnumerable<MemberDto>> Filter(int? ApprovalStatus, int? FormStatus, int? ReferenceId)
+        public async Task<IEnumerable<MemberDto>> Filter(MemberFilterDto filterDto)
         {
-            if (ApprovalStatus == null)
-                ApprovalStatus = 1;
-
-            if (ApprovalStatus == 2)
-                FormStatus = null;
-
-            if (FormStatus == 0)
-                FormStatus = null;
-
-            if (ReferenceId == 0)
-                ReferenceId = null;
+            if (filterDto.ApprovalStatus == 2)
+                filterDto.FormStatus = null;
 
             var obj = await _repository.StoredProcedureAsync<MemberDto>("[dbo].[FilterMember]"
                , new
                {
-                   ApprovalStatus,
-                   FormStatus,
-                   ReferenceId
+                   ApprovalStatus=filterDto.ApprovalStatus,
+                   FormStatus=filterDto.FormStatus,
+                   ReferenceId=filterDto.ReferenceId,
+                   AgentId = filterDto.AgentId,
+                   ShareTypeId=filterDto.ShareTypeId
+               });
+            return obj;
+        }
+
+        public async Task<IEnumerable<MemberDto>> FilterShareholder(MemberFilterDto filterDto)
+        {
+            var obj = await _repository.StoredProcedureAsync<MemberDto>("[dbo].[FilterShareholder]"
+               , new
+               {
+                   ReferenceId = filterDto.ReferenceId,
+                   AgentId = filterDto.AgentId,
+                   ShareTypeId = filterDto.ShareTypeId,
+                   SearchQuery=filterDto.SearchQuery,
+                   Code=filterDto.Code,
                });
             return obj;
         }
@@ -86,18 +117,29 @@ namespace web.Web.Services.Services
             return obj;
         }
 
+        public async Task<MemberDto> GetMemberWithRefernceDetailsForUpdate(int? MemberId)
+        {
+            string query = "select B.*,D.VoucherImage, " +
+                "(case when isnull(B.ReferenceId,0)=0 then AG.LicenceNumber " +
+                "else B1.ReferalCode end)  as ReferenceReferalCode " +
+                "from dbo.[Member] B " +
+                "left join dbo.Member AS B1 ON B.ReferenceId = B1.MemberId " +
+                "left join dbo.Agent AS AG on AG.AgentId=B.AgentId " +
+                "left join dbo.BankDeposit AS D on D.MemberId=B.MemberId " +
+                "where B.MemberId=@MemberId";
+
+            var obj = (await _repository.QueryAsync<MemberDto>(query, new { MemberId })).FirstOrDefault();
+            return obj;
+        }
+
         public async Task<MemberDto> GetMemberByIdAsync(int? id)
         {
-            var obj = (await _repository.QueryAsync<MemberDto>("SELECT * FROM MemberView " +
+            var obj = (await _repository.QueryAsync<MemberDto>("SELECT * " +
+                "FROM dbo.MemberDetailView " +
                 "WHERE MemberId=@id", new { id })).FirstOrDefault();
-            if (obj.PermanentIsOutsideNepal == true)
-            {
-                obj.PermanentFullAddress = obj.PermanentAddress + "," + obj.PermanentCountryName;
-            }
-            else
-            {
-                obj.PermanentFullAddress = obj.PermanentMunicipalityName + "-" + obj.PermanentWardNumber + "," + obj.PermanentDistrictName;
-            }
+
+            obj.PermanentFullAddress = obj.PermanentMunicipalityName + "-" + obj.PermanentWardNumber + "," + obj.PermanentDistrictName;
+
             if (obj.TemporaryIsOutsideNepal == true)
             {
                 obj.TemporaryFullAddress = obj.TemporaryAddress + "," + obj.TemporaryCountryName;
@@ -111,7 +153,7 @@ namespace web.Web.Services.Services
 
         public async Task<MemberDto> GetMemberByReferalCode(string ReferalCode)
         {
-            string query = "select * from dbo.[Member] " +
+            string query = "select MemberId,ReferalCode,ReferenceId from dbo.[Member] " +
                             "where ReferalCode=@ReferalCode and IsActive=1 and " +
                             "ApprovalStatus=2";
 
@@ -343,17 +385,35 @@ namespace web.Web.Services.Services
             return resp;
         }
 
-        public async Task<Response> ApproveMember(int MemberId, int AccountHeadId)
+        public async Task<Response> ApproveMember(int MemberId, int AccountHeadId,int ShareTypeId)
         {
-            var obj = await GetMemberForUpdate(MemberId);
-            if (obj is null)
-                return null;
-
-            var bankDeposit = await GetMemberBankDepositById(MemberId);
             var response = new Response();
             response.messageType = "error";
+            var obj = await GetMemberForUpdate(MemberId);
+            if (obj is null)
+            {
+                response.message = "Invalid Member";
+            }
+
+            if (AccountHeadId == 0)
+            {
+                response.message = "Please Select Account Head";
+                return response;
+            }
+
+            if (ShareTypeId == 0)
+            {
+                response.message = "Please Select Share Type";
+                return response;
+            }
+
+            var bankDeposit = await GetMemberBankDepositById(MemberId);
+            var shareType = await _repository.QueryAsync<ShareTypesDto>("select * from " +
+                "dbo.ShareTypes where ShareTypeId=@id and Status=1",new { id=ShareTypeId });
+            
             try
             {
+                obj.ShareTypeId = ShareTypeId;
                 if (obj.ApprovalStatus == ApprovalStatus.Rejected && obj.FormStatus == FormStatus.Complete)
                 {
                     obj.ApprovalStatus = ApprovalStatus.Approved;
@@ -370,6 +430,7 @@ namespace web.Web.Services.Services
                             obj.ApprovalStatus = ApprovalStatus.Approved;
                             obj.IsActive = true;
                             obj.ReferalCode = await GetReferalCode();
+                            obj.MemberCode = await GetMemberCode();
                             obj.ApprovedBy =_repository.UserIdentity();
                             obj.ApprovedDate = DateTime.Now;
                             await _repository.UpdateAsync(obj.ToEntity(), _sql.conn, _sql.trans);
@@ -379,6 +440,11 @@ namespace web.Web.Services.Services
                                 bankDeposit.IsApproved = true;
                                 bankDeposit.ApprovedDate = DateTime.Now;
                                 bankDeposit.AccountHeadId = AccountHeadId;
+                                if (shareType.Count() > 0)
+                                {
+                                    bankDeposit.Amount = Convert.ToDecimal(shareType
+                                        .FirstOrDefault().RegistrationAmount);
+                                }
                                 await _bankDepositRepository.UpdateAsync(bankDeposit.ToEntity(),
                                     _sql.conn, _sql.trans);
                             }
@@ -454,7 +520,8 @@ namespace web.Web.Services.Services
 
         public async Task<string> GetReferalCode()
         {
-            var members = (await _repository.QueryAsync<Member>("SELECT TOP 1 * FROM Member where ReferalCode is not null ORDER BY MemberId DESC"));
+            var members = (await _repository.QueryAsync<Member>("SELECT TOP 1 " +
+                "ReferalCode,MemberId FROM Member where ReferalCode is not null ORDER BY ReferalCode DESC"));
             DateTime currentDate = DateTime.Now;
             string referalCode = "";
             int i = 888;
@@ -466,6 +533,224 @@ namespace web.Web.Services.Services
             }
             referalCode = "REF-" + currentDate.Year + "-" + i;
             return referalCode;
+        }
+
+        public async Task<string> GetMemberCode()
+        {
+            var members = (await _repository.QueryAsync<Member>("SELECT TOP 1 MemberCode," +
+                "MemberId FROM Member where MemberCode is not null ORDER BY MemberCode DESC"));
+            DateTime currentDate = DateTime.Now;
+            string memberCode = "";
+            int i = 78;
+            if (members.Count() > 0)
+            {
+                var number = members.FirstOrDefault().MemberCode.Split('-');
+                i = Convert.ToInt32(number[2]);
+                i = i + 1;
+            }
+            memberCode = "BKP-" + currentDate.Year + "-" + i;
+            return memberCode;
+        }
+
+        public async Task<IEnumerable<DropdownDto>> GetRefernceMemberDropdown()
+        {
+            var obj = await _repository.StoredProcedureAsync<DropdownDto>("[dbo].[Sp_GetReferenceMembers]");
+            return obj;
+        }
+
+        public async Task<MemberDto> GetMemberByCitizenshipNumber(string citizenshipNumber,int memberId)
+        {
+            string _sql = "select * from dbo.[Member] " +
+                "where CitizenshipNumber=@citizenshipNumber " +
+                "or MemberId=@memberId";
+            var obj = await _repository.QueryAsync<MemberDto>(_sql, new { citizenshipNumber,memberId });
+            return obj.FirstOrDefault();
+        }
+
+        public async Task<MemberDto> GetMemberByMobileNumber(string mobileNumber,int memberId)
+        {
+            string _sql = "select * from dbo.[Member] where MobileNumber=@mobileNumber " +
+                "and MemberId!=@memberId";
+            var obj = await _repository.QueryAsync<MemberDto>(_sql, new { mobileNumber,memberId });
+            return obj.FirstOrDefault();
+        }
+        public async Task<MemberDto> GetMemberByEmail(string emailAddress,int memberId)
+        {
+            string _sql = "select * from dbo.[Member] where Email=@emailAddress " +
+                "and Email is not null and Email!='' and MemberId!=@memberId";
+            var obj = await _repository.QueryAsync<MemberDto>(_sql, new { emailAddress,memberId });
+            return obj.FirstOrDefault();
+        }
+
+        public async Task<MemberDto> GetAddressByMemberId(int memberId)
+        {
+            string _sql = "select * from dbo.[Address] where MemberId=@memberId";
+            var obj = await _repository.QueryAsync<MemberDto>(_sql, new { memberId });
+            return obj.FirstOrDefault();
+        }
+
+        public async Task<UserDocumentDto> GetMemberDocuments(int memberId)
+        {
+            string _sql = "";
+            //_sql = "select (case when @type=N'front' then u.CitizenshipFront when " +
+            //   "@type=N'back' then u.CitizenshipBack " +
+            //   "when @type = N'photo' then u.Photo when @type=N'payment' then " +
+            //   "b.VoucherImage else '' end) as Photo " +
+            //   "from dbo.UserDocuments u " +
+            //   "left join dbo.BankDeposit b on b.MemberId=u.MemberId " +
+            //   "where u.MemberId=@memberId";
+
+            _sql = "select u.CitizenshipFront,u.CitizenshipBack,u.Photo,b.VoucherImage " +
+               "from dbo.UserDocuments u " +
+               "left join dbo.BankDeposit b on b.MemberId=u.MemberId " +
+               "where u.MemberId=@memberId";
+
+            var obj = (await _repository.QueryAsync<UserDocumentDto>(_sql, new { memberId })).FirstOrDefault();
+            return obj;
+        }
+
+        public async Task<Response> AddMemberToShareholder(ShareholderDto dto)
+        {
+            var response = new Response();
+            response.messageType = "error";
+            var memberDto = await GetMemberForUpdate(dto.MemberId);
+            if (memberDto is null)
+            {
+                response.message = "Invalid member!!!";
+                return response;
+            }
+            if (dto.TotalKitta <= 0)
+            {
+                response.message = "Please enter share kitta!!!";
+                return response;
+            }
+            try
+            {
+                if (memberDto.ApprovalStatus != ApprovalStatus.Approved)
+                {
+                    response.message = "Please approved this member then add to shareholder!!!!";
+                }
+                else
+                {
+                    var shareholderDto = await GetShareholderByMemberId(dto.MemberId);
+                    if (shareholderDto != null)
+                    {
+                        response.message = "Shareholder already exists";
+                        return response;
+                    }
+                    var entity = dto.ToEntity();
+                    entity.IsActive = dto.Status?1:0;
+                    entity.ApprovedDate = DateTime.Now;
+                    int ShareholderId = await _shareholderRepository.InsertAsync(entity, _sql.conn, _sql.trans);
+
+                    var member = memberDto.ToEntity();
+                    member.ShareholderId = ShareholderId;
+                    member.ShareTypeId = entity.ShareTypeId;
+                    await _repository.UpdateAsync(member, _sql.conn, _sql.trans);
+                    response = _messageClass.SaveMessage(ShareholderId);
+                }
+                _sql.trans.Commit();
+
+            }
+            catch (SqlException ex)
+            {
+                response.message = ex.Message.ToString();
+                _sql.trans.Rollback();
+            }
+            return response;
+        }
+
+        public async Task<ShareholderDto> GetShareholderByMemberId(int memberId)
+        {
+            string query = "select top 1 * from dbo.[Shareholder] where MemberId=@memberId";
+            var obj=(await _shareholderRepository.QueryAsync<ShareholderDto>
+                (query,new { memberId })).FirstOrDefault();
+
+            return obj;
+        }
+
+        public async Task<ShareholderDto> GetShareholderByShareholderId(int id)
+        {
+            string query = "select top 1 * from dbo.[Shareholder] where ShareHolderId=@id";
+            var obj = (await _shareholderRepository.QueryAsync<ShareholderDto>
+                (query, new { id })).FirstOrDefault();
+
+            if (obj != null)
+                obj.memberDto = await GetMemberForUpdate(obj.MemberId);
+
+            return obj;
+        }
+
+        public async Task<Response> ModifyShareholder(ShareholderDto dto)
+        {
+            var response = new Response();
+            response.messageType = "error";
+            var shareholderDto = await GetShareholderByShareholderId(dto.ShareholderId);
+            var memberDto = await GetMemberForUpdate(dto.MemberId);
+            if (shareholderDto is null)
+            {
+                response.message = "Invalid shareholder!!!";
+                return response;
+            }
+            if (dto.TotalKitta <= 0)
+            {
+                response.message = "Please enter share kitta!!!";
+                return response;
+            }
+            try
+            {
+                var entity = shareholderDto.ToEntity();
+                entity.ShareTypeId = dto.ShareTypeId;
+                entity.TotalKitta = dto.TotalKitta;
+                entity.IsActive = dto.Status ? 1 : 0;
+                await _shareholderRepository.UpdateAsync(entity, _sql.conn, _sql.trans);
+
+                if (memberDto != null)
+                {
+                    var member = memberDto.ToEntity();
+                    member.ShareTypeId = dto.ShareTypeId;
+                    await _repository.UpdateAsync(member, _sql.conn, _sql.trans);
+                }
+                response = _messageClass.SaveMessage(1);
+                _sql.trans.Commit();
+            }
+            catch (SqlException ex)
+            {
+                response.message = ex.Message.ToString();
+                _sql.trans.Rollback();
+            }
+            return response;
+        }
+
+        public async Task<Response> DeleteShareholder(int id)
+        {
+            var response = new Response();
+            response.messageType = "error";
+            var shareholderDto = await GetShareholderByShareholderId(id);
+            if (shareholderDto is null)
+            {
+                response.message = "Invalid shareholder!!!";
+                return response;
+            }
+            var memberDto = await GetMemberForUpdate(shareholderDto.MemberId);
+            try
+            {
+                if (memberDto != null)
+                {
+                    var member = memberDto.ToEntity();
+                    member.ShareholderId = null;
+                    await _repository.UpdateAsync(member, _sql.conn, _sql.trans);
+                }
+                await _shareholderRepository.DeleteAsync(id, _sql.conn, _sql.trans);
+                response = _messageClass.DeleteMessage(1);
+                _sql.trans.Commit();
+            }
+            catch (SqlException ex)
+            {
+                response.message = ex.Message.ToString();
+                _sql.trans.Rollback();
+            }
+            return response;
         }
     }
 }

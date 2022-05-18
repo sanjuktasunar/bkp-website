@@ -16,5 +16,6 @@ namespace Web.Entity.Entity
         public string CitizenshipBack { get; set; }
         public string PanCard { get; set; }
         public string EducationalDocument { get; set; }
+        public bool IsImageString { get; set; }
     }
 }

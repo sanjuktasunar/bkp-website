@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -51,7 +52,7 @@ namespace web.Utility
             var image = ConvertToImage(file);
             if (image != null)
             {
-                var resizeImage = ResizeImage(image, 1000, 1000, true);
+                var resizeImage = ResizeImage(image, 600, 600, true);
                 //var Imgstring = Convert.ToBase64String(ConvertToByte(file));
                 var Imgstring = Convert.ToBase64String(ImageToByteArray(resizeImage));
                 return Imgstring;
@@ -116,6 +117,15 @@ namespace web.Utility
 
             File.WriteAllBytes(imgPath, imageBytes);
             return true;
+        }
+
+        public bool IsBase64String(string base64String)
+        {
+            if (string.IsNullOrEmpty(base64String))
+                return false;
+
+            string base64 = base64String.Split(',')[1].ToString().Trim();
+            return (base64.Length % 4 == 0) && Regex.IsMatch(base64, @"^[a-zA-Z0-9\+/]*={0,3}$", RegexOptions.None);
         }
     }
 }

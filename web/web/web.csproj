@@ -169,11 +169,35 @@
     <Compile Include="Controllers\User\MemberController.cs" />
     <Compile Include="Controllers\User\MenusController.cs" />
     <Compile Include="Controllers\User\RoleController.cs" />
+    <Compile Include="Controllers\User\ShareholderController.cs" />
     <Compile Include="Controllers\User\ShareTypesController.cs" />
     <Compile Include="Controllers\User\StaffsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migration\MigrationFiles\100_add_tables_proc_insert_values.cs" />
+    <Compile Include="Migration\MigrationFiles\101_AddViews.cs" />
+    <Compile Include="Migration\MigrationFiles\102_alter_proc_views.cs" />
+    <Compile Include="Migration\MigrationFiles\103_alter_table.cs" />
+    <Compile Include="Migration\MigrationFiles\104_add_alter_view_proc.cs" />
+    <Compile Include="Migration\MigrationFiles\105_add_modify_tables.cs" />
+    <Compile Include="Migration\MigrationFiles\106_add_tables.cs" />
+    <Compile Include="Migration\MigrationFiles\107_add_members_tables.cs" />
+    <Compile Include="Migration\MigrationFiles\108_add_alter_table_Data.cs" />
+    <Compile Include="Migration\MigrationFiles\109_data_correction.cs" />
+    <Compile Include="Migration\MigrationFiles\110_add_proc_member.cs" />
+    <Compile Include="Migration\MigrationFiles\111_add_customer_table.cs" />
+    <Compile Include="Migration\MigrationFiles\112_changes_in_database.cs" />
+    <Compile Include="Migration\MigrationFiles\113_add_column_share_types.cs" />
+    <Compile Include="Migration\MigrationFiles\114_add_colum_member.cs" />
+    <Compile Include="Migration\MigrationFiles\115_alter_table_member.cs" />
+    <Compile Include="Migration\MigrationFiles\116_add_pratigyapatra.cs" />
+    <Compile Include="Migration\MigrationFiles\117_addproc_Add_view.cs" />
+    <Compile Include="Migration\MigrationFiles\118_add_alter_proc_table.cs" />
+    <Compile Include="Migration\MigrationFiles\119_alter_member_view.cs" />
+    <Compile Include="Migration\MigrationFiles\120_change_db_structure.cs" />
+    <Compile Include="Migration\MigrationFiles\121_add_alter_table_views_procs.cs" />
+    <Compile Include="Migration\MigrationFiles\LoadMigration.cs" />
     <Compile Include="Model\BaseDto.cs" />
     <Compile Include="Model\BaseEntity.cs" />
     <Compile Include="Model\Dto\AccountHeadDto.cs" />
@@ -185,6 +209,7 @@
     <Compile Include="Model\Dto\DesignationDto.cs" />
     <Compile Include="Model\Dto\DropdownDto.cs" />
     <Compile Include="Model\Dto\EmailDto.cs" />
+    <Compile Include="Model\Dto\FilterDto.cs" />
     <Compile Include="Model\Dto\FiscalYearDto.cs" />
     <Compile Include="Model\Dto\GenderDto.cs" />
     <Compile Include="Model\Dto\MemberDataDto.cs" />
@@ -201,6 +226,7 @@
     <Compile Include="Model\Dto\ProductPriceDto.cs" />
     <Compile Include="Model\Dto\ProvinceDto.cs" />
     <Compile Include="Model\Dto\RoleDto.cs" />
+    <Compile Include="Model\Dto\ShareholderDto.cs" />
     <Compile Include="Model\Dto\ShareTypesDto.cs" />
     <Compile Include="Model\Dto\StaffsDto.cs" />
     <Compile Include="Model\Dto\SupplierDto.cs" />
@@ -236,6 +262,7 @@
     <Compile Include="Model\Entity\ProductPrice.cs" />
     <Compile Include="Model\Entity\PurchaseRecord.cs" />
     <Compile Include="Model\Entity\Role.cs" />
+    <Compile Include="Model\Entity\Shareholder.cs" />
     <Compile Include="Model\Entity\ShareTypes.cs" />
     <Compile Include="Model\Entity\Staffs.cs" />
     <Compile Include="Model\Entity\Supplier.cs" />
@@ -268,6 +295,7 @@
     <Compile Include="Services\Services\DesignationService.cs" />
     <Compile Include="Services\Services\DropDownService.cs" />
     <Compile Include="Services\Services\FiscalYearService.cs" />
+    <Compile Include="Services\Services\MemberRegisterService.cs" />
     <Compile Include="Services\Services\MemberService.cs" />
     <Compile Include="Services\Services\MenusService.cs" />
     <Compile Include="Services\Services\ProductService.cs" />
@@ -281,6 +309,7 @@
     <Compile Include="Utility\ImageSettings.cs" />
     <Compile Include="Utility\InitialSetupModel.cs" />
     <Compile Include="Utility\MessageClass.cs" />
+    <Compile Include="Utility\NumberSettings.cs" />
     <Compile Include="Utility\Register_Services.cs" />
     <Compile Include="Utility\Security.cs" />
   </ItemGroup>
@@ -2010,6 +2039,36 @@
     <Content Include="Assets\Frontend\js\registration.js" />
     <Content Include="Assets\Frontend\src\style.css" />
     <Content Include="Global.asax" />
+    <Content Include="Migration\Query\100_add_tables.sql" />
+    <Content Include="Migration\Query\100_add_views_procs.sql" />
+    <Content Include="Migration\Query\100_InsertValues.sql" />
+    <Content Include="Migration\Query\101_add_view.sql" />
+    <Content Include="Migration\Query\102_add_proc.sql" />
+    <Content Include="Migration\Query\103_alter_table.sql" />
+    <Content Include="Migration\Query\104_add_view.sql" />
+    <Content Include="Migration\Query\105_add_column_add_table.sql" />
+    <Content Include="Migration\Query\106_drop_create_insert_district.sql" />
+    <Content Include="Migration\Query\106_query_down.sql" />
+    <Content Include="Migration\Query\107_create_Member_Registration.sql" />
+    <Content Include="Migration\Query\107_insert_value_member_registration.sql" />
+    <Content Include="Migration\Query\107_query_down.sql" />
+    <Content Include="Migration\Query\108_add_column_member.sql" />
+    <Content Include="Migration\Query\108_query_down.sql" />
+    <Content Include="Migration\Query\109_update_database_correct data.sql" />
+    <Content Include="Migration\Query\110_add_proc.sql" />
+    <Content Include="Migration\Query\111_customer_query.sql" />
+    <Content Include="Migration\Query\112_add_table.sql" />
+    <Content Include="Migration\Query\113_alter_colum_share_type.sql" />
+    <Content Include="Migration\Query\114_add_column_member.sql" />
+    <Content Include="Migration\Query\115_alter_table_member.sql" />
+    <Content Include="Migration\Query\116_add_pratigyapatra_details.sql" />
+    <Content Include="Migration\Query\117_alterproc_alter_view.sql" />
+    <Content Include="Migration\Query\118_add_alter_view.sql" />
+    <Content Include="Migration\Query\119_alter_view.sql" />
+    <Content Include="Migration\Query\120_change_in_db_structure.sql" />
+    <Content Include="Migration\Query\121_add_modify_table_procs.sql" />
+    <Content Include="Migration\Query\add_table_purchase_records.sql" />
+    <Content Include="Migration\Query\custom_query.sql" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -2222,7 +2281,7 @@
     <Content Include="Views\FiscalYear\AddModifyFiscalYear.cshtml" />
     <Content Include="Views\FiscalYear\FiscalYearList.cshtml" />
     <Content Include="Views\Member\AddModifyNewMember.cshtml" />
-    <Content Include="Views\Member\FilterMemberList.cshtml" />
+    <Content Include="Views\Member\FilterMemberList1.cshtml" />
     <Content Include="Views\Member\MemberDetails.cshtml" />
     <Content Include="Views\Member\MemberList.cshtml" />
     <Content Include="Views\Member\ModifyMember.cshtml" />
@@ -2238,6 +2297,10 @@
     <Content Include="Views\Staffs\AddModifyStaff.cshtml" />
     <Content Include="Views\Staffs\MenuAccessPermission.cshtml" />
     <Content Include="Views\Staffs\Staffs.cshtml" />
+    <Content Include="Views\Member\FilterMemberList.cshtml" />
+    <Content Include="Views\Shareholder\ShareholderList.cshtml" />
+    <Content Include="Views\Shareholder\FilterShareholderList.cshtml" />
+    <Content Include="Views\Shareholder\ModifyShareholder.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

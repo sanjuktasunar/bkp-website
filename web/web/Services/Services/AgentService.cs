@@ -18,6 +18,7 @@ namespace web.Web.Services.Services
         Task<AgentDto> GetAgentById(int? id);
         Task<Response> Insert(AgentDto dto);
         Task<Response> Update(AgentDto dto);
+        Task<AgentDto> GetAgentByLicenceNumber(string LicenceNumber);
     }
 
     public class AgentService : IAgentService
@@ -180,7 +181,7 @@ namespace web.Web.Services.Services
 
         public async Task<AgentDto> GetAgentByLicenceNumber(string LicenceNumber)
         {
-            string _query = "select * from dbo.[Agent] where LicenceNumber=@LicenceNumber " +
+            string _query = "select AgentId,AgentFullName,LicenceNumber from dbo.[Agent] where LicenceNumber=@LicenceNumber " +
                             "and IsActive=1";
             var obj = await _repository.QueryAsync<AgentDto>(_query,new { LicenceNumber });
             return obj.FirstOrDefault();

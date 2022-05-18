@@ -1,0 +1,120 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Web.Entity.Dto.MenuAccessPermissionDto menu = ViewBag.Menus;
+}
+<h6 class="h6 mb-2 text-gray-800">Shareholder List</h6>
+<div class="row">
+    <div class="col-md-12">
+        <form id="form_validation">
+            <div class="row">
+                <div class="col-sm-4 col-md-4">
+                    <div class="form-group">
+                        <label>Referred By</label>
+                        <select class="form-control" id="ddlReferenceId">
+                            <option value="">Referred By</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <div class="form-group">
+                        <label>Select Agent</label>
+                        <select class="form-control" id="ddlAgentId">
+                            <option value="">Select Value</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <div class="form-group">
+                        <label>Share Type</label>
+                        <select class="form-control" id="ddlShareTypeId">
+                            <option value="">Select Value</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-md-6">
+                    <div class="form-group">
+                        <label>Search Query</label>
+                        <input type="text" class="form-control"
+                               value="@ViewBag.SearchQuery"
+                               placeholder="Name/Phone No./Email/Citizenship"
+                               id="txtSearchQuery" />
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-6">
+                    <div class="form-group">
+                        <label>Code</label>
+                        <input type="text" class="form-control"
+                               value="@ViewBag.Code"
+                               placeholder="Referal/Member Code"
+                               id="txtCode" />
+                    </div>
+                </div>
+            </div>
+            <button type="submit" id="btnSearch" class="btn btn-primary">Search</button>
+            <button type="button" id="btnClear" class="btn btn-secondary" data-dismiss="modal">Clear</button>
+        </form>
+    </div>
+</div>
+<br />
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <div id="result">
+                <i class="fas fa-cog"></i> Loading...............
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/web/back-end/js")
+<script src="~/Assets/Backend/js/custom/plugin/select2/select2.min.js"></script>
+<script>
+    $('#ddlReferenceId').select2();
+    $('#ddlAgentId').select2();
+    LoadShareTypes('@ViewBag.ShareTypeId', "#ddlShareTypeId");
+    LoadReferenceAgent('@ViewBag.AgentId', "#ddlAgentId");
+    LoadReferenceMember('@ViewBag.ReferenceId', "#ddlReferenceId");
+
+    $("#btnSearch").click(function (evt) {
+        evt.preventDefault();
+        $("#btnSearch").prop('disabled', true);
+        $("#btnSearch").html('Searching....')
+       
+        var ReferenceId = $('#ddlReferenceId').find(':selected').val();
+        var AgentId = $('#ddlAgentId').find(':selected').val();
+        var ShareTypeId = $('#ddlShareTypeId').val();
+        var SearchQuery = $('#txtSearchQuery').val();
+        var Code = $('#txtCode').val();
+
+        window.location.href = "/ShareholderList?ReferenceId=" + ReferenceId + "&AgentId=" + AgentId + "&ShareTypeId=" + ShareTypeId + "&SearchQuery=" + SearchQuery + "&Code=" + Code;
+    })
+
+    $("#btnClear").click(function (evt) {
+        window.location.href="/ShareholderList"
+    });
+
+    $(document).ready(function () {
+        var ReferenceId = '@ViewBag.ReferenceId';
+        var AgentId = '@ViewBag.AgentId';
+        var ShareTypeId = '@ViewBag.ShareTypeId';
+        var SearchQuery = '@ViewBag.SearchQuery';
+        var Code = '@ViewBag.Code';
+
+        $.ajax({
+            type: "get",
+            url: "/Shareholder/FilterShareholderList",
+            data: { ReferenceId: ReferenceId, AgentId: AgentId, ShareTypeId: ShareTypeId, SearchQuery: SearchQuery, Code: Code },
+            success: function (res) {
+                $("#result").html(res);
+                $("#btnSearch").prop('disabled', false);
+                $("#btnSearch").html('Search');
+            },
+            error: function (res) {
+
+            }
+        });
+    })
+</script>

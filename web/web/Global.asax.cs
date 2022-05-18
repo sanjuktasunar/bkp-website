@@ -18,8 +18,8 @@ namespace web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            //Migrations.LoadMigration mig = new Migrations.LoadMigration();
-            //mig.Load();
+            Migrations.LoadMigration mig = new Migrations.LoadMigration();
+            mig.Load();
 
             RegisterServices.RegisterComponents();
         }
