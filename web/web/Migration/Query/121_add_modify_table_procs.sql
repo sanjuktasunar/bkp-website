@@ -13,9 +13,9 @@ ALTER TABLE [dbo].[Address]
 ADD FormerWardNumber nvarchar(4) null
 GO
 
-GO
-DROP VIEW [dbo].[AddressView]
-GO
+--GO
+--DROP VIEW [dbo].[AddressView]
+--GO
 
 GO
 CREATE VIEW [dbo].[AddressView]
