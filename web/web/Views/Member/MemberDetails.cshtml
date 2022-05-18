@@ -2,6 +2,8 @@
 @{
     ViewBag.Title = "MemberDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string base_Url = System.Web.Configuration.WebConfigurationManager
+                    .AppSettings["Image_Base_Url"];
 }
 <link href="~/Assets/Backend/css/custom/member-detail.css" rel="stylesheet" />
 <div class="card-body">
@@ -188,8 +190,8 @@
                         Citizenship Front
                     </td>
                     <td>
-                        <a href="#" id="CitizenShipFrontImage">
-
+                        <a href="#">
+                            <img id="CitizenShipFrontImage" />
                         </a>
                     </td>
                     <td>
@@ -198,8 +200,8 @@
 
                     </td>
                     <td>
-                        <a id="CitizenShipBackImage" href="#">
-
+                        <a href="#">
+                            <img id="CitizenShipBackImage" />
                         </a>
                     </td>
                 </tr>
@@ -210,8 +212,8 @@
 
                     </td>
                     <td>
-                        <a id="PhotoImage" href="#">
-
+                        <a href="#">
+                            <img id="PhotoImage" />
                         </a>
                     </td>
                     <td>
@@ -219,8 +221,8 @@
                         Payment Proof
                     </td>
                     <td>
-                        <a id="PaymentImage" href="#">
-
+                        <a href="#">
+                            <img id="PaymentImage" />
                         </a>
                     </td>
                 </tr>
@@ -239,8 +241,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row ImageDiv">
-
+                <div class="row">
+                    <img id="ImagePreview" />
                 </div>
             </div>
         </div>
@@ -249,11 +251,11 @@
 
 @Scripts.Render("~/web/back-end/js")
 <script>
+    var path = ("@base_Url" + "ImageStorage/").replace('~', '');
     function ShowImage(imageName) {
-        $(".ImageDiv").empty();
+        $("#ImagePreview").empty();
         $("#exampleModal").modal();
-        var $html = '<img src="/ImageStorage/' + imageName + '"/>';
-        $(".ImageDiv").html($html);
+        $("#ImagePreview").attr("src", path + imageName);
     }
 
     function showDocument() {
@@ -266,17 +268,10 @@
             data: { memberId },
             success: function (resp) {
                 if (resp != null) {
-                    $("#PhotoImage")
-                        .html('<img src="/ImageStorage/' + resp.Photo + '"/>');
-
-                    $("#CitizenShipFrontImage")
-                        .html('<img src="/ImageStorage/' + resp.CitizenshipFront + '"/>');
-
-                    $("#CitizenShipBackImage")
-                        .html('<img src="/ImageStorage/' + resp.CitizenshipBack + '"/>');
-
-                    $("#PaymentImage")
-                        .html('<img src="/ImageStorage/' + resp.VoucherImage + '"/>');
+                    $("#PhotoImage").attr("src", path + resp.Photo);
+                    $("#CitizenShipFrontImage").attr("src", path + resp.CitizenshipFront);
+                    $("#CitizenShipBackImage").attr("src", path + resp.CitizenshipBack);
+                    $("#PaymentImage").attr("src", path + resp.VoucherImage);
 
                     $("#PhotoImageString").val(resp.Photo);
                     $("#CitizenShipFrontImageString").val(resp.CitizenshipFront);
@@ -291,7 +286,7 @@
         })
     }
 
-    $("#documentTable").on('click', 'a', function (event) {
+    $("#documentTable").on('click', 'a img', function (event) {
         event.preventDefault();
         var idName = $(this).attr("id");
         var image_name = $("#" + idName + "String").val();

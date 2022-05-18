@@ -46,9 +46,9 @@ FROM        dbo.[Address] AS A LEFT JOIN
 			--dbo.Gender AS G ON G.GenderId=M.GenderId
 GO
 
-GO
-DROP VIEW [dbo].[MemberAddressView]
-GO
+--GO
+--DROP VIEW [dbo].[MemberAddressView]
+--GO
 
 GO
 CREATE VIEW [dbo].[MemberAddressView]
