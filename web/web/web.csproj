@@ -196,6 +196,7 @@
     <Compile Include="Migration\MigrationFiles\118_add_alter_proc_table.cs" />
     <Compile Include="Migration\MigrationFiles\119_alter_member_view.cs" />
     <Compile Include="Migration\MigrationFiles\120_change_db_structure.cs" />
+    <Compile Include="Migration\MigrationFiles\121_add_alter_table_views_procs.cs" />
     <Compile Include="Migration\MigrationFiles\LoadMigration.cs" />
     <Compile Include="Model\BaseDto.cs" />
     <Compile Include="Model\BaseEntity.cs" />
