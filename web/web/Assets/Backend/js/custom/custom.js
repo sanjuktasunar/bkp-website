@@ -75,10 +75,6 @@ function DisplayImageFromFolder(elementName, imageName) {
         $(divId).show();
         $(divId).html('');
         $(divId).append('<img src="ImageStorage/' + imageName + '" />')
-        //$(divId).append("<img src='/ImageStorage/'" + imageName + ">")
-        //$('<img>', {
-        //    src: imageString
-        //}).appendTo($(divId));
     }
 }
 function ClearImageInDiv(elementName) {

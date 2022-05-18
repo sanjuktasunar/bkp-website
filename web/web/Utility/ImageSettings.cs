@@ -9,11 +9,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 
 namespace web.Utility
 {
     public class ImageSettings
     {
+        string base_Url = WebConfigurationManager.AppSettings["Image_Base_Url"];
         public byte[] ConvertToByte(HttpPostedFileBase file)
         {
             byte[] imageData = null;
@@ -95,7 +97,7 @@ namespace web.Utility
 
         public bool SaveImage(string ImgStr, string ImgName)
         {
-            String path = System.Web.HttpContext.Current.Server.MapPath("~/ImageStorage"); //Path
+            String path = System.Web.HttpContext.Current.Server.MapPath(base_Url + "ImageStorage"); //Path
 
             //Check if directory exist
             if (!System.IO.Directory.Exists(path))
@@ -104,7 +106,7 @@ namespace web.Utility
             }
 
             //check if image exists or not
-            var oldfilePath = System.Web.HttpContext.Current.Server.MapPath("~/ImageStorage/" + ImgName + ".jpg");
+            var oldfilePath = System.Web.HttpContext.Current.Server.MapPath(base_Url + "ImageStorage/" + ImgName + ".jpg");
             if (File.Exists(oldfilePath))
                 File.Delete(oldfilePath);
 
