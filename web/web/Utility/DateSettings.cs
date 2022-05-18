@@ -60,7 +60,13 @@ namespace web.Utility
                                                                             Convert.ToInt32(nepaliMonth),
                                                                             Convert.ToInt32(nepaliDate));
 
-            return string.Format("{0}/{1}/{2}", englishDate.Year, englishDate.Month, englishDate.Day);
+            int year=englishDate.Year;
+            int month=englishDate.Month;
+            int day=englishDate.Day;
+            if (year == 0 || month == 0 || day == 0)
+                return null;
+
+            return string.Format("{0}/{1}/{2}", year, month, day);
         }
 
         public bool CheckNepaliDateValidity(string nepaliDateStr)

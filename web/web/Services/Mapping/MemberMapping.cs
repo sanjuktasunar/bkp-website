@@ -42,8 +42,6 @@ namespace Web.Services.Mapping
                 Email = dto.Email?.Trim(),
                 OccupationId = dto.OccupationId,
                 OtherOccupationRemarks = dto.OtherOccupationRemarks,
-                //MemberFieldId = dto.MemberFieldId,
-                //IsMemberFilled = dto.IsMemberFilled,
                 FormStatus = dto.FormStatus,
                 ApprovalStatus = dto.ApprovalStatus,
                 ApprovedDate = dto.ApprovedDate,
@@ -57,7 +55,11 @@ namespace Web.Services.Mapping
                 IsActive = dto.IsActive,
                 UserId = dto.UserId,
                 ShareTypeId = dto.ShareTypeId,
+                MaritalStatusId = dto.MaritalStatusId,
                 ApprovalRemarks = dto.ApprovalRemarks?.Trim(),
+                MemberFieldId=dto.MemberFieldId,
+                AgentId=dto.AgentId,
+                ShareholderId=dto.ShareholderId,
             };
         }
 
@@ -167,6 +169,38 @@ namespace Web.Services.Mapping
                 obj.TemporaryMunicipality = dto.TemporaryMunicipality;
                 obj.TemporaryWardNumber = dto.TemporaryWardNumber;
                 obj.TemporaryToleName = dto.TemporaryToleName;
+            }
+            else
+            {
+                obj.TemporaryCountryId = dto.TemporaryCountryId;
+                obj.TemporaryAddress = dto.TemporaryAddress;
+            }
+            return obj;
+        }
+
+        public static Address ToAddressEntity(this MemberDto dto)
+        {
+            if (dto is null)
+                return null;
+
+            var obj = new Address();
+            obj.Id = dto.Id;
+            obj.MemberId = dto.MemberId;
+
+            obj.FormerDistrictId = dto.FormerDistrictId;
+            obj.FormerMunicipalityName = dto.FormerMunicipalityName;
+            obj.FormerWardNumber = dto.FormerWardNumber;
+
+            obj.PermanentDistrictId = dto.PermanentDistrictId;
+            obj.PermanentMunicipality = dto.PermanentMunicipality;
+            obj.PermanentWardNumber = dto.PermanentWardNumber;
+
+            obj.TemporaryIsOutsideNepal = dto.TemporaryIsOutsideNepal;
+            if (!dto.TemporaryIsOutsideNepal)
+            {
+                obj.TemporaryDistrictId = dto.TemporaryDistrictId;
+                obj.TemporaryMunicipality = dto.TemporaryMunicipality;
+                obj.TemporaryWardNumber = dto.TemporaryWardNumber;
             }
             else
             {
@@ -355,9 +389,17 @@ namespace Web.Services.Mapping
             {
                 Id = dto.Id,
                 MemberId = dto.MemberId,
-                VoucherImage = dto.VoucherImage,
+                IsOther = dto.IsOther,
+                IsVoucherDeposit = true,
+                Name = dto.Name,
+                PhoneNumber = dto.PhoneNumber,
+                Address = dto.Address,
                 Amount = dto.Amount,
-                IsVoucherDeposit = true
+                AccountHeadId = dto.AccountHeadId,
+                DepositDate = dto.DepositDate,
+                VoucherImage = dto.VoucherImage,
+                IsApproved=dto.IsApproved,
+                ApprovedDate=dto.ApprovedDate,
             };
         }
 

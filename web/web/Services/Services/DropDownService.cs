@@ -22,6 +22,10 @@ namespace web.Web.Services.Services
         IEnumerable<DropdownDto> GetDropDownShareTypes();
         IEnumerable<DropdownDto> GetDropDownAgentStatus();
         IEnumerable<DropdownDto> GetDropDownAccountHead();
+        IEnumerable<DropdownDto> GetDropDownMaritalStatus();
+        IEnumerable<DropdownDto> GetOutsideCountry();
+        IEnumerable<DropdownDto> GetReferenceAgentList();
+        IEnumerable<DropdownDto> GetReferenceMemberList();
     }
 
     public class DropDownService:IDropDownService
@@ -192,6 +196,7 @@ namespace web.Web.Services.Services
                             "from dbo.[Occupation] " +
                             "where [Status]=1"
                         ).ToList();
+                data.Add(new DropdownDto{ Key=-1,Value="Others"});
                 HttpRuntime.Cache[CacheCodes.OCCUPATION_LIST] = data;
             }
             else
@@ -211,9 +216,9 @@ namespace web.Web.Services.Services
                             "select ShareTypeId as [Key]," +
                             "ShareTypeName as [Value] " +
                             "from dbo.[ShareTypes] " +
-                            "where [Status]=1"
+                            "where [Status]=1 order by IsPrimary desc"
                         ).ToList();
-                HttpRuntime.Cache[CacheCodes.SHARE_TYPE_LIST] = data;
+                //HttpRuntime.Cache[CacheCodes.SHARE_TYPE_LIST] = data;
             }
             else
             {
@@ -261,6 +266,65 @@ namespace web.Web.Services.Services
             {
                 data = HttpRuntime.Cache[CacheCodes.ACCOUNT_HEAD_LIST] as List<DropdownDto>;
             }
+            return data;
+        }
+
+        public IEnumerable<DropdownDto> GetDropDownMaritalStatus()
+        {
+            var data = new List<DropdownDto>();
+            if (HttpRuntime.Cache[CacheCodes.MARITAL_STATUS_LIST] == null)
+            {
+                data = _repository.Query<DropdownDto>
+                        (
+                            "select Id as [Key]," +
+                            "MaritalStatusName as [Value] " +
+                            "from dbo.[MaritalStatus] " +
+                            "where [IsActive]=1"
+                        ).ToList();
+                HttpRuntime.Cache[CacheCodes.MARITAL_STATUS_LIST] = data;
+            }
+            else
+            {
+                data = HttpRuntime.Cache[CacheCodes.MARITAL_STATUS_LIST] as List<DropdownDto>;
+            }
+            return data;
+        }
+
+        public IEnumerable<DropdownDto> GetOutsideCountry()
+        {
+            var data = new List<DropdownDto>();
+            if (HttpRuntime.Cache[CacheCodes.OUTSIDE_COUNTRY_LIST] == null)
+            {
+                data = _repository.Query<DropdownDto>
+                        (
+                            "select Id as [Key]," +
+                            "Name as [Value] " +
+                            "from dbo.[Country] " +
+                            "where [Status]=1 and IsOutsideNepal=1"
+                        ).ToList();
+                HttpRuntime.Cache[CacheCodes.OUTSIDE_COUNTRY_LIST] = data;
+            }
+            else
+            {
+                data = HttpRuntime.Cache[CacheCodes.OUTSIDE_COUNTRY_LIST] as List<DropdownDto>;
+            }
+            return data;
+        }
+
+        public IEnumerable<DropdownDto> GetReferenceAgentList()
+        {
+            var data = _repository.StoredProcedure<DropdownDto>
+                        (
+                           "[dbo].[Sp_GetReferenceAgents]"
+                        ).ToList();
+            return data;
+        }
+        public IEnumerable<DropdownDto> GetReferenceMemberList()
+        {
+            var data = _repository.StoredProcedure<DropdownDto>
+                        (
+                           "[dbo].[Sp_GetReferenceMembers]"
+                        ).ToList();
             return data;
         }
     }

@@ -12,10 +12,17 @@ namespace Web.Entity.Dto
         public int? StaffId { get; set; }
         public int? MemberId { get; set; }
         public string Photo { get; set; }
-        //public string MemberPhoto { get; set; }
+       
         public string CitizenshipFront { get; set; }
         public string CitizenshipBack { get; set; }
         public string PanCard { get; set; }
         public string EducationalDocument { get; set; }
+        public bool IsImageString { get; set; }
+
+        public string MemberPhoto { get; set; }
+        public string MemberPhotoString { get; set; }
+        public string CitizenshipFrontImageString { get; set; }
+        public string CitizenshipBackImageString { get; set; }
+        public string VoucherImage { get; set; }
     }
 }

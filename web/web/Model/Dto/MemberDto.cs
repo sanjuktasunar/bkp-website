@@ -22,7 +22,7 @@ namespace Web.Entity.Dto
         public string Email { get; set; }
         public string DateOfBirthBS { get; set; }
         public string DateOfBirthAD { get; set; }
-        public int GenderId { get; set; }
+        public int? GenderId { get; set; }
         public int? OccupationId { get; set; }
         public string OtherOccupationRemarks { get; set; }
         public int? MemberFieldId { get; set; }
@@ -107,6 +107,19 @@ namespace Web.Entity.Dto
         public string MemberPhotoString { get; set; }
         public string VoucherImageString { get; set; }
         public string ReferenceFullName { get; set; }
+
+        public int? MaritalStatusId { get; set; }
+
+        public int? FormerDistrictId { get; set; }
+        public string FormerDistrictName { get; set; }
+        public string FormerMunicipalityName { get; set; }
+        public string FormerWardNumber { get; set; }
+
+        public int? AgentId { get; set; }
+        public int? ShareholderId { get; set; }
+        public int TotalKitta { get; set; }
+        public int ShareholderIsActive { get; set; }
+        public DateTime? ShareholderDate { get; set; }
     }
 
     public class MemberPersonalInfoDto

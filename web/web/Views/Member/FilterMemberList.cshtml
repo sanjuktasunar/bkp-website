@@ -15,7 +15,8 @@
             <th>Referal Code</th>
             <th>Referred By</th>
             <th>Status</th>
-            <th>Applied Kitta</th>
+            @*<th>Applied Kitta</th>*@
+            <th>Type</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -24,27 +25,24 @@
         @foreach (var x in Model)
         {
             string approvalClassName = "";
-
             i++;
             <tr>
-                <td>@i</td>
+                <td>
+                    @i
+                    <input type="hidden" value="@x.AppliedKitta" name="AppliedKitta" />
+                    <input type="hidden" value="@x.ShareTypeId" name="ShareTypeId" />
+                    <input type="hidden" value="@x.ShareholderId" name="ShareholderId" />
+                </td>
                 <td hidden="hidden">@x.MemberId</td>
                 <td>
                     <label>Fullname : @x.FullName </label><br />
                     <label>Phone : @x.MobileNumber</label><br />
                     <label>Email : @x.Email </label><br />
-                    <label>Created Date : @x.CreatedDate</label><br />
-                    @if (x.ApprovalStatus == Web.Entity.Infrastructure.ApprovalStatus.Approved)
-                    {
-                        <label>Approval Date : @x.ApprovedDate</label>
-                    }
-
+                    <label>Created Date : @x.CreatedDate.ToShortDateString()</label><br />
                 </td>
 
                 <td>
-                    <label>Form : @x.FormStatus</label> <br />
                     <label>
-                        Approval :
                         @if (x.ApprovalStatus == Web.Entity.Infrastructure.ApprovalStatus.Approved)
                         {
                             approvalClassName = "badge badge-success";
@@ -55,9 +53,17 @@
                         }
                         else
                         {
+                            <label>@x.FormStatus</label> <br />
                             approvalClassName = "badge badge-primary";
                         }
                         <span class="@approvalClassName">@x.ApprovalStatus</span>
+                        @if (x.ApprovalStatus == Web.Entity.Infrastructure.ApprovalStatus.Approved)
+                        {
+                            <label>
+                                @Convert.ToDateTime(x.ApprovedDate).ToShortDateString()
+                            </label>
+                        }
+
                         @if (!string.IsNullOrEmpty(x.ApprovalRemarks))
                         {
                             <br />
@@ -65,9 +71,8 @@
                         }
                     </label>
                 </td>
-                @*<td>@x.ApprovalStatus</td>*@
                 <td>
-                    <label>Referal Code : @x.ReferalCode</label>
+                    <label>@x.ReferalCode</label>
                 </td>
                 <td>@x.ReferenceFullName</td>
                 <td>
@@ -80,7 +85,9 @@
                         <span class="badge badge-danger"> InActive </span>
                     }
                 </td>
-                <td style="background-color:yellow;">@x.AppliedKitta</td>
+                <td>
+                    @x.ShareTypeName
+                </td>
                 <td>
                     @if (x.FormStatus ==
                         Web.Entity.Infrastructure.FormStatus.Complete &&
@@ -102,22 +109,30 @@
                     }
                     @if (x.IsActive == true)
                     {
-                        <a class="btn btn-secondary btn-circle btn-sm" href="#"
-                           onclick="SendEmail('@x.MemberId')" title="Send Email">
-                            <i class="fas fa-envelope"></i>
-                        </a>
+                        @*<a class="btn btn-secondary btn-circle btn-sm" href="#"
+                               onclick="SendEmail('@x.MemberId')" title="Send Email">
+                                <i class="fas fa-envelope"></i>
+                            </a>*@
                     }
                     <a href="~/MemberDetails/@x.MemberId"
+                       target="_blank"
                        class="btn btn-primary btn-circle btn-sm"
                        id="btnView" title="View Details">
                         <i class="fas fa-eye"></i>
                     </a>
                     @if (menu.ModifyAccess == true || x.UserId == Convert.ToInt32(User.Identity.Name))
                     {
-                        <a href="~/ModifyMember/@x.MemberId"
-                           class="btn btn-success btn-circle btn-sm"
-                           id="btnEditMember" title="Edit Details">
-                            <i class="fas fa-edit"></i>
+                        @*<a href="~/ModifyMember/@x.MemberId"
+                               class="btn btn-success btn-circle btn-sm"
+                               id="btnEditMember" title="Edit Details">
+                                <i class="fas fa-edit"></i>
+                            </a>*@
+                    }
+                    @if (x.ApprovalStatus == Web.Entity.Infrastructure.ApprovalStatus.Approved && x.ShareholderId == null && menu.ApprovalAccess == true)
+                    {
+                        <a href="#" class="btn btn-secondary btn-circle btn-sm"
+                           id="btnAddMemberToShareholder" title="Add to Shareholder">
+                            <i class="fas fa-plus"></i>
                         </a>
                     }
                 </td>
@@ -144,12 +159,21 @@
                                    id="MemberId" />
                             <fieldset>
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="floating-label">Account Head</label>
                                             <select name="AccountHeadId" id="AccountHeadId"
                                                     class="form-control">
                                                 <option value="">Select Account Head</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="floating-label">Share Type</label>
+                                            <select name="ShareTypeId" id="ShareTypeId"
+                                                    class="form-control">
+                                                <option value="">Select Share Type</option>
                                             </select>
                                         </div>
                                     </div>
@@ -204,9 +228,74 @@
     </div>
 </div>
 
+<!-- add member to shareholder Modal -->
+<div class="modal fade" id="addMemberToShareholder" tabindex="-1" role="dialog" aria-labelledby="addMemberToShareholder" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rejectModalLabel">Add to shareholder</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="member_Shareholder_form">
+                            <input type="hidden" id="hdnMemberId" name="MemberId" />
+                            <input type="hidden" id="hdnShareholderId" name="ShareholderId" />
+                                   
+                            <fieldset>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Applied Kitta</label>
+                                            <input type="text" placeholder="Applied Kitta"
+                                                   name="TotalKitta" 
+                                                   class="form-control" id="txtAppliedKitta" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Share Type</label>
+                                            <select class="form-control" id="ddlShareTypeId1"
+                                                    name="ShareTypeId">
+                                                <option value="">Select Value</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" 
+                                                        name="Status" checked="checked"
+                                                        value="true" type="checkbox" />
+                                                    Is Active
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div style="float:right">
+                                <button type="submit" id="btnAddShareholder"
+                                        class="btn btn-primary">
+                                    Save
+                                </button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @Scripts.Render("~/web/back-end/js")
 <script src="~/Assets/Backend/vendor/bootstrap/js/bootstrap.min.js"></script>
-
+<script src="~/Assets/Backend/js/custom/filterMemberList.js"></script>
 <script>
     LoadAccountHead(null, "#AccountHeadId");
     $("#dataTable").on('click', '#btnApprove', function () {
@@ -222,34 +311,61 @@
         $("#MemberId1").val(data);
         $("#rejectModal").modal();
     });
+
+    $("#dataTable").on('click', '#btnAddMemberToShareholder', function () {
+        var currentRow = $(this).closest("tr");
+        var shareholderId = currentRow.find("td:eq(0)").find("input[name='ShareholderId']").val();
+        var shareTypeId = currentRow.find("td:eq(0)").find("input[name='ShareTypeId']").val();
+        var appliedKitta = currentRow.find("td:eq(0)").find("input[name='AppliedKitta']").val();
+        var memberId = currentRow.find("td:eq(1)").html();
+
+        $("#hdnMemberId").val(memberId);
+        $("#hdnShareholderId").val(shareholderId);
+
+        if (parseInt(appliedKitta) > 0) {
+            $("#txtAppliedKitta").val(appliedKitta);
+        }
+        
+
+        $("#ddlShareTypeId1").val(shareTypeId);
+        $("#addMemberToShareholder").modal();
+    });
+
     function SaveData(evt) {
         evt.preventDefault();
-        $("#btnSave").prop('disabled', true)
-        $("#btnSave span").html('Saving...')
         var MemberId = $("#MemberId").val();
         var AccountHeadId = $("#AccountHeadId").val();
+        var ShareTypeId = $("#ShareTypeId").val();
         if (AccountHeadId.length == 0) {
-            ShowErrorMessage("Account Head is required");
+            showMessage_Only({ messageType: "error", message: "Account Head is required"});
             return false;
-
-            var ApprovalStatus = '@ViewBag.ApprovalStatus';
-            var FormStatus = '@ViewBag.FormStatus';
-            var ReferenceId = '@ViewBag.ReferenceId';
-            $("#btnSave").prop('disabled', false)
-            $("#btnSave span").html('Save')
         }
+
+        if (ShareTypeId.length == 0) {
+            showMessage_Only({ messageType: "error", message: "Share Type is required" });
+            return false;
+        }
+        $("#btnSave").prop('disabled', true)
+        $("#btnSave span").html('Saving...')
+
         $.ajax({
             type: "POST",
             url: '/Member/ApproveMember',
-            data: { MemberId: MemberId, AccountHeadId: AccountHeadId },
+            data: { MemberId: MemberId, AccountHeadId: AccountHeadId, ShareTypeId: ShareTypeId },
             success: function (message) {
-                showResultMessage(message, "/MemberList?ApprovalStatus=" + ApprovalStatus + "&FormStatus=" + FormStatus + "&ReferenceId=" + ReferenceId)
+                showResultMessage(message, getCurrentUrl())
+
+                $("#btnSave").prop('disabled', false)
+                $("#btnSave span").html('Save')
             },
             error: function (message) {
-                showResultMessage(message, "/MemberList?ApprovalStatus=" + ApprovalStatus + "&FormStatus=" + FormStatus + "&ReferenceId=" + ReferenceId)
+                showResultMessage(message, getCurrentUrl());
+                $("#btnSave").prop('disabled', false)
+                $("#btnSave span").html('Save')
             }
         })
     }
+
     function SaveRejectData(evt) {
         debugger;
         evt.preventDefault();
@@ -263,22 +379,19 @@
             $("#btnSave").prop('disabled', false)
             $("#btnSave span").html('Save')
         }
-        var ApprovalStatus = '@ViewBag.ApprovalStatus';
-        var FormStatus = '@ViewBag.FormStatus';
-        var ReferenceId = '@ViewBag.ReferenceId';
-
         $.ajax({
             type: "POST",
             url: '/Member/RejectMember',
             data: { MemberId: MemberId, remarks: Remarks },
             success: function (message) {
-                showResultMessage(message, "/MemberList?ApprovalStatus=" + ApprovalStatus + "&FormStatus=" + FormStatus + "&ReferenceId=" + ReferenceId)
+                showResultMessage(message, getCurrentUrl());
             },
             error: function (message) {
-                showResultMessage(message, "/MemberList?ApprovalStatus=" + ApprovalStatus + "&FormStatus=" + FormStatus + "&ReferenceId=" + ReferenceId)
+                showResultMessage(message, getCurrentUrl());
             }
         })
     }
+
     function SendMemberApproveEmail(id) {
         $.ajax({
             type: 'post',
@@ -292,5 +405,41 @@
             }
         })
     }
-</script>
 
+    function getCurrentUrl() {
+        var ApprovalStatus = '@ViewBag.ApprovalStatus';
+        var FormStatus = '@ViewBag.FormStatus';
+        var ReferenceId = '@ViewBag.ReferenceId';
+        var ShareTypeId = '@ViewBag.ShareTypeId';
+        var AgentId = '@ViewBag.ShareTypeId';
+
+        var url = "/MemberList?ApprovalStatus=" + ApprovalStatus + "&FormStatus=" + FormStatus + "&ReferenceId=" + ReferenceId + "&ShareTypeId=" + ShareTypeId + "&AgentId=" + AgentId;
+        return url;
+
+    }
+
+    $("#btnAddShareholder").click(function (evt) {
+        evt.preventDefault();
+        var totalKitta = $("#txtAppliedKitta").val();
+        if (totalKitta == '' || totalKitta == 0 || parseInt(totalKitta)<=0) {
+            showMessage_Only({ messageType: "error", message: "Please Enter Kitta" });
+            return false;
+        }
+        $("#btnAddShareholder").prop('disabled', true);
+        $("#btnAddShareholder").html('Saving......');
+        $.ajax({
+            type: 'post',
+            url: '/Member/AddMemberToShareholder',
+            data: $("#member_Shareholder_form").serialize(),
+            success: function (resp) {
+                showResultMessage(resp, getCurrentUrl());
+                $("#btnAddShareholder").prop('disabled', false);
+                $("#btnAddShareholder").html('Save');
+            },
+            error: function (resp) {
+                showResultMessage(resp, getCurrentUrl());
+            }
+        })
+
+    })
+</script>

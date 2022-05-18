@@ -1,6 +1,5 @@
-﻿<!doctype html>
+﻿<!Doctype html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +8,6 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <title>BKP Nepal | Life Changing Platform </title>
 </head>
-
 <body class="bg-gray-200 font-natosans antialiased text-gray-600">
     <div class="fixed z-10 w-full bg-white px-6 shadow-md">
         <header class="h-16 max-w-5xl mx-auto flex items-center justify-between flex-wrap">
@@ -165,7 +163,7 @@
     </div>
 
     @RenderBody()
-    
+
     <!-- footer section start -->
     <section class="pt-4 h-auto bg-black text-gray-300">
         <footer class="max-w-5xl mx-auto px-6 py-8 text-black-200 md:flex flex-wrap md:gap-4 flex-row justify-between items-start">
@@ -240,7 +238,7 @@
                     </address>
                 </div>
                 <div class="mt-8 mb-4">
-                    <a class="btn bg-brand mt-4 py-3 text-md uppercase" 
+                    <a class="btn bg-brand mt-4 py-3 text-md uppercase"
                        href="~/member-register">Become a member</a>
                 </div>
             </div>
@@ -359,10 +357,27 @@
     <script src="~/Assets/Frontend/js/main.js" type="module"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-    AOS.init({
-      offset: 100,
-    });
+        AOS.init({
+            offset: 100,
+        });
     </script>
 
 </body>
 </html>
+@*<script src="~/Assets/Backend/vendor/jquery/jquery.min.js"></script>*@
+<script>
+    //$(document).ready(function () {
+    //    $.ajax({
+    //        type: 'post',
+    //        url: '/Account/ClearAllCache',
+    //        success: function (resp) {
+    //            if (resp.messageType == "error") {
+    //                showMessage_Only(resp);
+    //            }
+    //        },
+    //        error: function (resp) {
+    //            showMessage_Only(resp);
+    //        }
+    //    })
+    //})
+</script>

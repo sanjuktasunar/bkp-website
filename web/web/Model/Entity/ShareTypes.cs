@@ -22,6 +22,10 @@ namespace Web.Entity.Entity
 
         public bool? Status { get; set; }
 
+        public bool IsPrimary { get; set; }
+
         public double? PricePerKitta { get; set; }
+
+        public double RegistrationAmount { get; set; }
     }
 }

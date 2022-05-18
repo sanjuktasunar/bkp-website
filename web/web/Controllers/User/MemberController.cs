@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using web.Model.Dto;
 using web.Utility;
 using web.Web.Services.Services;
 using Web.Entity.Dto;
@@ -27,19 +28,22 @@ namespace web.Controllers.User
             
         }
         [Route("~/MemberList")]
-        public ActionResult MemberList(int? approvalStatus, int? FormStatus, int? ReferenceId)
+        public ActionResult MemberList(int? approvalStatus, int? FormStatus, int? ReferenceId, 
+            int? ShareTypeId = null, int? AgentId = null)
         {
             if (!menu.ReadAccess)
                 return Redirect(Logout_Url);
 
-            ViewBag.ApprovalStatus = 2;
+            ViewBag.ApprovalStatus = approvalStatus==null?2:approvalStatus;
             ViewBag.FormStatus = FormStatus;
             ViewBag.ReferenceId = ReferenceId;
+            ViewBag.ShareTypeId = ShareTypeId;
+            ViewBag.AgentId = AgentId;
             return View();
         }
 
         [HttpGet]
-        public async Task<ActionResult> FilterMemberList(int? ApprovalStatus, int? FormStatus, int? ReferenceId)
+        public async Task<ActionResult> FilterMemberList(int? ApprovalStatus, int? FormStatus, int? ReferenceId,int ? ShareTypeId= null, int? AgentId = null)
         {
             if (!menu.ReadAccess)
                 return Redirect(Logout_Url);
@@ -47,7 +51,18 @@ namespace web.Controllers.User
             ViewBag.ApprovalStatus = ApprovalStatus;
             ViewBag.FormStatus = FormStatus;
             ViewBag.ReferenceId = ReferenceId;
-            var obj = await _memberService.Filter(ApprovalStatus, FormStatus, ReferenceId);
+            ViewBag.ShareTypeId = ShareTypeId;
+            ViewBag.AgentId = AgentId;
+
+            var filterDto = new MemberFilterDto 
+            {
+                ApprovalStatus= ApprovalStatus,
+                FormStatus = FormStatus,
+                ReferenceId = ReferenceId,
+                ShareTypeId = ShareTypeId,
+                AgentId=AgentId
+            };
+            var obj = await _memberService.Filter(filterDto);
             return PartialView("FilterMemberList", obj);
         }
 
@@ -90,11 +105,11 @@ namespace web.Controllers.User
 
 
         [HttpPost]
-        public async Task<JsonResult> ApproveMember(int MemberId, int AccountHeadId)
+        public async Task<JsonResult> ApproveMember(int MemberId, int AccountHeadId,int ShareTypeId)
         {
             if (menu.ApprovalAccess != true)
                 return null;
-            var obj = await _memberService.ApproveMember(MemberId, AccountHeadId);
+            var obj = await _memberService.ApproveMember(MemberId, AccountHeadId,ShareTypeId);
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
@@ -111,6 +126,23 @@ namespace web.Controllers.User
         public async Task<JsonResult> GetRefernceMember()
         {
             var obj = await _memberService.GetRefernceMemberDropdown();
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> GetMemberDocuments(int memberId)
+        {
+            var obj = await _memberService.GetMemberDocuments(memberId);
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AddMemberToShareholder(ShareholderDto dto)
+        {
+            if (menu.ApprovalAccess != true)
+                return null;
+
+            var obj = await _memberService.AddMemberToShareholder(dto);
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
     }

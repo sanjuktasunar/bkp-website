@@ -2,7 +2,13 @@
 $('input[type="file"]').change(function () {
     var idName = $(this).attr('class');
     var element_name = $(this).attr('name');
-    idName = idName.replace('form-control', '').trim();
+
+    if (idName.includes('form-control')) {
+        idName = idName.replace('form-control', '').trim();
+    }
+    if (idName.includes('input')) {
+        idName = idName.replace('input', '').trim();
+    }
     var id = "#" + idName;
     var data = new FormData();
     var files = $(this).get(0).files;
@@ -63,6 +69,18 @@ function DisplayImageInDiv(elementName, imageString) {
     }
 }
 
+function DisplayImageFromFolder(elementName, imageName) {
+    var divId = "#Div" + elementName;
+    if (imageName.length > 0) {
+        $(divId).show();
+        $(divId).html('');
+        $(divId).append('<img src="ImageStorage/' + imageName + '" />')
+        //$(divId).append("<img src='/ImageStorage/'" + imageName + ">")
+        //$('<img>', {
+        //    src: imageString
+        //}).appendTo($(divId));
+    }
+}
 function ClearImageInDiv(elementName) {
     var divId = "#Div" + elementName;
     $(divId).empty();
@@ -104,8 +122,8 @@ function RequiredHandling(elementId) {
     removeErrorClasses(element);
     if (!$el.val()) {
         AddErrorClasses(element)
-        AddErrorMessage(element,
-            $el.attr('name') + ' is required ')
+        //AddErrorMessage(element, $el.attr('name') + ' is required ')
+        AddErrorMessage(element, 'This field is required')
         return false;
     }
     return true;
@@ -115,9 +133,10 @@ function MaxlengthHandling(elementId, length) {
     var $el = $(element);
     removeErrorClasses(element);
     if ($el.val().length > length) {
-        AddErrorClasses(element)
-        AddErrorMessage(element,
-            $el.attr('name') + ' must be less than ' + length);
+        AddErrorClasses(element);
+        //AddErrorMessage(element, $el.attr('name') + ' must be less than ' + length);
+        AddErrorMessage(element, 'This field value must be less than ' + length);
+           
         return false;
     }
     return true;
@@ -125,10 +144,7 @@ function MaxlengthHandling(elementId, length) {
 
 function removeErrorClasses(element) {
     var $el = $(element);
-    //$el.parent().addClass('form-group').removeClass('error');
-    //$el.parent().removeClass('.error-message');
-    //$el.parent().find('.error-message').remove();
-
+  
     $el.parent().removeClass('error');
     $el.parent().removeClass('error');
     $el.parent().find('.error-message').remove();

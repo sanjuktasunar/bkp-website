@@ -91,5 +91,23 @@ namespace web.Controllers.User
             versionCookie.Expires = DateTime.Now.AddDays(-1d);
             Response.Cookies.Add(versionCookie);
         }
+
+        [HttpPost]
+        public JsonResult ClearAllCache()
+        {
+            var resp = new Response();
+            resp.messageType = "success";
+            try
+            {
+                cacheManager.ClearAllCache();
+                
+            }
+            catch(Exception ex)
+            {
+                resp.messageType = "error";
+                resp.message = ex.Message;
+            }
+            return Json(resp, JsonRequestBehavior.AllowGet);
+        }
     }
 }

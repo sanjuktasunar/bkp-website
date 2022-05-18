@@ -169,6 +169,7 @@
     <Compile Include="Controllers\User\MemberController.cs" />
     <Compile Include="Controllers\User\MenusController.cs" />
     <Compile Include="Controllers\User\RoleController.cs" />
+    <Compile Include="Controllers\User\ShareholderController.cs" />
     <Compile Include="Controllers\User\ShareTypesController.cs" />
     <Compile Include="Controllers\User\StaffsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -207,6 +208,7 @@
     <Compile Include="Model\Dto\DesignationDto.cs" />
     <Compile Include="Model\Dto\DropdownDto.cs" />
     <Compile Include="Model\Dto\EmailDto.cs" />
+    <Compile Include="Model\Dto\FilterDto.cs" />
     <Compile Include="Model\Dto\FiscalYearDto.cs" />
     <Compile Include="Model\Dto\GenderDto.cs" />
     <Compile Include="Model\Dto\MemberDataDto.cs" />
@@ -223,6 +225,7 @@
     <Compile Include="Model\Dto\ProductPriceDto.cs" />
     <Compile Include="Model\Dto\ProvinceDto.cs" />
     <Compile Include="Model\Dto\RoleDto.cs" />
+    <Compile Include="Model\Dto\ShareholderDto.cs" />
     <Compile Include="Model\Dto\ShareTypesDto.cs" />
     <Compile Include="Model\Dto\StaffsDto.cs" />
     <Compile Include="Model\Dto\SupplierDto.cs" />
@@ -258,6 +261,7 @@
     <Compile Include="Model\Entity\ProductPrice.cs" />
     <Compile Include="Model\Entity\PurchaseRecord.cs" />
     <Compile Include="Model\Entity\Role.cs" />
+    <Compile Include="Model\Entity\Shareholder.cs" />
     <Compile Include="Model\Entity\ShareTypes.cs" />
     <Compile Include="Model\Entity\Staffs.cs" />
     <Compile Include="Model\Entity\Supplier.cs" />
@@ -304,6 +308,7 @@
     <Compile Include="Utility\ImageSettings.cs" />
     <Compile Include="Utility\InitialSetupModel.cs" />
     <Compile Include="Utility\MessageClass.cs" />
+    <Compile Include="Utility\NumberSettings.cs" />
     <Compile Include="Utility\Register_Services.cs" />
     <Compile Include="Utility\Security.cs" />
   </ItemGroup>
@@ -2292,6 +2297,9 @@
     <Content Include="Views\Staffs\MenuAccessPermission.cshtml" />
     <Content Include="Views\Staffs\Staffs.cshtml" />
     <Content Include="Views\Member\FilterMemberList.cshtml" />
+    <Content Include="Views\Shareholder\ShareholderList.cshtml" />
+    <Content Include="Views\Shareholder\FilterShareholderList.cshtml" />
+    <Content Include="Views\Shareholder\ModifyShareholder.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

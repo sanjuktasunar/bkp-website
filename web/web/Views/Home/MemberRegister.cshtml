@@ -2,7 +2,7 @@
 @{
     Layout = "~/Views/Shared/_FrontLayout.cshtml";
 }
-
+<link href="~/Assets/Backend/css/custom/plugin/select2/select2.min.css" rel="stylesheet" />
 <style>
     .error-message {
         width: 100%;
@@ -11,12 +11,21 @@
         color: #ff5252;
     }
 
-    .error input {
+    .error input,select {
         border-color: #ff5252;
         padding-right: calc(1.5em + 1.25rem);
         background-position: center right calc(0.375em + 0.3125rem);
         background-size: calc(0.75em + 0.625rem) calc(0.75em + 0.625rem);
     }
+
+    .wizard-image-div {
+        display: none;
+    }
+
+        .wizard-image-div img {
+            height: 20%;
+            width: 50%
+        }
 </style>
 <!-- register -->
 <section class="min-h-screen w-full bg-gray-200 py-16">
@@ -29,7 +38,7 @@
                        name="search-inc-form" id="search-inc-form"
                        placeholder="Email / Mobile no. / Citizenship no." />
             </label>
-            <button class="flex h-8 items-center gap-2 rounded-sm bg-gray-800 hover:bg-gray-700 px-4 py-1 text-sm text-white">
+            <button class="flex h-8 items-center gap-2 rounded-sm bg-gray-800 hover:bg-gray-700 px-4 py-1 text-sm text-white" type="submit" id="btnMemberSearch">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2h-1.528A6 6 0 004 9.528V4z" />
                     <path fill-rule="evenodd"
@@ -61,7 +70,7 @@
                     </div>
                     <div class="flex justify-end w-full py-4 space-x-4">
                         <button class="next-btn btn flex items-center gap-1"
-                             type="button">
+                                type="button">
                             <span>Next</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
                                  viewBox="0 0 20 20" fill="currentColor">
@@ -97,7 +106,7 @@
                             <input class="input mb-2" type="text" name="LastName" id="LastName">
                         </lable>
                         <lable class="mb-4 block" for="DateOfBirthBS">
-                            <span>DOB in B.S. (eg. 2046-01-20) </span>
+                            <span>DOB in B.S. (eg. 2046/01/20) </span>
                             <input class="input" type="text" name="DateOfBirthBS"
                                    id="DateOfBirthBS">
                         </lable>
@@ -107,18 +116,12 @@
                             <span>Gender</span>
                             <select class="input" name="GenderId" id="GenderId">
                                 <option value="">Select Value</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="others">Others</option>
                             </select>
                         </lable>
                         <lable class="mb-4 block" for="MaritalStatusId">
                             <span>Marital Status</span>
                             <select class="input" name="MaritalStatusId" id="MaritalStatusId">
                                 <option value="">Select Value</option>
-                                <option value="1">Married</option>
-                                <option value="2">Unmarried</option>
-                                <option value="3">Others</option>
                             </select>
                         </lable>
                     </div>
@@ -127,7 +130,7 @@
                             <span>Mobile Number</span>
                             <input class="input" inputmode="numeric" type="text"
                                    name="MobileNumber" id="MobileNumber" />
-                                   
+
                         </lable>
                         <lable class="mb-2 block" for="Email">
                             <span>Email ( Only Gmail ID accepted)</span>
@@ -138,16 +141,14 @@
                         <lable class="mb-2 block" for="OccupationId">
                             <span>Occupation : </span>
                             <select class="input" name="OccupationId" id="OccupationId">
-                                <option value="1">Doctor</option>
-                                <option value="2">Enginner</option>
-                                <option value="3">Other</option>
+                                <option value="">Select Value</option>
                             </select>
                         </lable>
                         <lable class="mb-2 block" for="OtherOccupationRemarks">
                             <span>Occupation Remarks</span>
                             <input class="input" type="text" name="OtherOccupationRemarks"
                                    id="OtherOccupationRemarks"
-                                   readonly="readonly" disabled="disabled">
+                                   disabled="disabled">
                         </lable>
                     </div>
                     <div class="flex justify-end w-full py-4 space-x-4">
@@ -181,60 +182,38 @@
                     <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 3 of 6</span>
                 </div>
                 <h3 class="mb-4 font-semibold text-gray-600">Citizenship Issued Zone</h3>
-                <form class="space-y-2 flex flex-col">
+                <form class="space-y-2 flex flex-col" id="form_step_3">
                     <div class="flex flex-row space-x-4">
-                        <span>Former Address </span>
+                        <b>Former Address </b>
                     </div>
                     <div class="grid md:grid-cols-2 gap-2 md:gap-6">
                         <lable class="mb-2 block">
                             <span>District</span>
-                            <select class="input" name="PermanentDistrictId" id="PermanentDistrictId">
-                                <option value="">Select District</option>
-                                <option value="56">Baglung</option>
-                                <option value="57">Gorkha</option>
-                                <option value="58">Kaski</option>
-                                <option value="59">Lamjung</option>
-                                <option value="60">Manang</option>
-                                <option value="61">Mustang</option>
-                                <option value="62">Myagdi</option>
-                                <option value="63">Nawalparasi</option>
-                                <option value="64">Parbat</option>
-                                <option value="65">Syangja</option>
-                                <option value="66">Tanahu</option>
+                            <select class="input select2-dropdown" name="FormerDistrictId" id="FormerDistrictId" style="width:100%">
+                                <option value="">Select Value</option>
                             </select>
                         </lable>
                         <lable class="mb-2 block">
-                            <span>V.D.C./Muni. Name:</span>
-                            <input type="text" id="PermanentMunicipality" class="input" name="PermanentMunicipality"
+                            <span>RM/Muni. Name:</span>
+                            <input type="text" id="FormerMunicipalityName" class="input" name="FormerMunicipalityName"
                                    placeholder="RM/Municipality Name">
                         </lable>
                     </div>
                     <div class="grid md:grid-cols-2 gap-2 md:gap-6">
                         <lable class="mb-2 block">
                             <span>Ward Number:</span>
-                            <input type="text" id="PermanentWardNumber" name="PermanentWardNumber"
+                            <input type="text" id="FormerWardNumber" name="FormerWardNumber"
                                    placeholder="Ward Number" class="input" onkeypress="AllowNumberOnly(event)">
                         </lable>
                     </div>
                     <div class="flex flex-row space-x-4">
-                        <span>Changed Address </span>
+                        <b>Changed Address </b>
                     </div>
                     <div class="grid md:grid-cols-2 gap-2 md:gap-6">
                         <lable class="mb-2 block">
                             <span>District</span>
-                            <select class="input" name="PermanentDistrictId" id="PermanentDistrictId">
-                                <option value="">Select District</option>
-                                <option value="56">Baglung</option>
-                                <option value="57">Gorkha</option>
-                                <option value="58">Kaski</option>
-                                <option value="59">Lamjung</option>
-                                <option value="60">Manang</option>
-                                <option value="61">Mustang</option>
-                                <option value="62">Myagdi</option>
-                                <option value="63">Nawalparasi</option>
-                                <option value="64">Parbat</option>
-                                <option value="65">Syangja</option>
-                                <option value="66">Tanahu</option>
+                            <select class="input" name="PermanentDistrictId" id="PermanentDistrictId" style="width:100%">
+                                <option value="">Select Value</option>
                             </select>
                         </lable>
                         <lable class="mb-2 block">
@@ -256,50 +235,54 @@
                         <span>Is Outside Nepal? </span>
                         <label for="outside-nepal">
                             <span>Yes</span>
-                            <input class="accent-black-800 form-check-input" type="radio" id="PermanentRadio"
-                                   name="PermanentIsOutsideNepal"
-                                   value=" true">
+                            <input class="accent-black-800 form-check-input"
+                                   type="radio" id="TemporaryIsOutsideNepal"
+                                   name="TemporaryIsOutsideNepal"
+                                   value="true">
                         </label>
                         <label for="inside-nepal">
                             <span>No</span>
-                            <input class="accent-black-800 form-check-input" type="radio" checked="checked"
-                                   id="PermanentRadio" name="PermanentIsOutsideNepal" "
-                                   value=" false">
+                            <input class="accent-black-800 form-check-input"
+                                   type="radio" checked="checked"
+                                   id="TemporaryIsOutsideNepal" name="TemporaryIsOutsideNepal"
+                                   value="false">
                         </label>
                     </div>
-                    <div class="grid md:grid-cols-2 gap-2 md:gap-6">
+                    <div class="grid md:grid-cols-2 gap-2 md:gap-6 inside-nepal">
                         <lable class="mb-2 block">
                             <span>District</span>
-                            <select class="input" name="PermanentDistrictId" id="PermanentDistrictId">
-                                <option value="">Select District</option>
-                                <option value="56">Baglung</option>
-                                <option value="57">Gorkha</option>
-                                <option value="58">Kaski</option>
-                                <option value="59">Lamjung</option>
-                                <option value="60">Manang</option>
-                                <option value="61">Mustang</option>
-                                <option value="62">Myagdi</option>
-                                <option value="63">Nawalparasi</option>
-                                <option value="64">Parbat</option>
-                                <option value="65">Syangja</option>
-                                <option value="66">Tanahu</option>
+                            <select class="input" name="TemporaryDistrictId" id="TemporaryDistrictId" style="width:100%">
+                                <option value="">Select Value</option>
                             </select>
                         </lable>
                         <lable class="mb-2 block">
-                            <span>RM/Municipality Name:</span>
-                            <input type="text" id="PermanentMunicipality" class="input" name="PermanentMunicipality"
+                            <span>RM/Muni. Name:</span>
+                            <input type="text" id="TemporaryMunicipality" class="input" name="TemporaryMunicipality"
                                    placeholder="RM/Municipality Name">
                         </lable>
                     </div>
-
-                    <div class="grid md:grid-cols-2 gap-2 md:gap-6">
+                    <div class="grid md:grid-cols-2 gap-2 md:gap-6 inside-nepal">
                         <lable class="mb-2 block">
                             <span>Ward Number:</span>
-                            <input type="text" id="PermanentWardNumber" name="PermanentWardNumber"
+                            <input type="text" id="TemporaryWardNumber" name="TemporaryWardNumber"
                                    placeholder="Ward Number" class="input" onkeypress="AllowNumberOnly(event)">
                         </lable>
                     </div>
-
+                    <div class="grid md:grid-cols-2 gap-2 md:gap-6 outside-nepal"
+                         style="display:none;">
+                        <lable class="mb-2 block">
+                            <span>Country</span>
+                            <select class="input" name="TemporaryCountryId"
+                                    id="TemporaryCountryId" style="width:100%">
+                                <option value="">Select Value</option>
+                            </select>
+                        </lable>
+                        <lable class="mb-2 block">
+                            <span>Address:</span>
+                            <input type="text" id="TemporaryAddress" class="input" name="TemporaryAddress"
+                                   placeholder="Enter Full Address">
+                        </lable>
+                    </div>
                     <div class="flex justify-end w-full py-4 space-x-4">
                         <button class="prev-btn bg-gray-200 hover:bg-gray-300 py-2 px-5  text-sm rounded flex items-center gap-1"
                                 type="submit">
@@ -311,7 +294,8 @@
                             </svg>
                             <span>Back</span>
                         </button>
-                        <button class="next-btn btn flex items-center gap-1" type="submit">
+                        <button class="next-btn btn flex items-center gap-1"
+                                type="submit">
                             <span>Next</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                  fill="currentColor">
@@ -336,21 +320,48 @@
                     : all
                     document must be in .jpg , .png or .jpeg format
                 </p>
-                <form class="space-y-2 flex flex-col">
+                <form class="space-y-2 flex flex-col" id="form_step_4">
                     <label class="mb-2 block" for="MemberImage">
                         <span>Upload your photo</span>
                         <input type="file" name="MemberImage" id="MemberImage" class="input MemberPhotoString">
                     </label>
+                    <input type="hidden" name="Photo"
+                           id="Photo" />
+                    <input type="hidden" name="MemberPhotoString"
+                           id="MemberPhotoString" />
+
+                    <div id="DivMemberPhotoString"
+                         class="wizard-image-div">
+
+                    </div>
                     <label class="mb-2 block" for="CitizenshipFrontImage">
                         <span>Citizenship Front:</span>
                         <input type="file" class="input CitizenshipFrontImageString" id="CitizenshipFrontImage"
                                name="CitizenshipFrontImage">
                     </label>
+                    <input type="hidden" name="CitizenshipFront" class="input"
+                           id="CitizenshipFront" />
+                    <input type="hidden" class="input"
+                           name="CitizenshipFrontImageString"
+                           id="CitizenshipFrontImageString" />
+                    <div id="DivCitizenshipFrontImageString"
+                         class="wizard-image-div">
+                    </div>
+
                     <label class="mb-2 block" for="CitizenshipBackImage">
-                        <span>Citizenship Front:</span>
+                        <span>Citizenship Back:</span>
                         <input type="file" name="CitizenshipBackImage" class="input CitizenshipBackImageString"
                                id="CitizenshipBackImage">
                     </label>
+                    <input type="hidden" name="CitizenshipBack"
+                           id="CitizenshipBack" />
+                    <input type="hidden"
+                           name="CitizenshipBackImageString"
+                           id="CitizenshipBackImageString" />
+                    <div id="DivCitizenshipBackImageString"
+                         class="wizard-image-div">
+
+                    </div>
                     <div class="flex justify-end w-full py-4 space-x-4">
                         <button class="prev-btn bg-gray-200 hover:bg-gray-300 py-2 px-5  text-sm rounded flex items-center gap-1"
                                 type="submit">
@@ -362,7 +373,8 @@
                             </svg>
                             <span>Back</span>
                         </button>
-                        <button class="next-btn btn flex items-center gap-1" type="submit">
+                        <button class="next-btn btn flex items-center gap-1"
+                                type="submit">
                             <span>Next</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                  fill="currentColor">
@@ -381,7 +393,7 @@
                     <span class="font-semibold text-2xl">Payment</span>
                     <span class="py-1 pl-3 pr-10 -mr-10 bg-gray-200 rounded-full shadow">Step 5 of 6</span>
                 </div>
-                <form class="space-y-2 flex flex-col">
+                <form class="space-y-2 flex flex-col" id="form_step_5">
                     <label class="mb-2 block" for="VoucherImageFile">
                         <span>
                             Upload voucher Photo / Online payment
@@ -390,10 +402,17 @@
                         <input type="file" name="VoucherImageFile" class="input VoucherImageString"
                                id="VoucherImageFile">
                     </label>
+                    <input type="hidden" name="VoucherImage"
+                           id="VoucherImage" />
+                    <input type="hidden" name="VoucherImageString"
+                           id="VoucherImageString" />
+                    <div id="DivVoucherImageString"
+                         class="wizard-image-div">
+                    </div>
                     <label class="mb-2 block" for="ReferalCode">
-                        <span>Referal Code</span>
-                        <input type="text" name="ReferalCode" class="input" id="ReferalCode"
-                               placeholder="Referal Code">
+                        <span>Referal Code/Agent Licence No.</span>
+                        <input type="text" name="ReferenceReferalCode" class="input" id="ReferenceReferalCode"
+                               placeholder="Enter Referal Code/Agent Licence No.">
                     </label>
                     <div class="flex justify-end w-full py-4 space-x-4">
                         <button class=" prev-btn bg-gray-200 hover:bg-gray-300 py-2 px-5  text-sm rounded flex items-center gap-1"
@@ -502,13 +521,14 @@
                     <span class="step-indicator-text">Confirmation</span>
                 </li>
             </ul>
-
         </div>
     </div>
 </section>
 <input type="hidden" id="MemberId" />
 <!-- end of registration -->
+
 <script src="~/Assets/Frontend/js/main.js" type="module"></script>
 <script src="~/Assets/Backend/vendor/jquery/jquery.min.js"></script>
 @Scripts.Render("~/web/custom/js")
+<script src="~/Assets/Backend/js/custom/plugin/select2/select2.min.js"></script>
 <script src="~/Assets/Frontend/js/registration.js"></script>

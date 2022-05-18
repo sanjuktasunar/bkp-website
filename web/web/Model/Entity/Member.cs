@@ -7,7 +7,7 @@ using Web.Entity.Infrastructure;
 
 namespace Web.Entity.Entity
 {
-    public class Member: BaseEntityData
+    public class Member
     {
         public int MemberId { get; set; }
         public string MemberCode { get; set; }
@@ -18,7 +18,7 @@ namespace Web.Entity.Entity
         public string Email { get; set; }
         public string DateOfBirthBS { get; set; }
         public string DateOfBirthAD { get; set; }
-        public int GenderId { get; set; }
+        public int? GenderId { get; set; }
         public int? OccupationId { get; set; }
         public string OtherOccupationRemarks { get; set; }
         public int? MemberFieldId { get; set; }
@@ -34,7 +34,16 @@ namespace Web.Entity.Entity
         public bool? IsActive { get; set; }
         public int? UserId { get; set; }
         public int? ShareTypeId { get; set; }
+
+        public int? CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public int? UpdatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; }
         //public int? AppliedKitta { get; set; }
+
+        public int? MaritalStatusId { get; set; }
+        public int? AgentId { get; set; }
+        public int? ShareholderId { get; set; }
     }
 
     public class MemberDetails

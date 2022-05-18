@@ -12,7 +12,7 @@
                 <form id="form_validation">
                     <input type="hidden" value="@Model.ShareTypeId" name="ShareTypeId" />
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label>Name</label>
                                 <input type="text" value="@Model.ShareTypeName"
@@ -22,7 +22,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label class="floating-label">Fiscal Year</label>
                                 <select name="FiscalYearId" id="FiscalYearId"
@@ -34,13 +34,17 @@
                         @{
                             long? totalShare = null;
                             int? minShare = null, maxShare = null;
+                            double ? registrationAmount=null;
 
                             totalShare = Model.NumberOfIssuedShares;
                             maxShare = Model.MaxSharePerPerson;
                             minShare = Model.MinSharePerPerson;
-
+                            if (Model.RegistrationAmount > 0)
+                            {
+                                registrationAmount = Model.RegistrationAmount;
+                            }
                         }
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label>Total Issued Shares</label>
                                 <input type="text" value="@totalShare"
@@ -50,7 +54,7 @@
                                        onkeypress="AllowPositiveNumber(event)" />
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label>Price Per Kitta</label>
                                 <input type="text" value="@Model.PricePerKitta"
@@ -60,7 +64,7 @@
                                        onkeypress="AllowPositiveNumber(event)" />
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label>Min Share Per Person</label>
                                 <input type="text" value="@minShare"
@@ -71,7 +75,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label>Max Share Per Person</label>
                                 <input type="text" value="@maxShare"
@@ -81,7 +85,17 @@
                                        onkeypress="AllowPositiveNumber(event)" />
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Registration Amount</label>
+                                <input type="text" value="@registrationAmount"
+                                       name="RegistrationAmount"
+                                       placeholder="Enter Registration Amount"
+                                       class="form-control"
+                                       onkeypress="AllowPositiveNumber(event)" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <div class="form-check">
                                     <label class="form-check-label">
@@ -97,7 +111,25 @@
                                     </label>
                                 </div>
                             </div>
-
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        @if (Model.IsPrimary != true)
+                                        {
+                                            <input class="form-check-input" name="IsPrimary"
+                                                   value="true" type="checkbox" />
+                                        }
+                                        else
+                                        {
+                                            <input class="form-check-input" name="IsPrimary"
+                                                   value="true" type="checkbox" checked="checked" />
+                                        }
+                                        Is Primary
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <button type="submit" id="btnSave" name="SaveButton" class="btn btn-primary btn-md"><i class="fa fa-save"></i> <span> Save </span> </button>
@@ -130,10 +162,9 @@
                 required: true,
                 maxlength: 20
             },
-            //'MinSharePerPerson': {
-            //    required: true,
-            //    maxlength: 10
-            //},
+            'RegistrationAmount': {
+                required: true,
+            },
             //'MaxSharePerPerson': {
             //    required: true,
             //    maxlength: 10
