@@ -251,48 +251,6 @@ namespace Web.Services.Mapping
             return obj;
         }
 
-        public static Address ToMemberAddress(this MemberDto dto)
-        {
-            if (dto is null)
-                return null;
-
-            var obj = new Address();
-            obj.Id = dto.Id;
-            obj.MemberId = dto.MemberId;
-            obj.MemberId = dto.MemberId;
-            obj.PermanentIsOutsideNepal = dto.PermanentIsOutsideNepal;
-            if (!dto.PermanentIsOutsideNepal)
-            {
-                obj.PermanentProvinceId = dto.PermanentProvinceId;
-                obj.PermanentDistrictId = dto.PermanentDistrictId;
-                //obj.PermanentMunicipalityTypeId = dto.PermanentMunicipalityTypeId;
-                obj.PermanentMunicipality = dto.PermanentMunicipality;
-                obj.PermanentWardNumber = dto.PermanentWardNumber;
-                obj.PermanentToleName = dto.PermanentToleName;
-            }
-            else
-            {
-                obj.PermanentCountryId = dto.PermanentCountryId;
-                obj.PermanentAddress = dto.PermanentAddress;
-            }
-            obj.TemporaryIsOutsideNepal = dto.TemporaryIsOutsideNepal;
-            if (!dto.TemporaryIsOutsideNepal)
-            {
-                obj.TemporaryProvinceId = dto.TemporaryProvinceId;
-                obj.TemporaryDistrictId = dto.TemporaryDistrictId;
-                //obj.TemporaryMunicipalityTypeId = dto.TemporaryMunicipalityTypeId;
-                obj.TemporaryMunicipality = dto.TemporaryMunicipality;
-                obj.TemporaryWardNumber = dto.TemporaryWardNumber;
-                obj.TemporaryToleName = dto.TemporaryToleName;
-            }
-            else
-            {
-                obj.TemporaryCountryId = dto.TemporaryCountryId;
-                obj.TemporaryAddress = dto.TemporaryAddress;
-            }
-            return obj;
-        }
-
         public static Member ToOccupationEntity(this MemberOccupationDto dto, Member entity)
         {
             if (dto is null)

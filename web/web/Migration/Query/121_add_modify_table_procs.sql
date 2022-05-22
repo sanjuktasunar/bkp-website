@@ -165,25 +165,27 @@ CREATE VIEW [dbo].[MemberDetailView]
 AS
 SELECT	B.MemberId,B.FirstName, B.MiddleName, B.LastName, B.MobileNumber, B.Email, B.DateOfBirthBS, B.DateOfBirthAD, B.GenderId, B.OccupationId, B.OtherOccupationRemarks,B.MemberCode,B.ShareholderId,
 		B.ShareTypeId,B.CitizenshipNumber, B.FormStatus, B.CreatedDate, B.CreatedBy, B.UpdatedDate, B.UpdatedBy, B.ApprovalStatus, B.ApprovedDate, B.ApprovedBy, B.ReferalCode, B.ReferenceId, B.IsActive, B.UserId,B.ApprovalRemarks, 
-		A.PermanentProvinceId,A.PermanentProvinceName, A.PermanentDistrictId,A.PermanentDistrictName, A.PermanentMunicipality, A.PermanentWardNumber, 
+		A.PermanentProvinceId,A.PermanentProvinceName, A.PermanentDistrictId,A.PermanentDistrictName, A.PermanentMunicipality, A.PermanentWardNumber, B.MaritalStatusId,
         A.TemporaryIsOutsideNepal, A.TemporaryCountryId,A.TemporaryCountryName,A.TemporaryAddress, A.TemporaryProvinceId, A.TemporaryProvinceName,A.TemporaryDistrictId, A.TemporaryDistrictName,A.TemporaryMunicipality,
         A.TemporaryWardNumber,A.FormerDistrictId,A.FormerDistrictName,A.FormerMunicipalityName,A.FormerWardNumber,
 		O.[Name] AS OcuupationName,
 		G.GenderName,H.ShareTypeName,H.RegistrationAmount,
 		(case when isnull(B.ReferenceId,0)=0 then AG.LicenceNumber else B1.ReferalCode end)  as ReferenceReferalCode ,
 		(case when isnull(b.ReferenceId,0)=0 then AG.AgentFullName else (B.FirstName+ (case when isnull(B.MiddleName,'')= N'' then '' else B.MiddleName end) + ' '+B.LastName) end)  as ReferenceFullName,
-		BD.Amount,s.TotalKitta,AH.AccountHeadName,s.IsActive as ShareholderIsActive,s.ApprovedDate as ShareholderDate
+		BD.Amount,s.TotalKitta,AH.AccountHeadName,s.IsActive as ShareholderIsActive,s.ApprovedDate as ShareholderDate,
+		ud.CitizenshipFront,ud.CitizenshipBack,ud.Photo,BD.VoucherImage,ms.MaritalStatusName
 FROM            dbo.Member AS B LEFT OUTER JOIN
                 dbo.[MemberAddressView] AS A ON A.MemberId = B.MemberId LEFT OUTER JOIN
                 dbo.Member AS B1 ON B.ReferenceId = B1.MemberId LEFT OUTER JOIN
                 dbo.Occupation AS O ON O.Id = B.OccupationId LEFT OUTER JOIN
 				dbo.Gender AS G ON G.GenderId = B.GenderId LEFT OUTER JOIN
                 dbo.ShareTypes AS H ON H.ShareTypeId = B.ShareTypeId LEFT OUTER JOIN
-				--dbo.PratigyaPatraFormFillups AS PF ON PF.MemberId=B.MemberId LEFT OUTER JOIN
 				dbo.Agent AS AG on AG.AgentId=B.AgentId LEFT OUTER JOIN
 				dbo.[Shareholder] s on s.ShareholderId=B.ShareholderId LEFT OUTER JOIN
 				dbo.BankDeposit BD on BD.MemberId=B.MemberId LEFT OUTER JOIN
-				dbo.[AccountHead] AH on AH.AccountHeadId=BD.AccountHeadId
+				dbo.[AccountHead] AH on AH.AccountHeadId=BD.AccountHeadId LEFT OUTER JOIN
+				dbo.[UserDocuments] ud on ud.MemberId=B.MemberId LEFT OUTER JOIN
+				dbo.[MaritalStatus] ms on ms.Id=B.MaritalStatusId
 GO
 
 GO

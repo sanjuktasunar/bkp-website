@@ -86,10 +86,12 @@ namespace web.Controllers.User
         }
 
         [Route("~/ModifyMember/{memberId}")]
-        public async Task<ActionResult> ModifyMember(int memberId)
+        public async Task<ActionResult> ModifyMember(int memberId,string return_Url=null)
         {
             if (!menu.ModifyAccess)
                 return RedirectToAction("Logout", "Account");
+
+            ViewBag.ReturnUrl = string.IsNullOrEmpty(return_Url)?"/MemberList":return_Url;
             var obj = await _memberService.GetMemberByIdAsync(memberId);
             return View("AddModifyNewMember", obj);
         }
@@ -101,6 +103,16 @@ namespace web.Controllers.User
 
             var resp = await _memberService.Insert(dto);
             return Json(resp,JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> Update(MemberDto dto)
+        {
+            if (!menu.ReadAccess)
+                return null;
+
+            var resp = await _memberService.Update(dto);
+            return Json(resp, JsonRequestBehavior.AllowGet);
         }
 
 

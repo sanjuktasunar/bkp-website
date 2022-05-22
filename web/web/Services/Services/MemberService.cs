@@ -25,6 +25,7 @@ namespace web.Web.Services.Services
         Task<IEnumerable<MemberDto>> FilterShareholder(MemberFilterDto filterDto);
         Task<MemberDto> GetMemberByIdAsync(int? id);
         Task<Response> Insert(MemberDto dto);
+        Task<Response> Update(MemberDto dto);
         Task<MemberDto> GetMemberByReferalCode(string ReferalCode);
         Task<Response> ApproveMember(int MemberId, int AccountHeadId, int ShareTypeId);
         Task<Response> RejectMember(int MemberId, string remarks);
@@ -59,7 +60,9 @@ namespace web.Web.Services.Services
         private readonly SqlConnectionDetails _sql;
         private readonly DateSettings dateSettings;
         private readonly ImageSettings imageSettings;
-        
+        private readonly DateSettings _dateSettings;
+        //private readonly IAgentService _agentService;
+
         public MemberService(IShareTypesService shareTypesService,
             IUsersService usersService)
         {
@@ -76,6 +79,8 @@ namespace web.Web.Services.Services
             _usersService = usersService;
             _userRepository = new Repository<Users>();
             imageSettings = new ImageSettings();
+            _dateSettings = new DateSettings();
+            //_agentService = agentService;
         }
         public async Task<IEnumerable<MemberDto>> Filter(MemberFilterDto filterDto)
         {
@@ -137,17 +142,6 @@ namespace web.Web.Services.Services
             var obj = (await _repository.QueryAsync<MemberDto>("SELECT * " +
                 "FROM dbo.MemberDetailView " +
                 "WHERE MemberId=@id", new { id })).FirstOrDefault();
-
-            obj.PermanentFullAddress = obj.PermanentMunicipalityName + "-" + obj.PermanentWardNumber + "," + obj.PermanentDistrictName;
-
-            if (obj.TemporaryIsOutsideNepal == true)
-            {
-                obj.TemporaryFullAddress = obj.TemporaryAddress + "," + obj.TemporaryCountryName;
-            }
-            else
-            {
-                obj.TemporaryFullAddress = obj.TemporaryMunicipalityName + "-" + obj.TemporaryWardNumber + "," + obj.TemporaryDistrictName;
-            }
             return obj;
         }
 
@@ -185,7 +179,7 @@ namespace web.Web.Services.Services
                 member.IsActive = false;
                 int MemberId = await _repository.InsertAsync(member,_sql.conn,_sql.trans);
 
-                var address = dto.ToMemberAddress();
+                var address = dto.ToAddressEntity();
                 address.MemberId = MemberId;
                 await _addressRepository.InsertAsync(address, _sql.conn, _sql.trans);
 
@@ -218,29 +212,46 @@ namespace web.Web.Services.Services
             var resp = new Response();
             try
             {
-                var Referal = await GetMemberByReferalCode(dto.ReferenceReferalCode);
-                if (Referal == null)
-                {
-                    resp.message = "Invalid Referal Code";
-                    return resp;
-                }
-
                 var obj = await GetMemberForUpdate(dto.MemberId);
                 if (obj == null)
                     resp = _messageClass.NotFoundMessage();
 
-                var member = dto.ToEntity();
-                member.UpdatedBy = _repository.UserIdentity();
-                member.UpdatedDate = DateTime.Now;
-                member.FormStatus = obj.FormStatus;
-                member.ApprovalStatus = obj.ApprovalStatus;
-                member.IsActive = obj.IsActive;
-                member.ReferalCode = obj.ReferalCode;
-                int MemberId = await _repository.InsertAsync(member, _sql.conn, _sql.trans);
+                var valid = await ValidateMember(dto);
+                if (valid.messageType == "error")
+                {
+                    resp.messageType = "error";
+                    resp.messageList = valid.messageList;
+                    return resp;
+                }
 
-                var address = dto.ToMemberAddress();
-                address.MemberId = MemberId;
-                await _addressRepository.InsertAsync(address, _sql.conn, _sql.trans);
+                var member = obj.ToEntity();
+                member.FirstName = dto.FirstName;
+                member.MiddleName = dto.MiddleName;
+                member.LastName = dto.LastName;
+                member.CitizenshipNumber = valid.memberDto.CitizenshipNumber;
+                member.DateOfBirthBS = dto.DateOfBirthBS;
+                member.DateOfBirthAD = valid.memberDto.DateOfBirthAD;
+                member.GenderId = dto.GenderId;
+                member.MaritalStatusId = dto.MaritalStatusId;
+                member.MobileNumber = dto.MobileNumber;
+                member.Email = dto.Email;
+                member.OccupationId = valid.memberDto.OccupationId;
+                member.OtherOccupationRemarks = dto.OtherOccupationRemarks;
+                member.AgentId = valid.memberDto.AgentId;
+                member.ReferenceId = valid.memberDto.ReferenceId;
+                await _repository.UpdateAsync(member, _sql.conn, _sql.trans);
+
+                var addressDto = await GetAddressByMemberId(dto.MemberId);
+                var address = dto.ToAddressEntity();
+                address.MemberId = dto.MemberId;
+                if (addressDto != null)
+                {
+                    await _addressRepository.UpdateAsync(address, _sql.conn, _sql.trans);
+                }
+                else
+                {
+                    await _addressRepository.InsertAsync(address, _sql.conn, _sql.trans);
+                }
 
                 var documentResp = await SaveUserDocument(dto);
                 if (documentResp.messageType == "error")
@@ -254,7 +265,7 @@ namespace web.Web.Services.Services
                     _sql.trans.Rollback();
                     return bankDepositResp;
                 }
-                resp = _messageClass.SaveMessage(MemberId);
+                resp = _messageClass.SaveMessage(1);
                 _sql.trans.Commit();
             }
             catch (SqlException ex)
@@ -264,6 +275,215 @@ namespace web.Web.Services.Services
                 _sql.trans.Rollback();
             }
             return resp;
+        }
+
+        public async Task<MemberResponse> ValidateMember(MemberDto dto)
+        {
+            var response = new MemberResponse();
+            response.messageType = "success";
+            var messageList = new List<string>();
+
+            string citizenshipNumber = dto.CitizenshipNumber;
+            string returnCitizenshipNumber = "";
+            if (!string.IsNullOrEmpty(citizenshipNumber))
+            {
+                citizenshipNumber = citizenshipNumber.Replace("-", "/");
+                if (citizenshipNumber.Substring(citizenshipNumber.Length - 1) == "/")
+                {
+                    messageList.Add("Invalid Citizenship Number");
+                }
+                var split = citizenshipNumber.Replace("-", "/").Split('/');
+                foreach (var s in split)
+                {
+                    if (!string.IsNullOrEmpty(s))
+                    {
+                        if (s.Trim().All(char.IsDigit))
+                        {
+                            if (string.IsNullOrEmpty(returnCitizenshipNumber))
+                                returnCitizenshipNumber = s.Trim();
+                            else
+                                returnCitizenshipNumber = returnCitizenshipNumber + "/" + s;
+                        }
+                        else
+                        {
+                            messageList.Add("Invalid Citizenship Number");
+                        }
+                    }
+                    else
+                    {
+                        messageList.Add("Invalid Citizenship Number");
+                    }
+                }
+                if (string.IsNullOrEmpty(returnCitizenshipNumber))
+                {
+                    messageList.Add("Invalid Citizenship Number");
+                }
+            }
+            else
+            {
+                messageList.Add("Please Enter Citizenship Number!!!!");
+            }
+
+            if (!string.IsNullOrEmpty(returnCitizenshipNumber))
+            {
+                string _sql = "select CitizenshipNumber,MemberId from dbo.[Member] " +
+                "where CitizenshipNumber=@citizenshipNumber " +
+                "and MemberId!=@memberId";
+                var obj = (await _repository.QueryAsync<MemberDto>(_sql, new { citizenshipNumber, memberId=dto.MemberId })).FirstOrDefault();
+                if (obj != null)
+                {
+                    messageList.Add("Citizenship Number Already Exists!!!!");
+                }
+                dto.CitizenshipNumber = returnCitizenshipNumber;
+            }
+            else
+            {
+                if (messageList.Count() == 0)
+                {
+                    messageList.Add("Invalid Citizenship Number");
+                }
+            }
+
+            if (string.IsNullOrEmpty(dto.FirstName))
+                messageList.Add("First Name is required");
+
+            if (string.IsNullOrEmpty(dto.LastName))
+                messageList.Add("Last Name is required");
+
+            if (string.IsNullOrEmpty(dto.DateOfBirthBS))
+                messageList.Add("Please Enter Date Of Birth!!!!");
+
+            if (dto.GenderId == null || dto.GenderId == 0)
+            {
+                messageList.Add("Please Select Gender.");
+            }
+            if (dto.MaritalStatusId == null || dto.MaritalStatusId == 0)
+            {
+                messageList.Add("Please Select Marital Status.");
+            }
+            if (string.IsNullOrEmpty(dto.MobileNumber))
+            {
+                messageList.Add("Please Enter Mobile Number");
+            }
+
+            if (!string.IsNullOrEmpty(dto.DateOfBirthBS))
+            {
+                string dateOfBirthAD = _dateSettings.ConvertToEnglishDate(dto.DateOfBirthBS);
+                if (string.IsNullOrEmpty(dateOfBirthAD) || dateOfBirthAD == "0/0/0")
+                {
+                    messageList.Add("Invalid Date Of Birth!!");
+                }
+                else
+                {
+                    dto.DateOfBirthAD = dateOfBirthAD;
+                }
+            }
+            if (!string.IsNullOrEmpty(dto.MobileNumber))
+            {
+                var member = await GetMemberByMobileNumber(dto.MobileNumber?.Trim(), dto.MemberId);
+                if (member != null)
+                {
+                    messageList.Add("Mobile Number Already Exists,Please contact at office!!!");
+                }
+            }
+            if (!string.IsNullOrEmpty(dto.Email))
+            {
+                var member = await GetMemberByEmail(dto.Email?.Trim(), dto.MemberId);
+                if (member != null)
+                {
+                    messageList.Add("Email Address Already Exists,Please contact at office!!!");
+                }
+            }
+
+            if (!string.IsNullOrEmpty(dto.OtherOccupationRemarks))
+            {
+                dto.OccupationId = null;
+            }
+
+            if (dto.FormerDistrictId == null || dto.FormerDistrictId == 0)
+                messageList.Add("Please Select Former District");
+
+            if (string.IsNullOrEmpty(dto.FormerMunicipalityName))
+                messageList.Add("Please Enter Former Municipality Name");
+
+            if (string.IsNullOrEmpty(dto.FormerWardNumber))
+                messageList.Add("Please Enter Former Ward Number");
+
+            if (dto.PermanentDistrictId == null || dto.PermanentDistrictId == 0)
+                messageList.Add("Please Select Permanent District");
+
+            if (string.IsNullOrEmpty(dto.PermanentMunicipality))
+                messageList.Add("Please Enter Permanent Municipality Name");
+
+            if (string.IsNullOrEmpty(dto.PermanentWardNumber))
+                messageList.Add("Please Enter Permanent Ward Number");
+
+            if (dto.TemporaryIsOutsideNepal)
+            {
+                if (dto.PermanentDistrictId == null || dto.PermanentDistrictId == 0)
+                    messageList.Add("Please Select Country");
+
+                if (string.IsNullOrEmpty(dto.TemporaryAddress))
+                    messageList.Add("Please Enter Temporary Address");
+            }
+            else
+            {
+                if (dto.TemporaryDistrictId == null || dto.TemporaryDistrictId == 0)
+                    messageList.Add("Please Select Temporary District");
+
+                if (string.IsNullOrEmpty(dto.TemporaryMunicipality))
+                    messageList.Add("Please Enter Temporary Municipality Name");
+
+                if (string.IsNullOrEmpty(dto.TemporaryWardNumber))
+                    messageList.Add("Please Enter Temporary Ward Number");
+            }
+
+            if (string.IsNullOrEmpty(dto.Photo)
+                   && string.IsNullOrEmpty(dto.MemberPhotoString))
+                messageList.Add("Please Upload Photo");
+
+            if (string.IsNullOrEmpty(dto.CitizenshipFront)
+                && string.IsNullOrEmpty(dto.CitizenshipFrontImageString))
+                messageList.Add("Please Upload Citizenship Front");
+
+            if (string.IsNullOrEmpty(dto.CitizenshipBack)
+                && string.IsNullOrEmpty(dto.CitizenshipBackImageString))
+                messageList.Add("Please Upload Citizenship Back");
+
+            if (string.IsNullOrEmpty(dto.ReferenceReferalCode))
+            {
+                messageList.Add("Please enter referal code or agent licenece number");
+            }
+            else
+            {
+                var member = await GetMemberByReferalCode(dto.ReferenceReferalCode.ToUpper());
+                if (member != null)
+                {
+                    dto.ReferenceId = member.MemberId;
+                }
+                else
+                {
+                    var agent = await GetAgentByLicenceNumber(dto.ReferenceReferalCode.ToUpper());
+                    if (agent != null)
+                        dto.AgentId = agent.AgentId;
+                }
+
+                if (dto.AgentId == null && dto.ReferenceId == null)
+                {
+                    messageList.Add("Invalid Referal Code !!!!");
+                }
+            }
+            if (string.IsNullOrEmpty(dto.VoucherImageString)
+                && string.IsNullOrEmpty(dto.VoucherImage))
+                messageList.Add("Please Upload Payment Proof");
+
+            if (messageList.Count() > 0)
+            {
+                response.messageType = "error";
+                response.messageList = messageList;
+            }
+            response.memberDto = dto;
+            return response;
         }
 
         public Response MemberValidation(MemberDto dto)
@@ -751,6 +971,14 @@ namespace web.Web.Services.Services
                 _sql.trans.Rollback();
             }
             return response;
+        }
+
+        public async Task<AgentDto> GetAgentByLicenceNumber(string LicenceNumber)
+        {
+            string _query = "select AgentId,AgentFullName,LicenceNumber from dbo.[Agent] where LicenceNumber=@LicenceNumber " +
+                            "and IsActive=1";
+            var obj = await _repository.QueryAsync<AgentDto>(_query, new { LicenceNumber });
+            return obj.FirstOrDefault();
         }
     }
 }
