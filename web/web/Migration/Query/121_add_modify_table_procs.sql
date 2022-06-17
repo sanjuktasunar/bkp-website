@@ -324,7 +324,7 @@ BEGIN
 	m.MemberId,(m.FirstName+case when isnull(m.MiddleName,'')!='' then (' '+m.MiddleName) else '' end+' '+m.LastName) AS FullName,
 	m.MobileNumber,m.Email,m.CreatedDate,m.ReferalCode,m.MemberCode,
 	m.CitizenshipNumber,
-	(case when isnull(m.ReferenceId,0)=0 then a.AgentFullName else (m.FirstName+ (case when isnull(m.MiddleName,'')= N'' then '' else ' '+m.MiddleName end) + ' '+m.LastName) end)  as ReferenceFullName
+	(case when isnull(m.ReferenceId,0)=0 then a.AgentFullName else (m1.FirstName+ (case when isnull(m1.MiddleName,'')= N'' then '' else ' '+m1.MiddleName end) + ' '+m1.LastName) end)  as ReferenceFullName
 	,st.ShareTypeName
 	FROM dbo.[Shareholder] s
 	inner join dbo.[Member] m on s.ShareholderId=m.ShareholderId
