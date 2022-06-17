@@ -64,7 +64,8 @@
                             </label>
                         }
 
-                        @if (!string.IsNullOrEmpty(x.ApprovalRemarks))
+                        @if (!string.IsNullOrEmpty(x.ApprovalRemarks) &&
+                            x.ApprovalStatus == Web.Entity.Infrastructure.ApprovalStatus.Rejected)
                         {
                             <br />
                             <span class="badge badge-dark">@x.ApprovalRemarks</span>
@@ -120,13 +121,13 @@
                        id="btnView" title="View Details">
                         <i class="fas fa-eye"></i>
                     </a>
-                    @if (menu.ModifyAccess == true || x.UserId == Convert.ToInt32(User.Identity.Name))
+                    @if (menu.ModifyAccess == true)
                     {
-                        @*<a href="~/ModifyMember/@x.MemberId"
-                               class="btn btn-success btn-circle btn-sm"
-                               id="btnEditMember" title="Edit Details">
-                                <i class="fas fa-edit"></i>
-                            </a>*@
+                        <a href="~/ModifyMember/@x.MemberId?return_Url=/MemberList"
+                           class="btn btn-secondary btn-circle btn-sm"
+                           title="Modify Member">
+                            <i class="fas fa-edit"></i>
+                        </a>
                     }
                     @if (x.ApprovalStatus == Web.Entity.Infrastructure.ApprovalStatus.Approved && x.ShareholderId == null && menu.ApprovalAccess == true)
                     {

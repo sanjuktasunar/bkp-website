@@ -24,7 +24,8 @@ namespace web.Web.Services
         public Repository()
         {
             con = ConfigurationManager.ConnectionStrings["ConnectionString"].ToString();
-            WaitingTime = Convert.ToInt32(ConfigurationManager.AppSettings["Waiting.Time"].ToString());
+            WaitingTime = 30;
+            //WaitingTime = Convert.ToInt32(ConfigurationManager.AppSettings["Waiting.Time"].ToString());
         }
 
         public SqlConnectionDetails GetSqlTransactionDetails()
