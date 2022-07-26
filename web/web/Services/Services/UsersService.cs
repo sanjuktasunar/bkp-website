@@ -28,8 +28,8 @@ namespace web.Web.Services.Services
             string EncUserName = _security.EncryptText(dto.UserName);
             string EncPassword = _security.EncryptText(dto.Password);
 
-            string dusername = _security.DecryptText("XX96H12akoL2okcC7Ur1ow==");
-            string dpw = _security.DecryptText("OHzTHRAngCB2vlRNc5g9Ig==");
+            string p= _security.EncryptText("dilli");
+            string euname = _security.EncryptText("dilli");
             string sql = "select * from dbo.[Users] where UserName=@UserName and Password=@Password";
             var user = (await _repository.QueryAsync<UsersDto>(sql,new { UserName = EncUserName , Password=EncPassword })).FirstOrDefault();
             if (user == null)
