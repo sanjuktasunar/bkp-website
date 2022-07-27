@@ -316,6 +316,7 @@
   <ItemGroup>
     <Content Include="Assets\Backend\css\Custom.css" />
     <Content Include="Assets\Backend\css\form-validation.css" />
+    <Content Include="Assets\Backend\css\nepali.datepicker.v3.6.min.css" />
     <Content Include="Assets\Backend\css\PagedList.css" />
     <Content Include="Assets\Backend\css\ruang-admin.css" />
     <Content Include="Assets\Backend\css\ruang-admin.min.css" />
@@ -323,12 +324,10 @@
     <Content Include="Assets\Backend\css\select2.min.css" />
     <Content Include="Assets\Backend\css\sweetalert.min.css" />
     <Content Include="Assets\Backend\css\TabPanel.css" />
-    <Content Include="Assets\Backend\custom\Custom.js" />
-    <Content Include="Assets\Backend\custom\layout-js-functions.js" />
-    <Content Include="Assets\Backend\custom\nepali-datepicker\load-picker.js" />
-    <Content Include="Assets\Backend\custom\nepali-datepicker\nepali.datepicker.v3.6.min.css" />
-    <Content Include="Assets\Backend\custom\nepali-datepicker\nepali.datepicker.v3.6.min.js" />
-    <Content Include="Assets\Backend\custom\ShowMessage.js" />
+    <Content Include="Assets\Backend\custom\load_ajax_dropdown.js" />
+    <Content Include="Assets\Backend\custom\custom.js" />
+    <Content Include="Assets\Backend\custom\layout_js_functions.js" />
+    <Content Include="Assets\Backend\custom\showMessage.js" />
     <Content Include="Assets\Backend\font\OFL.txt" />
     <Content Include="Assets\Backend\img\boy.png" />
     <Content Include="Assets\Backend\img\error.svg" />
@@ -344,12 +343,12 @@
     <Content Include="Assets\Backend\js\demo\chart-bar-demo.js" />
     <Content Include="Assets\Backend\js\demo\chart-pie-demo.js" />
     <Content Include="Assets\Backend\js\jquery.validate.min.js" />
+    <Content Include="Assets\Backend\js\nepali.datepicker.v3.6.min.js" />
     <Content Include="Assets\Backend\js\ruang-admin.js" />
     <Content Include="Assets\Backend\js\ruang-admin.min.js" />
     <Content Include="Assets\Backend\js\select2.js" />
     <Content Include="Assets\Backend\js\select2.min.js" />
     <Content Include="Assets\Backend\js\sweetalert.min.js" />
-    <Content Include="Assets\Backend\js_code\ajax_load.js" />
     <Content Include="Assets\Backend\vendor\bootstrap-datepicker\css\bootstrap-datepicker.css" />
     <Content Include="Assets\Backend\vendor\bootstrap-datepicker\css\bootstrap-datepicker.min.css" />
     <Content Include="Assets\Backend\vendor\bootstrap-datepicker\css\bootstrap-datepicker.standalone.css" />

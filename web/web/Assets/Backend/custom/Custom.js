@@ -1,4 +1,12 @@
 ﻿
+function getTodayNepaliDate() {
+    var obj = NepaliFunctions.GetCurrentBsDate();
+    var nepaliMonth = obj.month.toString();
+    if (nepaliMonth.length == 1)
+        nepaliMonth = "0" + nepaliMonth;
+
+    return (obj.year + '-' + nepaliMonth + '-' + obj.day);
+}
 
 function DisableWebPage() {
     $("body").append('<div id="overlay" style="background-color:grey;position:absolute;top:0;left:0;height:100%;width:100%;z-index:999"></div>');
@@ -23,6 +31,12 @@ function AllowNumberOnly(event) {
 }
 
 function AllowNumberWithDecimal(event) {
+    if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+        event.preventDefault();
+    }
+}
+
+function AllowPositiveNumber(event) {
     if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
         event.preventDefault();
     }

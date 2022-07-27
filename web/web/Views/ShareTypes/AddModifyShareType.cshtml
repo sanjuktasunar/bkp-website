@@ -159,10 +159,9 @@
 <script>
     $(document).ready(function () {
         var id = '@Model.FiscalYearId';
-        LoadFiscalYearList("#FiscalYearId",id);
+        LoadFiscalYear(id);
     })
-
-    var $checkoutForm = $('#form_validation').validate({
+    var $checkoutForm = $('#AddModifyForm').validate({
         ignore: [],
         rules: {
             'ShareTypeName': {
@@ -180,13 +179,6 @@
                 required: true,
                 maxlength: 20
             },
-            'RegistrationAmount': {
-                required: true,
-            },
-            //'MaxSharePerPerson': {
-            //    required: true,
-            //    maxlength: 10
-            //},
         },
         submitHandler: function (form) {
             $("#btnSave").prop('disabled', true)
@@ -200,7 +192,7 @@
             $.ajax({
                 type: "POST",
                 url: url,
-                data: $("#form_validation").serialize(),
+                data: $("#AddModifyForm").serialize(),
                 success: function (message) {
                     showResultMessage(message, "/ShareTypeList")
                 },
@@ -237,11 +229,5 @@
             $(element).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
         }
     });
-
-    function AllowPositiveNumber(event) {
-        if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
-            event.preventDefault();
-        }
-    }
 </script>
 

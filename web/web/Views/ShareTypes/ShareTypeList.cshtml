@@ -31,10 +31,8 @@
                                 <th>Name</th>
                                 <th>Issued Fiscal Year</th>
                                 <th>Total Issued Share</th>
-                                <th>Min/Max Kitta Per Person</th>
                                 <th>Price<br />(Per Kitta)</th>
                                 <th>Status</th>
-                                <th>Is Primary</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -49,10 +47,7 @@
                                     <td>@x.ShareTypeName</td>
                                     <td>@x.FiscalYearName</td>
                                     <td>@x.NumberOfIssuedShares</td>
-                                    <td>
-                                        <label>Min : @x.MinSharePerPerson</label> <br />
-                                        <label>Max : @x.MaxSharePerPerson</label> <br />
-                                    </td>
+                                    
                                     <td>
                                         @x.PricePerKitta
                                     </td>
@@ -64,16 +59,6 @@
                                         else
                                         {
                                             <span class="badge badge-danger">Inactive</span>
-                                        }
-                                    </td>
-                                    <td>
-                                        @if (x.IsPrimary == true)
-                                        {
-                                            <span class="badge badge-success">Yes</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge badge-danger">No</span>
                                         }
                                     </td>
                                     <td>
