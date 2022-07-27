@@ -12,7 +12,7 @@ using Web.Entity.Infrastructure;
 
 namespace web.Controllers.User
 {
-    //[Authorize]
+    [Authorize]
     public class AccountController : Controller
     {
         private IUsersService _usersService;

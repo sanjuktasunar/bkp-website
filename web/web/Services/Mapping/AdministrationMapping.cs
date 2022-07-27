@@ -59,13 +59,8 @@ namespace Web.Services.Mapping
             return new Menus
             {
                 MenuId = dto.MenuId,
-                //ParentMenuId = dto.ParentMenuId,
                 MenuNameEnglish = dto.MenuNameEnglish?.Trim(),
-                //MenuNameNepali = dto.MenuNameNepali?.Trim(),
                 CheckMenuName = dto.CheckMenuName?.Trim(),
-                //MenuLink = dto.MenuLink?.Trim(),
-                //MenuOrder = dto.MenuOrder,
-                //MenuIcon = dto.MenuIcon?.Trim(),
                 Status=dto.Status,
             };
         }

@@ -55,6 +55,8 @@ namespace web.Web.Services.Services
             var result = new Response();
             try
             {
+                dto.StartDateAD = Convert.ToDateTime(dateSettings.ConvertToEnglishDate(dto.StartDateBS));
+                dto.EndDateAD = Convert.ToDateTime(dateSettings.ConvertToEnglishDate(dto.EndDateBS));
                 var entity = dto.ToEntity();
                 if (entity.IsCurrent == true)
                     await MakeIsCurrentFalse();
@@ -116,8 +118,9 @@ namespace web.Web.Services.Services
                 {
                     if (obj.IsCurrent == true)
                     {
-                        await _repository.ExecuteQueryAsync("update dbo.[FiscalYear] set" +
-                            "IsCurrent=1 where FiscalYearId=" +
+                        await _repository.ExecuteQueryAsync("update dbo.[FiscalYear] " +
+                            "set IsCurrent=1 " +
+                            "where FiscalYearId=" +
                             "(select top 1 FiscalYearId from " +
                             "dbo.FiscalYear order by EndDateAD desc)");
                     }

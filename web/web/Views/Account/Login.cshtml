@@ -36,16 +36,9 @@
         </div>
     </main>
 </section>
-@Scripts.Render("~/web/back-end/js")
-@*<script src="~/Assets/Backend/vendor/jquery/jquery.min.js"></script>*@
-<script src="~/Assets/Backend/js/custom/plugin/jquery.validate.min.js"></script>
+@Scripts.Render("~/web/backend/jquery-ui")
+<script src="~/Assets/Backend/js/jquery.validate.min.js"></script>
 <script>
-    //var resp = {
-    //    messageType: 'success',
-    //    message:'this is testing'
-    //};
-    //showResultMessage(resp);
-
     var $checkoutForm = $('#form_validation').validate({
         ignore: [],
         rules: {

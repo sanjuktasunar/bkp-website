@@ -1,107 +1,131 @@
 ﻿@model Web.Entity.Dto.FiscalYearDto
 @{
-    ViewBag.Title = "AddModifyFiscalYear";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h6 class="h6 mb-2 text-gray-800">Add/Modify Fiscal Year</h6>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <form id="form_validation">
-                    <input type="hidden" value="@Model.FiscalYearId" name="FiscalYearId" />
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" value="@Model.FiscalYearName"
-                                       name="FiscalYearName" placeholder="Fiscal Year Name"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                        @*<div class="col-md-6">
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Add/Modify Fiscal Year</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Settings</a></li>
+            <li class="breadcrumb-item">Fiscal Year</li>
+        </ol>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Basic -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form id="AddModifyForm">
+                        <div class="row">
+                            <input type="hidden" value="@Model.FiscalYearId"
+                                   name="FiscalYearId" />
+
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Nepali Name</label>
-                                    <input type="text" value="@Model.NepaliName"
-                                           name="NepaliName" placeholder="Nepali Name"
+                                    <label>Name</label>
+                                    <input type="text" value="@Model.FiscalYearName"
+                                           name="FiscalYearName" placeholder="Fiscal Year Name"
                                            class="form-control" />
+
                                 </div>
-                            </div>*@
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Starting Date</label>
-                                <input type="text" value="@Model.StartDateBS"
-                                       name="StartDateBS" id="StartDateBS"
-                                       placeholder="Starting Date"
-                                       class="form-control" autocomplete="off"
-                                       onkeypress="AllowForDate(event)" />
                             </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Ending Date</label>
-                                <input type="text" value="@Model.EndDateBS"
-                                       name="EndDateBS" id="EndDateBS"
-                                       placeholder="Ending Date"
-                                       class="form-control" autocomplete="off"
-                                       onkeypress="AllowForDate(event)" />
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Starting Date</label>
+                                    <input type="text" value="@Model.StartDateBS"
+                                           name="StartDateBS" id="StartDateBS"
+                                           placeholder="Starting Date"
+                                           class="form-control" autocomplete="off"
+                                           onkeypress="AllowForDate(event)" />
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        @if (Model.Status != true && Model.FiscalYearId > 0)
-                                        {
-                                            <input class="form-check-input" name="Status" value="true" type="checkbox" />
-                                        }
-                                        else
-                                        {
-                                            <input class="form-check-input" name="Status" value="true" type="checkbox" checked="checked" />
-                                        }
-                                        Is Active
-                                    </label>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Ending Date</label>
+                                    <input type="text" value="@Model.EndDateBS"
+                                           name="EndDateBS" id="EndDateBS"
+                                           placeholder="Ending Date"
+                                           class="form-control" autocomplete="off"
+                                           onkeypress="AllowForDate(event)" />
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        @if (Model.IsCurrent == true)
-                                        {
-                                            <input class="form-check-input" name="IsCurrent"
-                                                   value="true" type="checkbox"
-                                                   checked="checked" />
-                                        }
-                                        else
-                                        {
-                                            <input class="form-check-input" name="IsCurrent"
-                                                   value="true" type="checkbox" />
-                                        }
-                                        Is Current Fiscal Year
-                                    </label>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            @if (Model.IsCurrent == true)
+                                            {
+                                                <input class="form-check-input"
+                                                       name="IsCurrent" checked="checked" 
+                                                       value="true" type="checkbox" />
+                                            }
+                                            else
+                                            {
+                                                <input class="form-check-input"
+                                                       name="IsCurrent" value="true"
+                                                       type="checkbox"/>
+                                            }
+                                            Is Current Fiscal Year ?
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            @if (Model.Status == false
+                                                && Model.FiscalYearId > 0)
+                                            {
+                                                <input class="form-check-input"
+                                                       name="Status"
+                                                       value="true" type="checkbox" />
+                                            }
+                                            else
+                                            {
+                                                <input class="form-check-input"
+                                                       name="Status" value="true"
+                                                       type="checkbox"
+                                                       checked="checked" />
+                                            }
+                                            Is Active ?
+                                        </label>
+                                    </div>
+                                </div>
 
+                            </div>
                         </div>
-                    </div>
-                    <button type="submit" id="btnSave" name="SaveButton" class="btn btn-primary btn-md"><i class="fa fa-save"></i> <span> Save </span> </button>
-                    <a href="/FiscalYearList" class="btn btn-danger"><i class="fa fa-window-close"></i> Close </a>
-                </form>
+                        <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
+                        <a href="~/FiscalYearList" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-@Scripts.Render("~/web/back-end/js")
-<script src="~/Assets/Backend/js/custom/plugin/jquery.validate.min.js"></script>
+
+    </div>
+    <!--Row-->
+</div>
+@Scripts.Render("~/web/backend/jquery-ui")
+<script src="~/Assets/Backend/js/jquery.validate.min.js"></script>
+
 <script>
-    var $checkoutForm = $('#form_validation').validate({
+    $("#StartDateBS").nepaliDatePicker({
+        ndpYear: true,
+        ndpMonth: true,
+        ndpYearCount: 10
+    });
+    $("#EndDateBS").nepaliDatePicker({
+        ndpYear: true,
+        ndpMonth: true,
+        ndpYearCount: 10
+    });
+
+    var $checkoutForm = $('#AddModifyForm').validate({
         ignore: [],
         rules: {
             'FiscalYearName': {
@@ -129,7 +153,7 @@
             $.ajax({
                 type: "POST",
                 url: url,
-                data: $("#form_validation").serialize(),
+                data: $("#AddModifyForm").serialize(),
                 success: function (message) {
                     showResultMessage(message, "/FiscalYearList")
                 },
@@ -167,19 +191,4 @@
             $(element).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
         }
     });
-</script>
-
-<script type="text/javascript">
-    window.onload = function () {
-        $("#StartDateBS").nepaliDatePicker({
-            ndpYear: true,
-            ndpMonth: true,
-            ndpYearCount: 10
-        });
-        $("#EndDateBS").nepaliDatePicker({
-            ndpYear: true,
-            ndpMonth: true,
-            ndpYearCount: 10
-        });
-    };
 </script>

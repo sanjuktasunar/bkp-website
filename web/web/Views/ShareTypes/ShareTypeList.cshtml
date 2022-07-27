@@ -1,9 +1,105 @@
 ﻿@model IEnumerable<Web.Entity.Dto.ShareTypesDto>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    Web.Entity.Dto.MenuAccessPermissionDto menus = ViewBag.Menus;
 }
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h2 class="h3 mb-0 text-gray-800">Share Type List</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Settings</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Share Type</li>
+        </ol>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card mb-4">
+                @if (menus.WriteAccess)
+                {
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <a href="~/AddShareType" class="btn btn-success btn-sm">
+                            <i class="fas fa-plus"></i> Add New
+                        </a>
+                    </div>
+                }
+                <div class="table-responsive p-3">
+                    <table class="table align-items-center table-flush table-hover" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>S.N.</th>
+                                <th hidden="hidden"></th>
+                                <th>Name</th>
+                                <th>Issued Fiscal Year</th>
+                                <th>Total Issued Share</th>
+                                <th>Min/Max Kitta Per Person</th>
+                                <th>Price<br />(Per Kitta)</th>
+                                <th>Status</th>
+                                <th>Is Primary</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ int i = 0; }
+                            @foreach (var x in Model)
+                            {
+                                i++;
+                                <tr>
+                                    <td>@i</td>
+                                    <td hidden="hidden">@x.ShareTypeId</td>
+                                    <td>@x.ShareTypeName</td>
+                                    <td>@x.FiscalYearName</td>
+                                    <td>@x.NumberOfIssuedShares</td>
+                                    <td>
+                                        <label>Min : @x.MinSharePerPerson</label> <br />
+                                        <label>Max : @x.MaxSharePerPerson</label> <br />
+                                    </td>
+                                    <td>
+                                        @x.PricePerKitta
+                                    </td>
+                                    <td>
+                                        @if (x.Status == true)
+                                        {
+                                            <span class="badge badge-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-danger">Inactive</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (x.IsPrimary == true)
+                                        {
+                                            <span class="badge badge-success">Yes</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-danger">No</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a href="~/ModifyShareType/@x.ShareTypeId"
+                                           class="btn btn-success btn-circle btn-sm" 
+                                            id="btnEdit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button class="btn btn-danger btn-circle btn-sm"
+                                                id="btnDelete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/web/backend/jquery-ui")
+@Scripts.Render("~/web/backend/datatables")
 
-<h6 class="h6 mb-2 text-gray-800">Share Type List</h6>
+@*<h6 class="h6 mb-2 text-gray-800">Share Type List</h6>
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <a href="~/AddShareType" class="btn btn-success btn-sm">
@@ -81,7 +177,7 @@
     </div>
 </div>
 
-@Scripts.Render("~/web/back-end/js")
+@Scripts.Render("~/web/back-end/js")*@
 <script>
     $(document).ready(function () {
         $("#dataTable").on('click', '#btnDelete', function () {
