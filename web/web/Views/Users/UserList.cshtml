@@ -1,14 +1,14 @@
-﻿@model IEnumerable<Web.Entity.Dto.StaffsDto>
+﻿@model IEnumerable<Web.Entity.Dto.UsersDto>
 @{
     Web.Entity.Dto.MenuAccessPermissionDto menus = ViewBag.Menus;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="container-fluid" id="container-wrapper">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h2 class="h3 mb-0 text-gray-800">Staff List</h2>
+        <h2 class="h3 mb-0 text-gray-800">User List</h2>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="./">Settings</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Staff</li>
+            <li class="breadcrumb-item"><a href="./">Users</a></li>
+            <li class="breadcrumb-item active" aria-current="page">User</li>
         </ol>
     </div>
     <div class="row">
@@ -17,7 +17,7 @@
                 @if (menus.WriteAccess)
                 {
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <a href="~/AddStaff" class="btn btn-success btn-sm">
+                        <a href="~/AddUser" class="btn btn-success btn-sm">
                             <i class="fas fa-plus"></i> Add New
                         </a>
                     </div>
@@ -27,11 +27,10 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>S.N.</th>
-                                <th hidden="hidden"></th>
-                                <th>Staff Name</th>
-                                <th>Gender</th>
-                                <th>Phone Number</th>
-                                <th>Email Address</th>
+                                <th>User Name</th>
+                                <th>Type</th>
+                                <th>Role</th>
+                                <th>Contact No.</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -42,15 +41,16 @@
                             {
                                 i++;
                                 <tr>
-                                    <td>@i</td>
-                                    <td hidden="hidden">@x.StaffId</td>
                                     <td>
-                                        @x.StaffName <br />
-                                        <b>Role</b> : @x.RoleName <br />
+                                        @i
+                                        <input type="hidden" value="@x.UserId"/>
                                     </td>
-                                    <td>@x.GenderName</td>
+                                    <td>
+                                        @x.DescryptUserName <br />
+                                    </td>
+                                    <td>@x.UserTypeTitle</td>
+                                    <td>@x.RoleName</td>
                                     <td>@x.ContactNumber</td>
-                                    <td>@x.EmailAddress</td>
                                     <td>
                                         @if (x.UserStatusId == 1)
                                         {
@@ -72,17 +72,17 @@
                                         }
                                     </td>
                                     <td>
-                                        <a href="~/ModifyStaff/@x.StaffId"
+                                        <a href="~/ModifyUser/@x.UserId"
                                            class="btn btn-success btn-circle btn-sm"
                                            id="btnEdit">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         @*<a href="~/MenuAccessPermission/@x.StaffId"
-                                           class="btn btn-primary btn-circle btn-sm"
-                                           id="btnEdit"
-                                           title="Menu Access Permission">
-                                            <i class="fas fa-book"></i>
-                                        </a>*@
+                                               class="btn btn-primary btn-circle btn-sm"
+                                               id="btnEdit"
+                                               title="Menu Access Permission">
+                                                <i class="fas fa-book"></i>
+                                            </a>*@
                                     </td>
                                 </tr>
                             }
@@ -95,6 +95,3 @@
 </div>
 @Scripts.Render("~/web/backend/jquery-ui")
 @Scripts.Render("~/web/backend/datatables")
-
-
-

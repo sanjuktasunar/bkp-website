@@ -3,12 +3,17 @@
     Layout = null;
     Web.Entity.Dto.MenuAccessPermissionDto menu = ViewBag.Menus;
 }
+
 <table class="table align-items-center table-flush table-hover" id="dataTable">
     <thead>
         <tr>
             <th>S.N.</th>
-            <th>Details</th>
-            <th>Share Details</th>
+            <th hidden="hidden"></th>
+            <th>Full Name</th>
+            <th>Contact Details</th>
+            <th>Referal Code</th>
+            <th>Share Type</th>
+            <th>Applied Kitta</th>
             <th>Seller Details</th>
             <th>Referred By</th>
             <th>Status</th>
@@ -28,29 +33,14 @@
                 </td>
                 <td>
                     @x.FullName
-                    @if (!string.IsNullOrEmpty(x.ContactNumber))
-                    {
-                        <br />
-                        <label>@x.ContactNumber</label>
-                    }
-                    @if (!string.IsNullOrEmpty(x.EmailAddress))
-                    {
-                        <br />
-                        <label>@x.EmailAddress</label>
-                    }
-                    @if (!string.IsNullOrEmpty(x.ReferalCode))
-                    {
-                        <br />
-                        <label>@x.ReferalCode</label>
-                    }
                 </td>
                 <td>
-                    @x.ShareTypeName <br />
-                    @if (x.AppliedShareKitta > 0)
-                    {
-                        <b>Kitta : </b> <label>@x.AppliedShareKitta</label>
-                    }
+                    @x.ContactNumber <br />
+                    @x.EmailAddress
                 </td>
+                <td>@x.ReferalCode</td>
+                <td>@x.ShareTypeName</td>
+                <td>@x.AppliedShareKitta</td>
                 <td>
                     @x.SellerFullName <br />
                     @x.SellerPhoneNumber
@@ -89,7 +79,12 @@
                         }
                     </label>
                 </td>
-                
+                <td>
+                    <label>@x.ReferalCode</label>
+                </td>
+                <td>
+                    @x.ShareTypeName
+                </td>
                 <td>
                     @if (menu.ApprovalAccess == true && (x.IsApproved ==
                             Web.Entity.Infrastructure.ApprovalStatus.UnApproved ||
@@ -107,7 +102,7 @@
                             <i class="fas fa-minus"></i>
                         </button>
                     }
-
+                    
                     <a href="~/MemberDetails/@x.MemberId"
                        target="_blank"
                        class="btn btn-primary btn-circle btn-sm"
@@ -436,4 +431,3 @@
 
     })
 </script>
-

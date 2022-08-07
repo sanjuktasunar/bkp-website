@@ -14,7 +14,8 @@ namespace web
                        "~/Assets/Backend/js/nepali.datepicker.v3.6.min.js",
                       "~/Assets/Backend/custom/custom.js",
                        "~/Assets/Backend/js/select2.min.js",
-                       "~/Assets/Backend/custom/showMessage.js"
+                       "~/Assets/Backend/custom/showMessage.js",
+                       "~/Assets/Backend/custom/layout_js_functions.js"
                        ));
 
             bundles.Add(new ScriptBundle("~/web/backend/datatables").Include(

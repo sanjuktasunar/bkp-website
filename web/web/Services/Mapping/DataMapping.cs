@@ -105,7 +105,7 @@ namespace Web.Services.Mapping
             return new DropdownList
             {
                 Id = dto.MemberId,
-                Value = dto.FirstName + ' ' + (!string.IsNullOrEmpty(dto.MiddleName) ? dto.MiddleName + ' ' : string.Empty) + dto.LastName,
+                Value = dto.FullName,
             };
         }
 

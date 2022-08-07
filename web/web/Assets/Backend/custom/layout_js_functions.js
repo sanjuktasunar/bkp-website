@@ -20,6 +20,9 @@ function PageLoad_Nav_Active_Inactive() {
     else if (nav_Name == "ChangePassword") {
         nav_Name = "User";
     }
+    else if (nav_Name == "MenuAccessPermission") {
+        nav_Name = "Role";
+    }
     var $a_tag = "#" + nav_Name;
     $($a_tag).addClass('active');
     var parentDiv = $($a_tag).parents('.collapse-inner').parents('.collapse');

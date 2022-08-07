@@ -3,154 +3,165 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h6 class="h6 mb-2 text-gray-800">Add/Modify Agent</h6>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <form id="form_validation">
-                    <input type="hidden" value="@Model.AgentId" name="AgentId" />
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Full Name</label>
-                                <input type="text" value="@Model.AgentFullName"
-                                       name="AgentFullName" placeholder="Agent Full Name"
-                                       class="form-control" />
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Add/Modify Agent</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Fund Development</a></li>
+            <li class="breadcrumb-item">Agent</li>
+        </ol>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Basic -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form id="AddModifyForm">
+                        <input type="hidden" value="@Model.AgentId" name="AgentId" />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input type="text" value="@Model.AgentFullName"
+                                           name="AgentFullName" placeholder="Agent Full Name"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Contact Number 1</label>
+                                    <input type="text" value="@Model.ContactNumber1"
+                                           name="ContactNumber1" placeholder="Enter Contact Number1"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Contact Number 2</label>
+                                    <input type="text" value="@Model.ContactNumber2"
+                                           name="ContactNumber2" placeholder="Enter Contact Number2"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="text" value="@Model.EmailAddress"
+                                           name="EmailAddress" placeholder="Enter Email Address"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Citizenship Number</label>
+                                    <input type="text" value="@Model.CitizenshipNumber"
+                                           name="CitizenshipNumber" placeholder="Enter Citizenship Number"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Occupation</label>
+                                    <input type="text" value="@Model.Occupation"
+                                           name="Occupation" placeholder="Enter Occupation"
+                                           class="form-control" />
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Contact Number 1</label>
-                                <input type="text" value="@Model.ContactNumber1"
-                                       name="ContactNumber1" placeholder="Enter Contact Number1"
-                                       class="form-control" />
+                        <b>Current Address</b>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>District</label>
+                                    <select class="form-control" id="DistrictId"
+                                            name="DistrictId">
+                                        <option value="">Select Value</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Municipality</label>
+                                    <input type="text" value="@Model.MunicipalityName"
+                                           name="MunicipalityName" placeholder="Enter Municipality"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Ward No.</label>
+                                    <input type="text" value="@Model.WardNumber"
+                                           name="WardNumber" placeholder="Ward No."
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Tole Name</label>
+                                    <input type="text" value="@Model.ToleName"
+                                           name="ToleName" placeholder="Enter Tole Name"
+                                           class="form-control" />
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Contact Number 2</label>
-                                <input type="text" value="@Model.ContactNumber2"
-                                       name="ContactNumber2" placeholder="Enter Contact Number2"
-                                       class="form-control" />
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Qualification</label>
+                                    <input type="text" value="@Model.Qualification"
+                                           name="Qualification" placeholder="Enter Qualification"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Ref. Code/ Licences No.</label>
+                                    <input type="text"
+                                           value="@Model.ReferenceLicenceNumber"
+                                           name="ReferenceLicenceNumber"
+                                           placeholder="Enter Referal Code/Licenes Number"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Agent/Member Phone Number</label>
+                                    <input type="text"
+                                           onkeypress="AllowNumberOnly(event)"
+                                           value="@Model.ReferencePhoneNumber"
+                                           name="ReferencePhoneNumber"
+                                           placeholder="Enter Agent/Member Phone Number"
+                                           class="form-control" />
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Email Address</label>
-                                <input type="text" value="@Model.EmailAddress"
-                                       name="EmailAddress" placeholder="Enter Email Address"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Citizenship Number</label>
-                                <input type="text" value="@Model.CitizenshipNumber"
-                                       name="CitizenshipNumber" placeholder="Enter Citizenship Number"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Occupation</label>
-                                <input type="text" value="@Model.Occupation"
-                                       name="Occupation" placeholder="Enter Occupation"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-                    <b>Current Address</b>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>Province</label>
-                                <select class="form-control" id="ProvinceId"
-                                        name="ProvinceId">
-                                    <option value="">Select Value</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>District</label>
-                                <select class="form-control" id="DistrictId"
-                                        name="DistrictId">
-                                    <option value="">Select Value</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Municipality</label>
-                                <input type="text" value="@Model.MunicipalityName"
-                                       name="MunicipalityName" placeholder="Enter Municipality"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>Ward No.</label>
-                                <input type="text" value="@Model.WardNumber"
-                                       name="WardNumber" placeholder="Ward No."
-                                       class="form-control" />
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Tole Name</label>
-                                <input type="text" value="@Model.ToleName"
-                                       name="ToleName" placeholder="Enter Tole Name"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Qualification</label>
-                                <input type="text" value="@Model.Qualification"
-                                       name="Qualification" placeholder="Enter Qualification"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Agent Licence No./ Referal Code</label>
-                                <input type="text" value="@Model.ReferenceLicenceNumber"
-                                       name="ReferenceLicenceNumber"
-                                       placeholder="Enter Licence No./Referal Code"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" id="btnSave"
-                            name="SaveButton" 
-                            class="btn btn-primary btn-md">
-                        <i class="fa fa-save"></i> 
-                        <span> Save </span>
-                    </button>
-                    <a href="/AgentList" class="btn btn-danger">
-                        <i class="fa fa-window-close"></i>
-                        Close
-                    </a>
-                </form>
+                        <button type="submit" id="btnSave"
+                                name="SaveButton"
+                                class="btn btn-primary btn-md">
+                            <i class="fa fa-save"></i>
+                            <span> Save </span>
+                        </button>
+                        <a href="/AgentList" class="btn btn-danger">
+                            <i class="fa fa-window-close"></i>
+                            Close
+                        </a>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+    <!--Row-->
 </div>
 
-@Scripts.Render("~/web/back-end/js")
-<script src="~/Assets/Backend/js/custom/plugin/jquery.validate.min.js"></script>
+
+@Scripts.Render("~/web/backend/jquery-ui")
+<script src="~/Assets/Backend/js/jquery.validate.min.js"></script>
 
 <script>
-
-    LoadProvince('@Model.ProvinceId', "#ProvinceId");
-    if (parseInt('@Model.AgentId') > 0) {
-        LoadDistrict('@Model.DistrictId', '@Model.ProvinceId');
-    }
-    var $checkoutForm = $('#form_validation').validate({
+    $("#DistrictId").select2();
+    LoadDistrict('@Model.DistrictId', 0);
+    var $checkoutForm = $('#AddModifyForm').validate({
         ignore: [],
         rules: {
             'AgentFullName': {
@@ -174,11 +185,16 @@
                 maxlength: 2
             },
             'ReferenceLicenceNumber': {
-                required: true,
+                required: function () {
+                    if ($('input[name="ReferencePhoneNumber"]').val().length)
+                        return false;
+                    return true;
+                },
                 maxlength: 30
             },
-            'ProvinceId': {
-                required: true
+            'ReferencePhoneNumber': {
+                maxlength: 10,
+                //minlength: 10,
             },
             'DistrictId': {
                 required: true
@@ -196,7 +212,7 @@
             $.ajax({
                 type: "POST",
                 url: url,
-                data: $("#form_validation").serialize(),
+                data: $("#AddModifyForm").serialize(),
                 success: function (resp) {
                     showResultMessage(resp, "/AgentDetails/" + resp.id);
                 },
@@ -233,10 +249,5 @@
             $(element).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
         }
     });
-
-    $("#ProvinceId").change(function () {
-        var provinceId = $("#ProvinceId").val();
-        LoadDistrict(0, provinceId);
-    })
 </script>
 

@@ -89,14 +89,13 @@
 @Scripts.Render("~/web/backend/jquery-ui")
 @Scripts.Render("~/web/backend/datatables")
 <script>
-    $('#dataTable').DataTable();
     $(document).ready(function () {
         $("#dataTable").on('click', '#btnDelete', function () {
             var currentRow = $(this).closest("tr");
             var data = currentRow.find("td:eq(0)").find('input').val();
 
             swal({
-                text: "Are you sure you want to delete this ?",
+                text: getDeleteConfirmationMessage(),
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,

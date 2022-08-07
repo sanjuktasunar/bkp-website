@@ -29,6 +29,18 @@ namespace web.Controllers.User
             var dropdown = new List<DropdownDto>();
             switch(requestDto.type)
             {
+                case "role_list":
+                    dropdown = _dropDownService.GetDropDownRole().ToList();
+                    break;
+                case "user_type_list":
+                    dropdown = _dropDownService.GetDropDownUserType().ToList();
+                    break;
+                case "user_type_for_user_list":
+                    dropdown = _dropDownService.GetDropDownUserTypeForUserList().ToList();
+                    break;
+                case "user_status_list":
+                    dropdown = _dropDownService.GetDropDownUserStatus().ToList();
+                    break;
                 case "fiscal_year_list":
                     dropdown = _dropDownService.GetDropDownFiscalYear().ToList();
                     break;

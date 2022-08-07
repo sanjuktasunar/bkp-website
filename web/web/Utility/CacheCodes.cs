@@ -22,6 +22,8 @@ namespace web.Utility
         public static string MENU_LIST = "MENU_LIST";
         public static string GENDER_LIST = "GENDER_LIST";
         public static string USER_STATUS_LIST = "USER_STATUS_LIST";
+        public static string USER_TYPE_LIST = "USER_TYPE_LIST";
+        public static string USER_TYPE_LIST_FOR_USER_LIST = "USER_TYPE_LIST_FOR_USER_LIST";
         public static string PARENT_CATEGORY_LIST = "PARENT_CATEGORY_LIST";
         public static string PROVINCE_LIST = "PROVINCE_LIST";
         public static string DISTRICT_LIST = "DISTRICT_LIST";

@@ -1,0 +1,170 @@
+﻿@model IEnumerable<Web.Entity.Dto.MemberDto>
+@{
+    Web.Entity.Dto.MenuAccessPermissionDto menus = ViewBag.Menus;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h2 class="h3 mb-0 text-gray-800">Member List</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Fund Development</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Member</li>
+        </ol>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form id="form_validation">
+                <div class="row">
+                    <div class="col-sm-3 col-md-3">
+                        <div class="form-group">
+                            <label>Approval Status</label>
+                            <select class="form-control" id="ApprovalStatus">
+                                @if (ViewBag.ApprovalStatus == 2)
+                                {
+                                    <option value="1">UnApproved</option>
+                                    <option value="2" selected="selected">Approved</option>
+                                    <option value="3">Rejected</option>
+                                }
+                                else if (ViewBag.ApprovalStatus == 3)
+                                {
+                                    <option value="1">UnApproved</option>
+                                    <option value="2">Approved</option>
+                                    <option value="3" selected="selected">Rejected</option>
+                                }
+                                else
+                                {
+                                    <option value="1" selected="selected">UnApproved</option>
+                                    <option value="2">Approved</option>
+                                    <option value="3">Rejected</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-md-3">
+                        <div class="form-group">
+                            <label>Share Type</label>
+                            <select class="form-control" id="ddlShareTypeId">
+                                <option value="">Select Value</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-md-3">
+                        <div class="form-group">
+                            <label>Referred By</label>
+                            <select class="form-control" id="select2">
+                                <option value="0">Referred By</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-md-3">
+                        <div class="form-group">
+                            <label>Select Agent</label>
+                            <select class="form-control" id="ddlAgentId">
+                                <option value="">Select Value</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" id="btnSearch" class="btn btn-primary">Search</button>
+                <button type="button" id="btnClear" class="btn btn-secondary" data-dismiss="modal">Clear</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card mb-4">
+                @if (menus.WriteAccess)
+                {
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <a href="~/AddNewMember" class="btn btn-success btn-sm">
+                            <i class="fas fa-plus"></i> Add New
+                        </a>
+                    </div>
+                }
+                <div class="table-responsive p-3" id="result">
+                    <i class="fas fa-cog"></i> Loading...............
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/web/backend/jquery-ui")
+<script>
+    $('#select2').select2();
+    $('#ddlAgentId').select2();
+    LoadReferenceMember('@ViewBag.ReferenceId', "#select2");
+    LoadReferenceAgent('@ViewBag.AgentId', "#ddlAgentId");
+
+    $("#btnSearch").click(function (evt) {
+        evt.preventDefault();
+        debugger;
+        $("#btnSearch").prop('disabled', true);
+        $("#btnSearch").html('Searching....')
+        var ApprovalStatus = $("#ApprovalStatus").val();
+        var ReferenceId = $('#select2').find(':selected').val();
+        var ShareTypeId = $('#ddlShareTypeId').val();
+        var AgentId = $('#ddlAgentId').val();
+        window.location.href = "/MemberList?ApprovalStatus=" + ApprovalStatus + "&ReferenceId=" + ReferenceId + "&ShareTypeId=" + ShareTypeId + "&AgentId=" + AgentId;
+    })
+
+    $("#btnClear").click(function (evt) {
+        window.location.href="/MemberList"
+    });
+    function loadMemberList(ApprovalStatus, ReferenceId,ShareTypeId,AgentId) {
+        $.ajax({
+            type: "get",
+            url: "/Member/FilterMemberList",
+            data: { ApprovalStatus: ApprovalStatus, ReferenceId: ReferenceId, ShareTypeId: ShareTypeId, AgentId: AgentId },
+            success: function (res) {
+                $("#result").html(res)
+                $("#btnSearch").prop('disabled', false);
+                $("#btnSearch").html('Search')
+
+                LoadShareTypesForMultipleElement();
+            },
+            error: function(res){
+                console.log(res)
+            }
+        })
+    }
+
+    $(document).ready(function () {
+        var ReferenceId = '@ViewBag.ReferenceId';
+        var ShareTypeId = '@ViewBag.ShareTypeId';
+        var AgentId = '@ViewBag.AgentId';
+
+        var ApprovalStatus = $("#ApprovalStatus").val();
+        loadMemberList(ApprovalStatus, ReferenceId, ShareTypeId, AgentId);
+    });
+    function LoadShareTypesForMultipleElement() {
+        $.ajax({
+            type: "post",
+            url: "/Ajax/Index",
+            data: { type:"share_type_list"},
+            success: function (resp) {
+                $("#ddlShareTypeId").empty();
+                $("#ShareTypeId").empty();
+                $("#ddlShareTypeId1").empty();
+
+                $("#ddlShareTypeId").append("<option value=''>Select Value</option>")
+                $.each(resp, function (index, row) {
+                    if ('@ViewBag.ShareTypeId' == row.Key) {
+                        $("#ddlShareTypeId").append("<option value=" + row.Key +
+                            " selected='selected'> "
+                            + row.Value + " </option>");
+                    }
+                    else {
+                        $("#ddlShareTypeId").append("<option value=" + row.Key + "> "
+                            + row.Value + " </option>");
+                    }
+                    $("#ShareTypeId").append("<option value=" + row.Key + "> "
+                        + row.Value + " </option>");
+                    $("#ddlShareTypeId1").append("<option value=" + row.Key + "> "
+                        + row.Value + " </option>");
+
+                })
+            }
+        })
+    }
+</script>

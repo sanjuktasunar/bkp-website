@@ -15,6 +15,8 @@ namespace web.Web.Services.Services
         IEnumerable<DropdownDto> GetDropDownDesignation();
         IEnumerable<DropdownDto> GetDropDownGender();
         IEnumerable<DropdownDto> GetDropDownUserStatus();
+        IEnumerable<DropdownDto> GetDropDownUserType();
+        IEnumerable<DropdownDto> GetDropDownUserTypeForUserList();
         IEnumerable<DropdownDto> GetDropDownFiscalYear();
         IEnumerable<DropdownDto> GetDropDownProvince();
         IEnumerable<DropdownDto> GetDropDownDistrict(int? ProvinceId = null);
@@ -115,6 +117,48 @@ namespace web.Web.Services.Services
             else
             {
                 data = HttpRuntime.Cache[CacheCodes.USER_STATUS_LIST] as List<DropdownDto>;
+            }
+            return data;
+        }
+
+        public IEnumerable<DropdownDto> GetDropDownUserType()
+        {
+            var data = new List<DropdownDto>();
+            if (HttpRuntime.Cache[CacheCodes.USER_TYPE_LIST] == null)
+            {
+                data = _repository.Query<DropdownDto>
+                    (
+                        "select UserTypeId as [Key]," +
+                        "UserTypeTitle as [Value] " +
+                        "from dbo.[UserType] " +
+                        "where [Status]=1"
+                    ).ToList();
+                HttpRuntime.Cache[CacheCodes.USER_TYPE_LIST] = data;
+            }
+            else
+            {
+                data = HttpRuntime.Cache[CacheCodes.USER_TYPE_LIST] as List<DropdownDto>;
+            }
+            return data;
+        }
+
+        public IEnumerable<DropdownDto> GetDropDownUserTypeForUserList()
+        {
+            var data = new List<DropdownDto>();
+            if (HttpRuntime.Cache[CacheCodes.USER_TYPE_LIST_FOR_USER_LIST] == null)
+            {
+                data = _repository.Query<DropdownDto>
+                    (
+                        "select UserTypeId as [Key]," +
+                        "UserTypeTitle as [Value] " +
+                        "from dbo.[UserType] " +
+                        "where [Status]=1 and lower(UserTypeTitle)<>'staff'"
+                    ).ToList();
+                HttpRuntime.Cache[CacheCodes.USER_TYPE_LIST_FOR_USER_LIST] = data;
+            }
+            else
+            {
+                data = HttpRuntime.Cache[CacheCodes.USER_TYPE_LIST_FOR_USER_LIST] as List<DropdownDto>;
             }
             return data;
         }

@@ -167,11 +167,13 @@
     <Compile Include="Controllers\User\DesignationController.cs" />
     <Compile Include="Controllers\User\FiscalYearController.cs" />
     <Compile Include="Controllers\User\MemberController.cs" />
+    <Compile Include="Controllers\User\Member_OldController.cs" />
     <Compile Include="Controllers\User\MenusController.cs" />
     <Compile Include="Controllers\User\RoleController.cs" />
     <Compile Include="Controllers\User\ShareholderController.cs" />
     <Compile Include="Controllers\User\ShareTypesController.cs" />
     <Compile Include="Controllers\User\StaffsController.cs" />
+    <Compile Include="Controllers\User\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -284,11 +286,12 @@
     <Compile Include="Services\Mapping\CustomerMapping.cs" />
     <Compile Include="Services\Mapping\DataMapping.cs" />
     <Compile Include="Services\Mapping\FundDevelopmentMapping.cs" />
-    <Compile Include="Services\Mapping\MemberMapping.cs" />
     <Compile Include="Services\Mapping\ModelStateMapping.cs" />
     <Compile Include="Services\Mapping\PublicSiteMapping.cs" />
     <Compile Include="Services\Mapping\SharesMapping.cs" />
-    <Compile Include="Services\Repository.cs" />
+    <Compile Include="Services\Repository\AgentRepository.cs" />
+    <Compile Include="Services\Repository\MemberRepository.cs" />
+    <Compile Include="Services\Repository\Repository.cs" />
     <Compile Include="Services\Services\AccountHeadService.cs" />
     <Compile Include="Services\Services\AgentService.cs" />
     <Compile Include="Services\Services\DepartmentService.cs" />
@@ -297,6 +300,7 @@
     <Compile Include="Services\Services\FiscalYearService.cs" />
     <Compile Include="Services\Services\MemberRegisterService.cs" />
     <Compile Include="Services\Services\MemberService.cs" />
+    <Compile Include="Services\Services\MemberService_Old.cs" />
     <Compile Include="Services\Services\MenusService.cs" />
     <Compile Include="Services\Services\ProductService.cs" />
     <Compile Include="Services\Services\RoleService.cs" />
@@ -2537,11 +2541,11 @@
     <Content Include="Views\Designation\Designation.cshtml" />
     <Content Include="Views\FiscalYear\AddModifyFiscalYear.cshtml" />
     <Content Include="Views\FiscalYear\FiscalYearList.cshtml" />
-    <Content Include="Views\Member\AddModifyNewMember.cshtml" />
-    <Content Include="Views\Member\FilterMemberList1.cshtml" />
-    <Content Include="Views\Member\MemberDetails.cshtml" />
-    <Content Include="Views\Member\MemberList.cshtml" />
-    <Content Include="Views\Member\ModifyMember.cshtml" />
+    <Content Include="Views\Member_Old\AddModifyNewMember.cshtml" />
+    <Content Include="Views\Member_Old\FilterMemberList1.cshtml" />
+    <Content Include="Views\Member_Old\MemberDetails.cshtml" />
+    <Content Include="Views\Member_Old\MemberList.cshtml" />
+    <Content Include="Views\Member_Old\ModifyMember.cshtml" />
     <Content Include="Views\Menus\AddModifyMenus.cshtml" />
     <Content Include="Views\Menus\Menus.cshtml" />
     <Content Include="Views\PublicProduct\Product.cshtml" />
@@ -2554,10 +2558,14 @@
     <Content Include="Views\Staffs\AddModifyStaff.cshtml" />
     <Content Include="Views\Staffs\MenuAccessPermission.cshtml" />
     <Content Include="Views\Staffs\Staffs.cshtml" />
-    <Content Include="Views\Member\FilterMemberList.cshtml" />
+    <Content Include="Views\Member_Old\FilterMemberList.cshtml" />
     <Content Include="Views\Shareholder\ShareholderList.cshtml" />
     <Content Include="Views\Shareholder\FilterShareholderList.cshtml" />
     <Content Include="Views\Shareholder\ModifyShareholder.cshtml" />
+    <Content Include="Views\Users\UserList.cshtml" />
+    <Content Include="Views\Users\AddModifyUser.cshtml" />
+    <Content Include="Views\Member\MemberList.cshtml" />
+    <Content Include="Views\Member\FilterMemberList.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

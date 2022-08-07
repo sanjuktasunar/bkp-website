@@ -4,221 +4,238 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="h3 mb-2 text-gray-800">Menu Access Permission</h1>
-
-<div class="card shadow mb-4">
-    <div class="card-body">
-        <div class="table-responsive">
-            <input type="hidden" value="@Model.RoleId" name="RoleId" />
-            <label>Role Name : </label> @Model.RoleName
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        @{
-                            int totalrow = Model.MenuAccessPermissions.Count();
-                            int readCount = Model.MenuAccessPermissions.Where(a => a.ReadAccess).Count();
-                            int writeCount = Model.MenuAccessPermissions.Where(a => a.WriteAccess).Count();
-                            int modifyCount = Model.MenuAccessPermissions.Where(a => a.ModifyAccess).Count();
-                            int deleteCount = Model.MenuAccessPermissions.Where(a => a.DeleteAccess).Count();
-                            int adminCount = Model.MenuAccessPermissions.Where(a => a.AdminAccess).Count();
-                            int approveCount = Model.MenuAccessPermissions.Where(a => a.ApprovalAccess == true).Count();
-                            int rejectCount = Model.MenuAccessPermissions.Where(a => a.RejectAccess == true).Count();
-                        }
-                        <th>
-                            Select All
-                            @if (totalrow == readCount)
-                            {
-                                <input type="checkbox" name="ReadAll" checked="checked" />
-                            }
-                            else
-                            {
-                                <input type="checkbox" name="ReadAll" />
-                            }
-                        </th>
-                        <th>
-                            Select All
-                            @if (totalrow == writeCount)
-                            {
-                                <input type="checkbox" name="WriteAll" checked="checked" />
-                            }
-                            else
-                            {
-                                <input type="checkbox" name="WriteAll" />
-                            }
-                        </th>
-                        <th>
-                            Select All
-                            @if (totalrow == modifyCount)
-                            {
-                                <input type="checkbox" name="ModifyAll" checked="checked" />
-                            }
-                            else
-                            {
-                                <input type="checkbox" name="ModifyAll" />
-                            }
-                        </th>
-                        <th>
-                            Select All
-                            @if (totalrow == deleteCount)
-                            {
-                                <input type="checkbox" name="DeleteAll" checked="checked" />
-                            }
-                            else
-                            {
-                                <input type="checkbox" name="DeleteAll" />
-                            }
-                        </th>
-                        <th>
-                            Select All
-                            @if (totalrow == approveCount)
-                            {
-                                <input type="checkbox" name="ApprovalAll" checked="checked" />
-                            }
-                            else
-                            {
-                                <input type="checkbox" name="ApprovalAll" />
-                            }
-                        </th>
-                        <th>
-                            Select All
-                            @if (totalrow == rejectCount)
-                            {
-                                <input type="checkbox" name="RejectAll" checked="checked" />
-                            }
-                            else
-                            {
-                                <input type="checkbox" name="RejectAll" />
-                            }
-                        </th>
-                        <th>
-                            Select All
-                            @if (totalrow == adminCount)
-                            {
-                                <input type="checkbox" name="AdminAll" checked="checked" />
-                            }
-                            else
-                            {
-                                <input type="checkbox" name="AdminAll" />
-                            }
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>S.N.</th>
-                        <th>Menu Name</th>
-                        <th>Read Access</th>
-                        <th>Write Access</th>
-                        <th>Modify Access</th>
-                        <th>Delete Access</th>
-                        <th>Approve Access</th>
-                        <th>Reject Access</th>
-                        <th>Admin Access</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{ int i = 0; }
-                    @foreach (var x in Model.MenuAccessPermissions)
-                    {
-                        i++;
-                        <tr>
-                            <td>
-                                @i
-                                <input type="hidden" name="MenuId" value="@x.MenuId" />
-                                <input type="hidden" name="MenuAccessPermissionId"
-                                       value="@x.MenuAccessPermissionId" />
-                            </td>
-                            <td>
-                                @x.MenuNameEnglish
-                            </td>
-                            <td>
-                                @if (x.ReadAccess)
-                                {
-                                    <input type="checkbox" name="ReadAccess"
-                                           checked="checked" />
-                                }
-                                else
-                                {
-                                    <input type="checkbox" name="ReadAccess" />
-                                }
-                            </td>
-                            <td>
-                                @if (x.WriteAccess)
-                                {
-                                    <input type="checkbox" name="WriteAccess"
-                                           checked="checked" />
-                                }
-                                else
-                                {
-                                    <input type="checkbox" name="WriteAccess" />
-                                }
-                            </td>
-                            <td>
-                                @if (x.ModifyAccess)
-                                {
-                                    <input type="checkbox" name="ModifyAccess"
-                                           checked="checked" />
-                                }
-                                else
-                                {
-                                    <input type="checkbox" name="ModifyAccess" />
-                                }
-                            </td>
-                            <td>
-                                @if (x.DeleteAccess)
-                                {
-                                    <input type="checkbox" name="DeleteAccess"
-                                           checked="checked" />
-                                }
-                                else
-                                {
-                                    <input type="checkbox" name="DeleteAccess" />
-                                }
-                            </td>
-                            <td>
-                                @if (x.ApprovalAccess == true)
-                                {
-                                    <input type="checkbox" name="ApprovalAccess"
-                                           checked="checked" />
-                                }
-                                else
-                                {
-                                    <input type="checkbox" name="ApprovalAccess" />
-                                }
-                            </td>
-                            <td>
-                                @if (x.RejectAccess == true)
-                                {
-                                    <input type="checkbox" name="RejectAccess"
-                                           checked="checked" />
-                                }
-                                else
-                                {
-                                    <input type="checkbox" name="RejectAccess" />
-                                }
-                            </td>
-                            <td>
-                                @if (x.AdminAccess)
-                                {
-                                    <input type="checkbox" name="AdminAccess"
-                                           checked="checked" />
-                                }
-                                else
-                                {
-                                    <input type="checkbox" name="AdminAccess" />
-                                }
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            <button type="submit" id="btnSave" name="SaveButton" class="btn btn-primary btn-md"><i class="fa fa-save"></i> <span>Save</span> </button>
-            <a href="/RoleList" class="btn btn-danger"><i class="fa fa-window-close"></i> Close</a>
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Menu Access Permission</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Settings</a></li>
+            <li class="breadcrumb-item">Role</li>
+        </ol>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <b>Role Name : </b> @Model.RoleName
         </div>
     </div>
-</div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card mb-4">
+                <input type="hidden" value="@Model.RoleId" name="RoleId" />
+                
+                <div class="table-responsive p-3">
+                    <table class="table align-items-center table-flush table-hover"
+                           id="dataTable">
+                        <thead class="thead-light">
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                @{
+                                    int totalrow = Model.MenuAccessPermissions.Count();
+                                    int readCount = Model.MenuAccessPermissions.Where(a => a.ReadAccess).Count();
+                                    int writeCount = Model.MenuAccessPermissions.Where(a => a.WriteAccess).Count();
+                                    int modifyCount = Model.MenuAccessPermissions.Where(a => a.ModifyAccess).Count();
+                                    int deleteCount = Model.MenuAccessPermissions.Where(a => a.DeleteAccess).Count();
+                                    int adminCount = Model.MenuAccessPermissions.Where(a => a.AdminAccess).Count();
+                                    int approveCount = Model.MenuAccessPermissions.Where(a => a.ApprovalAccess == true).Count();
+                                    int rejectCount = Model.MenuAccessPermissions.Where(a => a.RejectAccess == true).Count();
+                                }
+                                <th>
+                                    Select All
+                                    @if (totalrow == readCount)
+                                    {
+                                        <input type="checkbox" name="ReadAll" checked="checked" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="ReadAll" />
+                                    }
+                                </th>
+                                <th>
+                                    Select All
+                                    @if (totalrow == writeCount)
+                                    {
+                                        <input type="checkbox" name="WriteAll" checked="checked" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="WriteAll" />
+                                    }
+                                </th>
+                                <th>
+                                    Select All
+                                    @if (totalrow == modifyCount)
+                                    {
+                                        <input type="checkbox" name="ModifyAll" checked="checked" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="ModifyAll" />
+                                    }
+                                </th>
+                                <th>
+                                    Select All
+                                    @if (totalrow == deleteCount)
+                                    {
+                                        <input type="checkbox" name="DeleteAll" checked="checked" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="DeleteAll" />
+                                    }
+                                </th>
+                                <th>
+                                    Select All
+                                    @if (totalrow == approveCount)
+                                    {
+                                        <input type="checkbox" name="ApprovalAll" checked="checked" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="ApprovalAll" />
+                                    }
+                                </th>
+                                <th>
+                                    Select All
+                                    @if (totalrow == rejectCount)
+                                    {
+                                        <input type="checkbox" name="RejectAll" checked="checked" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="RejectAll" />
+                                    }
+                                </th>
+                                <th>
+                                    Select All
+                                    @if (totalrow == adminCount)
+                                    {
+                                        <input type="checkbox" name="AdminAll" checked="checked" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="AdminAll" />
+                                    }
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>S.N.</th>
+                                <th>Menu Name</th>
+                                <th>Read Access</th>
+                                <th>Write Access</th>
+                                <th>Modify Access</th>
+                                <th>Delete Access</th>
+                                <th>Approve Access</th>
+                                <th>Reject Access</th>
+                                <th>Admin Access</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ int i = 0; }
+                            @foreach (var x in Model.MenuAccessPermissions)
+                            {
+                                i++;
+                                <tr>
+                                    <td>
+                                        @i
+                                        <input type="hidden" name="MenuId" value="@x.MenuId" />
+                                        <input type="hidden" name="MenuAccessPermissionId"
+                                               value="@x.MenuAccessPermissionId" />
+                                    </td>
+                                    <td>
+                                        @x.MenuNameEnglish
+                                    </td>
+                                    <td>
+                                        @if (x.ReadAccess)
+                                        {
+                                            <input type="checkbox" name="ReadAccess"
+                                                   checked="checked" />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="ReadAccess" />
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (x.WriteAccess)
+                                        {
+                                            <input type="checkbox" name="WriteAccess"
+                                                   checked="checked" />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="WriteAccess" />
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (x.ModifyAccess)
+                                        {
+                                            <input type="checkbox" name="ModifyAccess"
+                                                   checked="checked" />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="ModifyAccess" />
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (x.DeleteAccess)
+                                        {
+                                            <input type="checkbox" name="DeleteAccess"
+                                                   checked="checked" />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="DeleteAccess" />
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (x.ApprovalAccess == true)
+                                        {
+                                            <input type="checkbox" name="ApprovalAccess"
+                                                   checked="checked" />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="ApprovalAccess" />
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (x.RejectAccess == true)
+                                        {
+                                            <input type="checkbox" name="RejectAccess"
+                                                   checked="checked" />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="RejectAccess" />
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (x.AdminAccess)
+                                        {
+                                            <input type="checkbox" name="AdminAccess"
+                                                   checked="checked" />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="AdminAccess" />
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <button type="submit" id="btnSave" name="SaveButton" class="btn btn-primary btn-md"><i class="fa fa-save"></i> <span>Save</span> </button>
+                    <a href="/RoleList" class="btn btn-danger"><i class="fa fa-window-close"></i> Close</a>
+                </div>
+            </div>
+        </div>
 
-@Scripts.Render("~/web/back-end/js")
+
+    </div>
+    <!--Row-->
+</div>
+@Scripts.Render("~/web/backend/jquery-ui")
 <script>
     $("input[type='checkbox']").click(function () {
         var elementName = $(this).attr('name');
@@ -261,8 +278,6 @@
             }
         }
     }
-</script>
-<script>
     $("#btnSave").click(function () {
         var MenuAccessPermissions = new Array();
         $("#btnSave").prop('disabled', true)
@@ -301,3 +316,4 @@
         });
     })
 </script>
+

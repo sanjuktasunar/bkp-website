@@ -47,7 +47,11 @@ namespace Web.Services.Mapping
                 IsSuperAdmin=dto.IsSuperAdmin,
                 CreatedBy=dto.CreatedBy,
                 CreatedDate=dto.CreatedDate,
-                UserStatusId = dto.UserStatusId
+                UserStatusId = dto.UserStatusId,
+                FullName=dto.FullName,
+                UpdatedBy=dto.UpdatedBy,
+                UpdatedDate=dto.UpdatedDate,
+                RoleId=dto.RoleId,
             };
         }
 

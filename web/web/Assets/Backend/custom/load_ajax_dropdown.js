@@ -11,6 +11,54 @@ function LoadFiscalYear(id, element = null) {
     LoadAjax($ajax_param);
 }
 
+function LoadRole(id, element = null) {
+    if (element == null || element == '')
+        element = "#RoleId";
+
+    var $ajax_param = {
+        element: element,
+        id: id,
+        type: "role_list"
+    };
+    LoadAjax($ajax_param);
+}
+
+function LoadUserType(id, element = null) {
+    if (element == null || element == '')
+        element = "#UserTypeId";
+
+    var $ajax_param = {
+        element: element,
+        id: id,
+        type: "user_type_list"
+    };
+    LoadAjax($ajax_param);
+}
+
+function LoadUserTypeForUserList(id, element = null) {
+    if (element == null || element == '')
+        element = "#UserTypeId";
+
+    var $ajax_param = {
+        element: element,
+        id: id,
+        type: "user_type_for_user_list"
+    };
+    LoadAjax($ajax_param);
+}
+
+function LoadUserStatus(id, element = null) {
+    if (element == null || element == '')
+        element = "#UserStatusId";
+
+    var $ajax_param = {
+        element: element,
+        id: id,
+        type: "user_status_list"
+    };
+    LoadAjax($ajax_param);
+}
+
 function LoadGender(id, element = null) {
     if (element == null || element == '')
         element = "#GenderId";

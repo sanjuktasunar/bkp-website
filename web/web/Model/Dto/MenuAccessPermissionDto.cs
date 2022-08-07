@@ -34,9 +34,9 @@ namespace Web.Entity.Dto
 
         public bool AdminAccess { get; set; }
 
-        public bool? ApprovalAccess { get; set; }
+        public bool ApprovalAccess { get; set; }
 
-        public bool? RejectAccess { get; set; }
+        public bool RejectAccess { get; set; }
 
         public string MenuName { get; set; }
         public string ParentMenuName { get; set; }

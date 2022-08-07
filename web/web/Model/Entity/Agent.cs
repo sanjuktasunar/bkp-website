@@ -9,7 +9,7 @@ namespace Web.Entity.Entity
     {
         public int AgentId { get; set; }
         public string AgentFullName { get; set; }
-        public int ProvinceId { get; set; }
+        //public int ProvinceId { get; set; }
         public int DistrictId { get; set; }
         public string MunicipalityName { get; set; }
         public string WardNumber { get; set; }
