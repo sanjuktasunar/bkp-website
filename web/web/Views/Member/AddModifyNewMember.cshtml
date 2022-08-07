@@ -1,0 +1,134 @@
+﻿@model Web.Entity.Dto.MemberDto
+@{
+    ViewBag.Title = "AddModifyNewMember";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Add/Modify Member</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Settings</a></li>
+            <li class="breadcrumb-item">Fund Development</li>
+        </ol>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Basic -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form id="AddModifyForm">
+                        <div class="row">
+                            <input type="hidden" value="@Model.MemberId"
+                                   name="MemberId" />
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Full Name </label>
+                                    <input type="text" value="@Model.FullName"
+                                           name="FullName"
+                                           placeholder="Enter Full Name"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Citizenship Number </label>
+                                    <input type="text" value="@Model.CitizenshipNumber"
+                                           name="CitizenshipNumber"
+                                           onkeypress="ValidateCitizenshipNumber(event)"
+                                           placeholder="Citizenship Number"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Age </label>
+                                    <input type="text" value="@Model.Age"
+                                           name="Age"
+                                           onkeypress="AllowNumberOnly(event)"
+                                           placeholder="Enter Age"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
+                        <a href="~/MemberList" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!--Row-->
+</div>
+@Scripts.Render("~/web/backend/jquery-ui")
+<script src="~/Assets/Backend/js/jquery.validate.min.js"></script>
+<script>
+    var $checkoutForm = $('#AddModifyForm').validate({
+        ignore: [],
+        rules: {
+            'MenuNameEnglish': {
+                required: true,
+                maxlength: 50
+            },
+            'CheckMenuName': {
+                required: true,
+                maxlength: 20
+            }
+        },
+        submitHandler: function (form) {
+            $("#btnSave").prop('disabled', true)
+            $("#btnSave span").html('Saving...')
+
+            var id = $('input[name="MenuId"').val();
+            var url = "/Menus/Insert";
+            if (parseInt(id) > 0) {
+                url = "/Menus/Update";
+            }
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: $("#AddModifyForm").serialize(),
+                success: function (resp) {
+                    debugger;
+                    showResultMessage(resp, "/MenuList")
+                },
+                error: function (resp) {
+                    showResultMessage(resp)
+                }
+            })
+        },
+
+        errorPlacement: function errorPlacement(error, element) {
+            var $parent = $(element).parents('.form-group');
+
+            // Do not duplicate errors
+            if ($parent.find('.jquery-validation-error').length) {
+                return false;
+            }
+
+            $parent.append(
+                error.addClass('jquery-validation-error small form-text invalid-feedback')
+            );
+        },
+        highlight: function (element) {
+            var $el = $(element);
+            var $parent = $el.parents('.form-group');
+
+            $el.addClass('is-invalid');
+
+            // Select2 and Tagsinput
+            if ($el.hasClass('select2-hidden-accessible') || $el.attr('data-role') === 'tagsinput') {
+                $el.parent().addClass('is-invalid');
+            }
+
+        },
+        unhighlight: function (element) {
+            $(element).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
+        }
+    });
+</script>

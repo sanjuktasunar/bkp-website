@@ -60,5 +60,15 @@ namespace web.Controllers.User
             var obj = await _memberService.Filter(filterDto);
             return PartialView("FilterMemberList", obj);
         }
+
+        [Route("~/AddNewMember")]
+        public ActionResult AddNewMember()
+        {
+            if (!menu.WriteAccess)
+                return Redirect(Logout_Url);
+
+            var member = new MemberDto();
+            return View("AddModifyNewMember", member);
+        }
     }
 }

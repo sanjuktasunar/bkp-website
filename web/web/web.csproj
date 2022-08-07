@@ -2566,6 +2566,7 @@
     <Content Include="Views\Users\AddModifyUser.cshtml" />
     <Content Include="Views\Member\MemberList.cshtml" />
     <Content Include="Views\Member\FilterMemberList.cshtml" />
+    <Content Include="Views\Member\AddModifyNewMember.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
