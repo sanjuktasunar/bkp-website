@@ -15,5 +15,6 @@ namespace web.Model.Dto
 
         public string SearchQuery { get; set; }
         public string Code { get; set; }
+        public int? SellerMemberId { get; set; }
     }
 }

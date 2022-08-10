@@ -1,18 +1,16 @@
 ﻿@model Web.Entity.Dto.MemberDto
 @{
-    ViewBag.Title = "AddModifyNewMember";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string age = string.Empty;
-    if(Model.Age>0)
+    if (Model.Age > 0)
     {
         age = Model.Age.ToString();
     }
 }
 
-
 <div class="container-fluid" id="container-wrapper">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Add/Modify Member</h1>
+        <h1 class="h3 mb-0 text-gray-800">Add/Modify Approved Member</h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="./">Settings</a></li>
             <li class="breadcrumb-item">Fund Development</li>
@@ -152,62 +150,8 @@
                                 </div>
                             </div>
                         </div>
-
                         <b>Share Details</b>
                         <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Share Type</label>
-                                    <select class="form-control"
-                                            name="ShareTypeId"
-                                            id="ShareTypeId">
-                                        <option value=""></option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Price Per Kitta</label>
-                                    <input type="text" value="@Model.SharePricePerKitta"
-                                           name="SharePricePerKitta"
-                                           id="SharePricePerKitta"
-                                           readonly="readonly"
-                                           placeholder="Price Per Kitta"
-                                           class="form-control" />
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Applied Share Kitta</label>
-                                    <input type="text" value="@Model.AppliedShareKitta"
-                                           name="AppliedShareKitta" id="AppliedShareKitta"
-                                           placeholder="Applied Kitta"
-                                           onkeypress="AllowNumberOnly(event)"
-                                           class="form-control" />
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Total Share Amount</label>
-                                    <input type="text"
-                                           value="@Model.TotalShareAmount"
-                                           readonly="readonly"
-                                           name="TotalShareAmount"
-                                           id="TotalShareAmount"
-                                           placeholder="Total Share Amount"
-                                           class="form-control" />
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Total Share Paid Amount</label>
-                                    <input type="text"
-                                           value="@Model.TotalSharePaidAmount"
-                                           name="TotalSharePaidAmount"
-                                           placeholder="Total Share Paid Amount"
-                                           class="form-control" />
-                                </div>
-                            </div>
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label>Select Seller</label>
@@ -256,45 +200,18 @@
                 </div>
             </div>
         </div>
-
-
     </div>
     <!--Row-->
 </div>
 @Scripts.Render("~/web/backend/jquery-ui")
 <script src="~/Assets/Backend/js/jquery.validate.min.js"></script>
 <script>
-    var $share_tye_list = new Array();
     $("#TemporaryDistrictId").select2();
     $("#SellerMemberId").select2();
 
     LoadDistrict('@Model.TemporaryDistrictId', 0, "#TemporaryDistrictId");
-    LoadShareTypesWithDetails('@Model.ShareTypeId', "#ShareTypeId",
-        "#SharePricePerKitta");
     LoadShareholder('@Model.SellerMemberId', "#SellerMemberId");
-
-    $("#ShareTypeId").change(function () {
-        var ShareTypeId = $("#ShareTypeId").val();
-        var $Share_Type_Filter = $share_tye_list.filter(item => item.Key == ShareTypeId);
-        $.each($Share_Type_Filter, function (index, row) {
-            $("#SharePricePerKitta").val(parseFloat(row.Value1).toFixed(2));
-        })
-        getTotalShareAmount();
-    })
-
-    $("#AppliedShareKitta").change(function () {
-        getTotalShareAmount();
-    })
-
-    function getTotalShareAmount() {
-        $("#TotalShareAmount").val('');
-        var sharePricePerKitta = parseFloat($("#SharePricePerKitta").val());
-        var appliedKitta = parseFloat($("#AppliedShareKitta").val());
-        var totalShareAmount = sharePricePerKitta * appliedKitta;
-        if (totalShareAmount > 0)
-            $("#TotalShareAmount").val(GetNumberWithComma(totalShareAmount));
-    }
-
+    
     var $checkoutForm = $('#AddModifyForm').validate({
         ignore: [],
         rules: {
@@ -333,15 +250,6 @@
                 required: true,
                 maxlength: 3
             },
-            'AppliedShareKitta': {
-                required: true,
-            },
-            'TotalSharePaidAmount': {
-                required: true,
-            },
-            'SellerMemberId': {
-                required: true,
-            },
             'ReferenceLicenceNumber': {
                 required: function () {
                     if ($('input[name="ReferencePhoneNumber"]').val().length)
@@ -365,15 +273,9 @@
         submitHandler: function (form) {
             $("#btnSave").prop('disabled', true)
             $("#btnSave span").html('Saving...')
-
-            var id = $('input[name="MemberId"').val();
-            var url = "/Member/Insert";
-            if (parseInt(id) > 0) {
-                url = "/Member/Update";
-            }
             $.ajax({
                 type: "POST",
-                url: url,
+                url: "/Member/UpdateApprovedMember",
                 data: $("#AddModifyForm").serialize(),
                 success: function (resp) {
                     debugger;

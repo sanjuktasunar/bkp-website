@@ -9,12 +9,13 @@ namespace web
         {
             bundles.Add(new ScriptBundle("~/web/backend/jquery-ui").Include(
                        "~/Assets/Backend/vendor/jquery/jquery.min.js",
+                       "~/Assets/Backend/vendor/bootstrap/js/bootstrap.min.js",
+                        "~/Assets/Backend/js/nepali.datepicker.v3.6.min.js",
                        "~/Assets/Backend/js/sweetalert.min.js",
-                       "~/Assets/Backend/custom/load_ajax_dropdown.js",
-                       "~/Assets/Backend/js/nepali.datepicker.v3.6.min.js",
-                      "~/Assets/Backend/custom/custom.js",
                        "~/Assets/Backend/js/select2.min.js",
                        "~/Assets/Backend/custom/showMessage.js",
+                       "~/Assets/Backend/custom/load_ajax_dropdown.js",
+                      "~/Assets/Backend/custom/custom.js",
                        "~/Assets/Backend/custom/layout_js_functions.js"
                        ));
 

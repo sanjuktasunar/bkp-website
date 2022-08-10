@@ -1,4 +1,16 @@
 ﻿
+function LoadShareholder(id, element = null) {
+    if (element == null || element == '')
+        element = "#ShareholderId";
+
+    var $ajax_param = {
+        element: element,
+        id: id,
+        type: "shareholder_List"
+    };
+    LoadAjax($ajax_param);
+}
+
 function LoadFiscalYear(id, element = null) {
     if (element == null || element == '')
         element = "#FiscalYearId";
@@ -126,6 +138,42 @@ function LoadShareTypes(id, element = null, not_include = null) {
         type: "share_type_list"
     };
     LoadAjax($ajax_param, not_include);
+}
+
+function LoadShareTypesWithDetails(id, element = null, $element_price = null) {
+    if (element == null || element == '')
+        element = "#ShareTypeId";
+
+    if ($element_price == null || $element_price == '')
+        $element_price = "#SharePricePerKitta";
+
+    var $ajax_param = {
+        element: element,
+        id: id,
+        type: "share_type_with_detail_list"
+    };
+    $.ajax({
+        type: "post",
+        url: "/Ajax/Index",
+        data: $ajax_param,
+        success: function (resp) {
+            debugger;
+            $($ajax_param.element).empty();
+            $.each(resp, function (index, row) {
+                if (index == 0 && id == 0) {
+                    $($element_price).val(parseFloat(row.Value1).toFixed(2));
+                }
+                if ($ajax_param.id == row.Key) {
+                    $($ajax_param.element).append("<option value=" + row.Key + " selected='selected'> " + row.Value + " </option>");
+                    $($element_price).val(parseFloat(row.Value1).toFixed(2));
+                }
+                else {
+                    $($ajax_param.element).append("<option value=" + row.Key + "> " + row.Value + " </option>");
+                }
+            })
+            $share_tye_list = resp;
+        }
+    })
 }
 
 function LoadAgentStatus(id, element = null) {

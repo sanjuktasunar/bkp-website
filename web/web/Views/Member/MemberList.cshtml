@@ -66,22 +66,74 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" id="btnSearch" class="btn btn-primary">Search</button>
-                <button type="button" id="btnClear" class="btn btn-secondary" data-dismiss="modal">Clear</button>
+                <div class="row">
+                    <div class="col-sm-5 col-md-5">
+                        <div class="form-group">
+                            <label>Search By Phone Number/Citizenship No./Referal Code</label>
+                            <input type="text" class="form-control" name="txtSearchQuery"
+                                id="txtSearchQuery" value="@ViewBag.SearchQuery"
+                                placeholder="Enter Phone No./Citizenship No./Referal Code" />
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <div class="form-group">
+                            <label>Select Seller</label>
+                            <select class="form-control" id="ddlSellerShareholderList">
+                                <option value="">Select Value</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-md-3">
+                        <button type="submit" id="btnSearch"
+                                class="btn btn-primary">
+                            Search
+                        </button>
+                        <button type="button" id="btnClear" class="btn btn-secondary">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+                
             </form>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="card mb-4">
-                @if (menus.WriteAccess)
-                {
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <a href="~/AddNewMember" class="btn btn-success btn-sm">
+                <div class="card-header">
+                    @if (menus.WriteAccess)
+                    {
+                        <a href="~/AddNewMember" class="btn btn-info btn-sm">
                             <i class="fas fa-plus"></i> Add New
                         </a>
-                    </div>
-                }
+                    }
+                    @if (menus.ModifyAccess)
+                    {
+                        <button id="btnEditMember"
+                                class="btn btn-primary btn-sm btn-member-list">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+
+                        <button id="btnEditMemberApprove"
+                                class="btn btn-secondary btn-sm btn-member-list">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    }
+                    @if (menus.ApprovalAccess)
+                    {
+                        <button id="btnApproveMember"
+                                class="btn btn-success btn-sm btn-member-list">
+                            <i class="fas fa-check"></i> Approve
+                        </button>
+                    }
+                    @if (menus.RejectAccess)
+                    {
+                        <button id="btnRejectMember"
+                                class="btn btn-danger btn-sm btn-member-list">
+                            <i class="fas fa-window-close"></i> Reject
+                        </button>
+                    }
+                </div>                
                 <div class="table-responsive p-3" id="result">
                     <i class="fas fa-cog"></i> Loading...............
                 </div>
@@ -93,8 +145,11 @@
 <script>
     $('#select2').select2();
     $('#ddlAgentId').select2();
+    $('#ddlSellerShareholderList').select2();
     LoadReferenceMember('@ViewBag.ReferenceId', "#select2");
     LoadReferenceAgent('@ViewBag.AgentId', "#ddlAgentId");
+    LoadShareTypes('@ViewBag.ShareTypeId', "#ddlShareTypeId");
+    LoadShareholder('@ViewBag.SellerMemberId', "#ddlSellerShareholderList");
 
     $("#btnSearch").click(function (evt) {
         evt.preventDefault();
@@ -105,23 +160,26 @@
         var ReferenceId = $('#select2').find(':selected').val();
         var ShareTypeId = $('#ddlShareTypeId').val();
         var AgentId = $('#ddlAgentId').val();
-        window.location.href = "/MemberList?ApprovalStatus=" + ApprovalStatus + "&ReferenceId=" + ReferenceId + "&ShareTypeId=" + ShareTypeId + "&AgentId=" + AgentId;
+        var SearchQuery = $('#txtSearchQuery').val();
+        var SellerMemberId = $('#ddlSellerShareholderList').val();
+
+        window.location.href = "/MemberList?ApprovalStatus=" + ApprovalStatus + "&ReferenceId=" + ReferenceId + "&ShareTypeId=" + ShareTypeId + "&AgentId=" + AgentId + "&SearchQuery=" + SearchQuery + "&SellerMemberId=" + SellerMemberId;
     })
 
     $("#btnClear").click(function (evt) {
         window.location.href="/MemberList"
     });
-    function loadMemberList(ApprovalStatus, ReferenceId,ShareTypeId,AgentId) {
+
+    function loadMemberList(ApprovalStatus, ReferenceId, ShareTypeId, AgentId, SearchQuery, SellerMemberId) {
+        ShowHideEnableDisableButtonsOn_PageLoad(ApprovalStatus);
         $.ajax({
             type: "get",
             url: "/Member/FilterMemberList",
-            data: { ApprovalStatus: ApprovalStatus, ReferenceId: ReferenceId, ShareTypeId: ShareTypeId, AgentId: AgentId },
+            data: { ApprovalStatus: ApprovalStatus, ReferenceId: ReferenceId, ShareTypeId: ShareTypeId, AgentId: AgentId, SearchQuery: SearchQuery, SellerMemberId: SellerMemberId },
             success: function (res) {
                 $("#result").html(res)
                 $("#btnSearch").prop('disabled', false);
                 $("#btnSearch").html('Search')
-
-                LoadShareTypesForMultipleElement();
             },
             error: function(res){
                 console.log(res)
@@ -129,42 +187,32 @@
         })
     }
 
+    function ShowHideEnableDisableButtonsOn_PageLoad(ApprovalStatus) {
+        $(".btn-member-list").prop('disabled', true);
+
+        $("#btnApproveMember").show();
+        $("#btnEditMember").show();
+        $("#btnEditMemberApprove").hide();
+        if (ApprovalStatus == 2) {
+            $("#btnApproveMember").hide();
+            $("#btnEditMember").hide();
+            $("#btnEditMemberApprove").show();
+        }
+        else if (ApprovalStatus==3) {
+            $("#btnRejectMember").hide();
+            $("#btnEditMember").hide();
+        }
+    }
+
     $(document).ready(function () {
         var ReferenceId = '@ViewBag.ReferenceId';
         var ShareTypeId = '@ViewBag.ShareTypeId';
         var AgentId = '@ViewBag.AgentId';
+        var SellerMemberId = '@ViewBag.SellerMemberId';
+        var SearchQuery = '@ViewBag.SearchQuery';
 
         var ApprovalStatus = $("#ApprovalStatus").val();
-        loadMemberList(ApprovalStatus, ReferenceId, ShareTypeId, AgentId);
+        loadMemberList(ApprovalStatus, ReferenceId, ShareTypeId, AgentId, SearchQuery, SellerMemberId);
     });
-    function LoadShareTypesForMultipleElement() {
-        $.ajax({
-            type: "post",
-            url: "/Ajax/Index",
-            data: { type:"share_type_list"},
-            success: function (resp) {
-                $("#ddlShareTypeId").empty();
-                $("#ShareTypeId").empty();
-                $("#ddlShareTypeId1").empty();
-
-                $("#ddlShareTypeId").append("<option value=''>Select Value</option>")
-                $.each(resp, function (index, row) {
-                    if ('@ViewBag.ShareTypeId' == row.Key) {
-                        $("#ddlShareTypeId").append("<option value=" + row.Key +
-                            " selected='selected'> "
-                            + row.Value + " </option>");
-                    }
-                    else {
-                        $("#ddlShareTypeId").append("<option value=" + row.Key + "> "
-                            + row.Value + " </option>");
-                    }
-                    $("#ShareTypeId").append("<option value=" + row.Key + "> "
-                        + row.Value + " </option>");
-                    $("#ddlShareTypeId1").append("<option value=" + row.Key + "> "
-                        + row.Value + " </option>");
-
-                })
-            }
-        })
-    }
+   
 </script>

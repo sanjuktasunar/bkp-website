@@ -22,6 +22,7 @@ namespace Web.Entity.Dto
         public string FormerAddress { get; set; }
         public string PermanentAddress { get; set; }
         public int? TemporaryDistrictId { get; set; }
+        public string TemporaryDistrictName { get; set; }
         public string TemporaryMunicipalityName { get; set; }
         public string TemporaryWardNumber { get; set; }
 
@@ -34,12 +35,21 @@ namespace Web.Entity.Dto
         public int? ShareTypeId { get; set; }
         public string ShareTypeName { get; set; }
 
+        public decimal? SharePricePerKitta { get; set; }
         public decimal? TotalShareAmount { get; set; }
         public decimal? TotalSharePaidAmount { get; set; }
+        public decimal TotalShareDueAmount { get; set; }
         public int? ReferenceId { get; set; }
+
+        public string AppliedShareKittaString { get; set; }
+        public string SharePricePerKittaString { get; set; }
+        public string TotalShareAmountString { get; set; }
+        public string TotalSharePaidAmountString { get; set; }
+        public string TotalShareDueAmountString { get; set; }
 
         public string ReferenceFullName { get; set; }
         public string ReferencePhoneNumber { get; set; }
+        public string ReferenceLicenceNumber { get; set; }
 
         public int? AgentId { get; set; }
         public string NomineeName { get; set; }
@@ -58,6 +68,18 @@ namespace Web.Entity.Dto
         public int? UpdatedBy { get; set; }
         public DateTime? ApprovedDate { get; set; }
         public int? ApprovedBy { get; set; }
+
+        public string ApprovedByFullName { get; set; }
+        public string CreatedByFullName { get; set; }
+
+        public Response response { get; set; }
+        public IEnumerable<MemberPaymentLogDto> MemberPaymentLogDtos { get; set; }
+    }
+
+    public class RefernceIdsDto
+    {
+        public int? MemberId { get; set; }
+        public int? AgentId { get; set; }
     }
 
     public class MemberPersonalInfoDto

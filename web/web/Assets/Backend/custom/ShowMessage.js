@@ -4,6 +4,16 @@ function getDeleteConfirmationMessage(){
     return message;
 }
 
+function getApproveConfirmationMessage() {
+    var message = "Are you sure you want to approve ?"
+    return message;
+}
+
+function getRejectConfirmationMessage() {
+    var message = "Are you sure you want to reject ?"
+    return message;
+}
+
 function showMessage_Only(resp) {
     if (resp != null) {
         var icon = "success";

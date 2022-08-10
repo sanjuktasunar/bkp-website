@@ -216,6 +216,7 @@
     <Compile Include="Model\Dto\GenderDto.cs" />
     <Compile Include="Model\Dto\MemberDataDto.cs" />
     <Compile Include="Model\Dto\MemberDto.cs" />
+    <Compile Include="Model\Dto\MemberPaymentLogDto.cs" />
     <Compile Include="Model\Dto\MemberTypeDto.cs" />
     <Compile Include="Model\Dto\MenuAccessPermissionDto.cs" />
     <Compile Include="Model\Dto\MenusDto.cs" />
@@ -254,6 +255,7 @@
     <Compile Include="Model\Entity\FiscalYear.cs" />
     <Compile Include="Model\Entity\Gender.cs" />
     <Compile Include="Model\Entity\Member.cs" />
+    <Compile Include="Model\Entity\MemberPaymentLog.cs" />
     <Compile Include="Model\Entity\MenuAccessPermission.cs" />
     <Compile Include="Model\Entity\Menus.cs" />
     <Compile Include="Model\Entity\OrganizationInfo.cs" />
@@ -2567,6 +2569,8 @@
     <Content Include="Views\Member\MemberList.cshtml" />
     <Content Include="Views\Member\FilterMemberList.cshtml" />
     <Content Include="Views\Member\AddModifyNewMember.cshtml" />
+    <Content Include="Views\Member\MemberDetails.cshtml" />
+    <Content Include="Views\Member\ModifyApprovedMember.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

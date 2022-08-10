@@ -60,17 +60,17 @@ GO
 
 GO
 CREATE UNIQUE INDEX Member_New_CitizenshipNumber_ui ON
-dbo.[Member](CitizenshipNumber) where CitizenshipNumber <>'' and CitizenshipNumber is not null
+dbo.[Member](CitizenshipNumber) where CitizenshipNumber <>'' and CitizenshipNumber is not null and IsApproved<>3
 GO
 
 GO
 CREATE UNIQUE INDEX Member_New_EmailAddress_ui ON
-dbo.[Member](EmailAddress) where EmailAddress <>'' and EmailAddress is not null
+dbo.[Member](EmailAddress) where EmailAddress <>'' and EmailAddress is not null and IsApproved<>3
 GO
 
 GO
 CREATE UNIQUE INDEX Member_New_ContactNumber_ui ON
-dbo.[Member](ContactNumber) where ContactNumber <>'' and ContactNumber is not null
+dbo.[Member](ContactNumber) where ContactNumber <>'' and ContactNumber is not null and IsApproved<>3
 GO
 
 GO
@@ -175,47 +175,6 @@ GO
 --EXEC sp_rename 'dbo.Member.RefernceId', 'ReferenceId', 'COLUMN';
 --GO
 
-GO
-ALTER PROC [dbo].[FilterMember]
-(
-	@ApprovalStatus int,
-	@ReferenceId int,
-	@AgentId int,
-	@ShareTypeId int
-)
-AS
-BEGIN
-	/*
-		exec [dbo].[FilterMember] 1,0,0,0
-	*/
-
-	SELECT m.MemberId,m.FullName,
-	m.ContactNumber,m.EmailAddress,m.CreatedDate,m.ApprovedDate,m.IsApproved,m.ReferalCode,m.RejectRemarks,
-	m.CitizenshipNumber,m.IsShareholder,m.ShareTypeId,
-	(case when isnull(m.ReferenceId,0)=0 then a.AgentFullName else m1.FullName end) as ReferenceFullName,
-	(case when isnull(m.ReferenceId,0)=0 then a.ContactNumber1 else m1.ContactNumber end) as ReferencePhoneNumber
-	,st.ShareTypeName,m.AppliedShareKitta,
-	sm.FullName as SellerFullName,sm.ContactNumber as SellerPhoneNumber
-	FROM Member m
-	left join dbo.ShareTypes st on st.ShareTypeId=m.ShareTypeId
-	left join [dbo].[Member] m1 on m1.MemberId=m.ReferenceId
-	left join [dbo].[Agent] a on a.AgentId=m.AgentId
-	left join dbo.[Member] sm on sm.MemberId=m.SellerMemberId
-	WHERE
-	(
-		(isnull(@ApprovalStatus,0)=0 OR m.IsApproved=@ApprovalStatus)
-		AND
-		(isnull(@ReferenceId,0)=0 OR m.ReferenceId=@ReferenceId)
-		AND
-		(isnull(@AgentId,0)=0 OR m.AgentId=@AgentId)
-		AND
-		isnull(m.IsShareholder,0)=0
-		AND
-		(isnull(@ShareTypeId,0)=0 OR m.ShareTypeId=@ShareTypeId)
-	)
-	ORDER BY m.CreatedDate DESC
-END
-GO
 
 GO
 ALTER TABLE [dbo].[Agent] DROP CONSTRAINT [Agent_ProvinceId_fk]
@@ -271,4 +230,107 @@ FROM Member as b
 join #temp as a on a.ReferenceID=b.MemberId
 select MemberId AS [Key],ReferenceName AS [Value] from #refMem
 END
+GO
+
+GO
+CREATE OR ALTER VIEW dbo.[ShareholderView]
+AS
+select		m.FullName,m.MemberId,s.TotalKitta,s.ShareholderId,s.ShareTypeId,
+			st.ShareTypeName,s.IsActive,m.ContactNumber
+from		dbo.Shareholder s
+inner join	dbo.Member m on m.MemberId=s.MemberId
+inner join	dbo.ShareTypes st on st.ShareTypeId=s.ShareTypeId
+GO
+
+GO
+DROP VIEW dbo.MemberView
+GO
+
+GO
+DROP VIEW dbo.MemberDetailView
+GO
+
+GO
+CREATE OR ALTER VIEW dbo.[MemberView]
+AS
+select		m.*,
+			d.DistrictName as TemporaryDistrictName,st.ShareTypeName,st.PricePerKitta as SharePricePerKitta,
+			sm.FullName as SellerFullName,sm.ContactNumber as SellerPhoneNumber,
+			(case when m.ReferenceId is not null then rm.FullName else ag.AgentFullName end) as ReferenceFullName,
+			(case when m.ReferenceId is not null then rm.ContactNumber else ag.ContactNumber1 end) as ReferencePhoneNumber,
+			(case when m.ReferenceId is not null then rm.ReferalCode else ag.LicenceNumber end) as ReferenceLicenceNumber,
+			u.FullName as ApprovedByFullName,u1.FullName as CreatedByFullName
+from		dbo.Member m
+left join	dbo.District d on d.DistrictId=m.TemporaryDistrictId
+left join	dbo.ShareTypes st on st.ShareTypeId=m.ShareTypeId
+left join	dbo.Member sm on sm.MemberId=m.SellerMemberId
+left join	dbo.Member rm on rm.MemberId=m.ReferenceId
+left join	dbo.Agent ag on ag.AgentId=m.AgentId
+left join	dbo.Users u on u.UserId=m.ApprovedBy
+left join	dbo.Users u1 on u1.UserId=m.CreatedBy
+GO
+
+GO
+ALTER PROC [dbo].[FilterMember]
+(
+	@ApprovalStatus int,
+	@ReferenceId int,
+	@AgentId int,
+	@ShareTypeId int,
+	@SearchQuery nvarchar(100),
+	@SellerMemberId int
+)
+AS
+BEGIN
+	/*
+		exec [dbo].[FilterMember] 1,0,0,0
+	*/
+
+	SELECT m.MemberId,m.FullName,
+	m.ContactNumber,m.EmailAddress,m.CreatedDate,m.ApprovedDate,m.IsApproved,m.ReferalCode,m.RejectRemarks,
+	m.CitizenshipNumber,m.IsShareholder,m.ShareTypeId,
+	m.ReferenceFullName,m.ReferencePhoneNumber,m.ShareTypeName,m.AppliedShareKitta,
+	m.SellerFullName,m.SellerPhoneNumber,m.TotalSharePaidAmount,(m.AppliedShareKitta*m.SharePricePerKitta) as TotalShareAmount
+	FROM dbo.[MemberView] m
+	WHERE
+	(
+		(isnull(@ApprovalStatus,0)=0 OR m.IsApproved=@ApprovalStatus)
+		AND
+		(isnull(@ReferenceId,0)=0 OR m.ReferenceId=@ReferenceId)
+		AND
+		(isnull(@AgentId,0)=0 OR m.AgentId=@AgentId)
+		AND
+		isnull(m.IsShareholder,0)=0
+		AND
+		(isnull(@ShareTypeId,0)=0 OR m.ShareTypeId=@ShareTypeId)
+		AND
+		(   isnull(@SearchQuery,'')='' OR 
+			(m.ContactNumber=@SearchQuery) OR
+			(m.CitizenshipNumber=@SearchQuery) OR
+			(m.ReferalCode=@SearchQuery)
+		)
+		AND
+		(isnull(@SellerMemberId,0)=0 or m.SellerMemberId=@SellerMemberId)
+	)
+	ORDER BY m.CreatedDate DESC
+END
+GO
+
+GO
+CREATE TABLE dbo.[MemberPaymentLog]
+(
+	PaymentId int not null Identity(1,1) Constraint MemberPaymentDetails_pk Primary Key,
+	MemberId int not null Constraint MemberPaymentDetails_Member_MemberId_fk References dbo.[Member](MemberId),
+	Amount money not null,
+	CreatedBy int not null Constraint MemberPaymentDetails_CreatedBy_fk References dbo.[Users](UserId),
+	CreatedDate datetime not null,
+	IsDeleted bit not null default(0),
+	DeletedDate datetime null,
+	DeletedBy int null Constraint MemberPaymentDetails_DeletedBy_fk References dbo.[Users](UserId)
+);
+GO
+
+GO
+UPDATE dbo.[Users] set FullName=N'System Admin'
+where UserId=1
 GO

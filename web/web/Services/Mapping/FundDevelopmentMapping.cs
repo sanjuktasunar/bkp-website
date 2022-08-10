@@ -128,5 +128,23 @@ namespace Web.Services.Mapping
                 ApprovedDate=dto.ApprovedDate
             };
         }
+
+        public static MemberPaymentLog ToEntity(this MemberPaymentLogDto dto)
+        {
+            if (dto == null)
+                return null;
+
+            return new MemberPaymentLog
+            {
+                PaymentId = dto.PaymentId,
+                MemberId = dto.MemberId,
+                Amount = dto.Amount,
+                CreatedBy = dto.CreatedBy,
+                CreatedDate = dto.CreatedDate,
+                IsDeleted = dto.IsDeleted,
+                DeletedDate = dto.DeletedDate,
+                DeletedBy = dto.DeletedBy,
+            };
+        }
     }
 }

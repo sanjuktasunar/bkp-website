@@ -1,0 +1,177 @@
+﻿@model Web.Entity.Dto.MemberDto
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h2 class="h3 mb-0 text-gray-800">Member Details</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Fund Development</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Member</li>
+        </ol>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <b>Personal Details</b>
+                    <div class="row">
+                        <label class="col-md-6">
+                            Full Name : @Model.FullName
+                        </label>
+                        <label class="col-md-6">
+                            Father's Name : @Model.FathersName
+                        </label>
+                        <label class="col-md-5">
+                            Husband's Name : @Model.HusbandName
+                        </label>
+                        <label class="col-md-2">
+                            Age : @Model.Age
+                        </label>
+                        <label class="col-md-5">
+                            Citizenship Number: @Model.CitizenshipNumber
+                        </label>
+
+                        <label class="col-md-6">
+                            Is Approved :
+                            @if (Model.IsApproved ==
+                                Web.Entity.Infrastructure.ApprovalStatus.Approved)
+                            {
+                                <span class="badge badge-success">
+                                    APPROVED
+                                </span>
+                                <span>@Model.ApprovedByFullName , @Model.ApprovedDate</span>
+                            }
+                            else if (Model.IsApproved ==
+                                Web.Entity.Infrastructure.ApprovalStatus.UnApproved)
+                            {
+                                <span class="badge badge-primary">
+                                    UNAPPROVED
+                                </span>
+                            }
+                            else if (Model.IsApproved ==
+                                Web.Entity.Infrastructure.ApprovalStatus.Rejected)
+                            {
+                                <span class="badge badge-danger">
+                                    REJECTED
+                                </span>
+                                <span class="badge badge-dark">
+                                    @Model.RejectRemarks
+                                </span>
+                            }
+                        </label>
+
+                        <label class="col-md-3">
+                            <b>Member Code</b> : @Model.MemberCode
+                        </label>
+                        <label class="col-md-3">
+                            <b>Referal Code</b> : @Model.ReferalCode
+                        </label>
+                        <label class="col-md-12">
+                            Created On : @Model.CreatedDate , @Model.CreatedByFullName
+                        </label>
+
+                    </div>
+                    <b>Contact Details</b>
+                    <div class="row">
+                        <label class="col-md-6">
+                            Contact Number : @Model.ContactNumber
+                        </label>
+                        <label class="col-md-6">
+                            Email Address : @Model.EmailAddress
+                        </label>
+                    </div>
+                    <b>Address Details</b>
+                    <div class="row">
+                        <label class="col-md-4">
+                            Former Address : @Model.FormerAddress
+                        </label>
+
+                        <label class="col-md-4">
+                            Changed Address : @Model.PermanentAddress
+                        </label>
+
+                        <label class="col-md-4">
+                            Temporary Address :  @Model.TemporaryMunicipalityName-@Model.TemporaryWardNumber
+                            , @Model.TemporaryDistrictName
+                        </label>
+                    </div>
+
+                    <b>Nominee Details</b>
+                    <div class="row">
+                        <label class="col-md-6">
+                            Full Name : @Model.NomineeName
+                        </label>
+                    </div>
+                    <br />
+                    <b>Share Details</b>
+                    <div class="row">
+                        <label class="col-md-4">
+                            Share Type : @Model.ShareTypeName
+                        </label>
+                        <label class="col-md-4">
+                            Price Per Kitta : @Model.SharePricePerKittaString
+                        </label>
+                        <label class="col-md-4">
+                            Applied Share Kitta : @Model.AppliedShareKittaString
+                        </label>
+                        <label class="col-md-4">
+                            Total Amount :
+                            <span class="badge badge-info">
+                                @Model.TotalShareAmountString
+                            </span>
+                        </label>
+                        <label class="col-md-4">
+                            Paid Amount :
+                            <span class="badge badge-success">
+                                @Model.TotalSharePaidAmountString
+                            </span>
+                        </label>
+                        <label class="col-md-4">
+                            DUE :
+                            <span class="badge badge-danger">
+                                @Model.TotalShareDueAmountString
+                            </span>
+                        </label>
+                    </div>
+                    <b>Seller Details</b>
+                    <div class="row">
+                        <label class="col-md-4">
+                            Name : @Model.SellerFullName
+                        </label>
+                        <label class="col-md-4">
+                            Phone Number : @Model.SellerPhoneNumber
+                        </label>
+                    </div>
+                    <b>Reference Details</b>
+                    <div class="row">
+                        <label class="col-md-4">
+                            Name : @Model.ReferenceFullName
+                        </label>
+                        <label class="col-md-4">
+                            Phone Number : @Model.ReferencePhoneNumber
+                        </label>
+                        <label class="col-md-4">
+                            Ref Code/Licences No. : @Model.ReferenceLicenceNumber
+                        </label>
+                    </div>
+                    <br />
+                    <a href="~/AddNewMember" class="btn btn-primary btn-sm">
+                        <i class="fa fa-plus"></i>
+                        Add New
+                    </a>
+                    <a href="~/ModifyMember/@Model.MemberId" class="btn btn-success btn-sm">
+                        <i class="fa fa-edit"></i>
+                        Modify
+                    </a>
+                    <a href="~/MemberList" class="btn btn-danger btn-sm">
+                        <i class="fa fa-window-close"></i>
+                        Close
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

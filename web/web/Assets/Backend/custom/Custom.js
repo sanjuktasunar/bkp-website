@@ -118,3 +118,21 @@ function highlightElement(element) {
         $el.parent().addClass('is-invalid');
     }
 }
+
+function ValidateCitizenshipNumber(event) {
+    var $field_value = event.target.value;
+    if ($field_value == null || $field_value.trim() == '') {
+        if (event.which == 47 || event.which == 45) {
+            event.preventDefault();
+        }
+    }
+    else if ($field_value.length > 0) {
+        if (($field_value.charAt($field_value.length - 1) == "/" || $field_value.charAt($field_value.length - 1) == "-") && (event.which == 47 || event.which == 45)) {
+            event.preventDefault();
+        }
+    }
+
+    if ((event.which < 48 || event.which > 57) && (event.which != 47) && event.which != 45) {
+        event.preventDefault();
+    }
+}

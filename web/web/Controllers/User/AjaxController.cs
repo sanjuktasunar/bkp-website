@@ -61,6 +61,9 @@ namespace web.Controllers.User
                 case "share_type_list":
                     dropdown = _dropDownService.GetDropDownShareTypes().ToList();
                     break;
+                case "share_type_with_detail_list":
+                    dropdown = _dropDownService.GetDropDownShareTypesWithDetails().ToList();
+                    break;
                 case "agent_Status_list":
                     dropdown = _dropDownService.GetDropDownAgentStatus().ToList();
                     break;
@@ -78,6 +81,9 @@ namespace web.Controllers.User
                     break;
                 case "reference_Member_List":
                     dropdown = _dropDownService.GetReferenceMemberList().ToList();
+                    break;
+                case "shareholder_List":
+                    dropdown = _dropDownService.GetShareholderList().ToList();
                     break;
                 default:
                     break;

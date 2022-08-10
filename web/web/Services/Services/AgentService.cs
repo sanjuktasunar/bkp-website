@@ -177,35 +177,40 @@ namespace web.Web.Services.Services
             if (isValidCitizen == false)
                 messageList.Add("Citizenship Number is not Valid !!!!");
 
-            var member = new MemberDto();
-            var agent = new AgentDto();
-            if (!string.IsNullOrEmpty(dto.ReferenceLicenceNumber))
-            {
-                member = await _memberRepository
-                          .GetMemberByReferalCodeAsync(dto.ReferenceLicenceNumber.ToUpper());
-                if (member != null)
-                    dto.MemberId = member.MemberId;
-                else
-                {
-                     agent = await _agentRepository.GetAgentByLicenceNumberAsync(dto.ReferenceLicenceNumber.ToUpper());
-                    if (agent != null)
-                        dto.ReferenceAgentId = agent.AgentId;
-                }
-            }
-            else
-            {
-                member = await _memberRepository
-                     .GetMemberByPhoneNumberAsync(dto.ReferencePhoneNumber.ToUpper());
+            //var member = new MemberDto();
+            //var agent = new AgentDto();
+            //if (!string.IsNullOrEmpty(dto.ReferenceLicenceNumber))
+            //{
+            //    member = await _memberRepository
+            //              .GetMemberByReferalCodeAsync(dto.ReferenceLicenceNumber.ToUpper());
+            //    if (member != null)
+            //        dto.MemberId = member.MemberId;
+            //    else
+            //    {
+            //         agent = await _agentRepository.GetAgentByLicenceNumberAsync(dto.ReferenceLicenceNumber.ToUpper());
+            //        if (agent != null)
+            //            dto.ReferenceAgentId = agent.AgentId;
+            //    }
+            //}
+            //else
+            //{
+            //    member = await _memberRepository
+            //         .GetMemberByPhoneNumberAsync(dto.ReferencePhoneNumber.ToUpper());
 
-                if (member != null)
-                    dto.MemberId = member.MemberId;
-                else
-                {
-                    agent = await _agentRepository.GetAgentByPhoneNumberAsync(dto.ReferencePhoneNumber);
-                    if (agent != null)
-                        dto.ReferenceAgentId = agent.AgentId;
-                }
-            }
+            //    if (member != null)
+            //        dto.MemberId = member.MemberId;
+            //    else
+            //    {
+            //        agent = await _agentRepository.GetAgentByPhoneNumberAsync(dto.ReferencePhoneNumber);
+            //        if (agent != null)
+            //            dto.ReferenceAgentId = agent.AgentId;
+            //    }
+            //}
+
+            var reference = await _memberRepository.GetRefernceAgentMemberId(dto.LicenceNumber, dto.ReferencePhoneNumber);
+            dto.ReferenceAgentId = reference.AgentId;
+            dto.MemberId = reference.MemberId;
+
             if (dto.ReferenceAgentId == null && dto.MemberId == null)
             {
                 messageList.Add("Lincence Number or Referal Code or Phone Number " +

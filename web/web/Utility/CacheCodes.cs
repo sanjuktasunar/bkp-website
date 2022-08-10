@@ -33,6 +33,7 @@ namespace web.Utility
         public static string ACCOUNT_HEAD_LIST = "ACCOUNT_HEAD_LIST";
         public static string MARITAL_STATUS_LIST = "MARITAL_STATUS_LIST";
         public static string OUTSIDE_COUNTRY_LIST = "OUTSIDE_COUNTRY_LIST";
+        public static string SHAREHOLDER_LIST = "SHAREHOLDER_LIST";
 
 
     }

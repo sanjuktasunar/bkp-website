@@ -46,7 +46,7 @@
 //        Task<MemberDto> GetApprovedMemberByPhoneNumber(string contactNumber);
 //    }
 
-//    public class MemberService_Old: IMemberService_Old
+//    public class MemberService_Old : IMemberService_Old
 //    {
 //        private readonly Repository<Member> _repository;
 //        private readonly Repository<Address> _addressRepository;
@@ -91,10 +91,10 @@
 //            var obj = await _repository.StoredProcedureAsync<MemberDto>("[dbo].[FilterMember]"
 //               , new
 //               {
-//                   ApprovalStatus=filterDto.ApprovalStatus,
-//                   ReferenceId=filterDto.ReferenceId,
+//                   ApprovalStatus = filterDto.ApprovalStatus,
+//                   ReferenceId = filterDto.ReferenceId,
 //                   AgentId = filterDto.AgentId,
-//                   ShareTypeId=filterDto.ShareTypeId
+//                   ShareTypeId = filterDto.ShareTypeId
 //               });
 //            return obj;
 //        }
@@ -107,8 +107,8 @@
 //                   ReferenceId = filterDto.ReferenceId,
 //                   AgentId = filterDto.AgentId,
 //                   ShareTypeId = filterDto.ShareTypeId,
-//                   SearchQuery=filterDto.SearchQuery,
-//                   Code=filterDto.Code,
+//                   SearchQuery = filterDto.SearchQuery,
+//                   Code = filterDto.Code,
 //               });
 //            return obj;
 //        }
@@ -118,7 +118,7 @@
 //            string query = "select * from dbo.[Member] " +
 //                            "where MemberId=@MemberId";
 
-//            var obj = (await _repository.QueryAsync<MemberDto>(query,new { MemberId })).FirstOrDefault();
+//            var obj = (await _repository.QueryAsync<MemberDto>(query, new { MemberId })).FirstOrDefault();
 //            return obj;
 //        }
 
@@ -187,7 +187,7 @@
 //                member.FormStatus = FormStatus.Complete;
 //                member.ApprovalStatus = ApprovalStatus.UnApproved;
 //                member.IsActive = false;
-//                int MemberId = await _repository.InsertAsync(member,_sql.conn,_sql.trans);
+//                int MemberId = await _repository.InsertAsync(member, _sql.conn, _sql.trans);
 
 //                var address = dto.ToAddressEntity();
 //                address.MemberId = MemberId;
@@ -209,7 +209,7 @@
 //                resp = _messageClass.SaveMessage(MemberId);
 //                _sql.trans.Commit();
 //            }
-//            catch(SqlException ex)
+//            catch (SqlException ex)
 //            {
 //                resp.message = ex.Message.ToString();
 //                _sql.trans.Rollback();
@@ -339,7 +339,7 @@
 //                string _sql = "select CitizenshipNumber,MemberId from dbo.[Member] " +
 //                "where CitizenshipNumber=@citizenshipNumber " +
 //                "and MemberId!=@memberId";
-//                var obj = (await _repository.QueryAsync<MemberDto>(_sql, new { citizenshipNumber, memberId=dto.MemberId })).FirstOrDefault();
+//                var obj = (await _repository.QueryAsync<MemberDto>(_sql, new { citizenshipNumber, memberId = dto.MemberId })).FirstOrDefault();
 //                if (obj != null)
 //                {
 //                    messageList.Add("Citizenship Number Already Exists!!!!");
@@ -536,7 +536,7 @@
 //                resp.messageType = "error";
 //                messageList.Add("Please select Payment Voucher or Screenshot");
 //            }
-            
+
 //            resp.messageList = messageList;
 //            return resp;
 //        }
@@ -552,7 +552,7 @@
 //                {
 //                    document.UserDocumentId = await _documentRepository.InsertAsync(document, _sql.conn, _sql.trans);
 //                }
-                
+
 //                string extension = ".jpg";
 //                if (dto.CitizenshipFrontImageString != null)
 //                {
@@ -578,7 +578,7 @@
 //                dto.UserDocumentId = _documentRepository.Update(document, _sql.conn, _sql.trans);
 //                resp.messageType = "success";
 //            }
-//            catch(Exception ex)
+//            catch (Exception ex)
 //            {
 //                resp.messageType = "error";
 //                resp.message = ex.Message.ToString();
@@ -615,7 +615,7 @@
 //            return resp;
 //        }
 
-//        public async Task<Response> ApproveMember(int MemberId, int AccountHeadId,int ShareTypeId)
+//        public async Task<Response> ApproveMember(int MemberId, int AccountHeadId, int ShareTypeId)
 //        {
 //            var response = new Response();
 //            response.messageType = "error";
@@ -639,8 +639,8 @@
 
 //            var bankDeposit = await GetMemberBankDepositById(MemberId);
 //            var shareType = await _repository.QueryAsync<ShareTypesDto>("select * from " +
-//                "dbo.ShareTypes where ShareTypeId=@id and Status=1",new { id=ShareTypeId });
-            
+//                "dbo.ShareTypes where ShareTypeId=@id and Status=1", new { id = ShareTypeId });
+
 //            try
 //            {
 //                obj.ShareTypeId = ShareTypeId;
@@ -648,7 +648,7 @@
 //                {
 //                    obj.ApprovalStatus = ApprovalStatus.Approved;
 //                    obj.IsActive = true;
-//                    await _repository.UpdateAsync(obj.ToEntity(), _sql.conn,_sql.trans);
+//                    await _repository.UpdateAsync(obj.ToEntity(), _sql.conn, _sql.trans);
 //                    response = _messageClass.SaveMessage(1);
 //                }
 //                else
@@ -661,7 +661,7 @@
 //                            obj.IsActive = true;
 //                            obj.ReferalCode = await GetReferalCode();
 //                            obj.MemberCode = await GetMemberCode();
-//                            obj.ApprovedBy =_repository.UserIdentity();
+//                            obj.ApprovedBy = _repository.UserIdentity();
 //                            obj.ApprovedDate = DateTime.Now;
 //                            await _repository.UpdateAsync(obj.ToEntity(), _sql.conn, _sql.trans);
 
@@ -682,10 +682,10 @@
 //                        }
 //                        else if (obj.ApprovalStatus == ApprovalStatus.Approved)
 //                        {
-                            
+
 //                            response.message = "This Member has been approved already";
 //                        }
-                      
+
 //                        else
 //                        {
 //                            response.message = "This member cannot be approved," +
@@ -699,11 +699,11 @@
 //                    }
 //                }
 //                _sql.trans.Commit();
-               
+
 //            }
 //            catch (SqlException ex)
 //            {
-//                response.message = ex.Message.ToString() ;
+//                response.message = ex.Message.ToString();
 //                _sql.trans.Rollback();
 //            }
 //            return response;
@@ -788,27 +788,27 @@
 //            return obj;
 //        }
 
-//        public async Task<MemberDto> GetMemberByCitizenshipNumber(string citizenshipNumber,int memberId)
+//        public async Task<MemberDto> GetMemberByCitizenshipNumber(string citizenshipNumber, int memberId)
 //        {
 //            string _sql = "select * from dbo.[Member] " +
 //                "where CitizenshipNumber=@citizenshipNumber " +
 //                "or MemberId=@memberId";
-//            var obj = await _repository.QueryAsync<MemberDto>(_sql, new { citizenshipNumber,memberId });
+//            var obj = await _repository.QueryAsync<MemberDto>(_sql, new { citizenshipNumber, memberId });
 //            return obj.FirstOrDefault();
 //        }
 
-//        public async Task<MemberDto> GetMemberByMobileNumber(string mobileNumber,int memberId)
+//        public async Task<MemberDto> GetMemberByMobileNumber(string mobileNumber, int memberId)
 //        {
 //            string _sql = "select * from dbo.[Member] where MobileNumber=@mobileNumber " +
 //                "and MemberId!=@memberId";
-//            var obj = await _repository.QueryAsync<MemberDto>(_sql, new { mobileNumber,memberId });
+//            var obj = await _repository.QueryAsync<MemberDto>(_sql, new { mobileNumber, memberId });
 //            return obj.FirstOrDefault();
 //        }
-//        public async Task<MemberDto> GetMemberByEmail(string emailAddress,int memberId)
+//        public async Task<MemberDto> GetMemberByEmail(string emailAddress, int memberId)
 //        {
 //            string _sql = "select * from dbo.[Member] where Email=@emailAddress " +
 //                "and Email is not null and Email!='' and MemberId!=@memberId";
-//            var obj = await _repository.QueryAsync<MemberDto>(_sql, new { emailAddress,memberId });
+//            var obj = await _repository.QueryAsync<MemberDto>(_sql, new { emailAddress, memberId });
 //            return obj.FirstOrDefault();
 //        }
 
@@ -869,7 +869,7 @@
 //                        return response;
 //                    }
 //                    var entity = dto.ToEntity();
-//                    entity.IsActive = dto.Status?1:0;
+//                    entity.IsActive = dto.Status ? 1 : 0;
 //                    entity.ApprovedDate = DateTime.Now;
 //                    int ShareholderId = await _shareholderRepository.InsertAsync(entity, _sql.conn, _sql.trans);
 
@@ -893,8 +893,8 @@
 //        public async Task<ShareholderDto> GetShareholderByMemberId(int memberId)
 //        {
 //            string query = "select top 1 * from dbo.[Shareholder] where MemberId=@memberId";
-//            var obj=(await _shareholderRepository.QueryAsync<ShareholderDto>
-//                (query,new { memberId })).FirstOrDefault();
+//            var obj = (await _shareholderRepository.QueryAsync<ShareholderDto>
+//                (query, new { memberId })).FirstOrDefault();
 
 //            return obj;
 //        }
