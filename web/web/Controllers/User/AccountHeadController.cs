@@ -12,7 +12,7 @@ using Web.Services.Services;
 
 namespace web.Controllers.User
 {
-    [Authorize]
+    //[Authorize]
     public class AccountHeadController : BaseController
     {
         private IAccountHeadService _accountHeadService { get; set; }

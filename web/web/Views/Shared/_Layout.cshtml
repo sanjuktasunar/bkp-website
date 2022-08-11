@@ -29,7 +29,7 @@
 </head>
 <body id="page-top">
     @{
-        //stock.Data.Dtos.UsersDto usersInfo = ViewBag.UsersInfo;
+        Web.Entity.Dto.UsersDto usersInfo = ViewBag.UsersInfo;
     }
     <div class="messagealert" id="alert_container">
     </div>
@@ -135,16 +135,16 @@
                                 <img class="img-profile rounded-circle"
                                      src="~/Assets/Backend/img/boy.png"
                                      style="max-width: 60px">
-                                @*<span class="ml-2 d-none d-lg-inline text-white small">
-                                        @usersInfo.FullName <br />
-                                        (@usersInfo.BranchName)
-                                    </span>*@
+                                <span class="ml-2 d-none d-lg-inline text-white small">
+                                        @*@usersInfo.FullName <br />
+                                        (@usersInfo.)*@
+                                    </span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right
                                  shadow animated--grow-in"
                                  aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#">
-                                    @*@usersInfo.FullName (@usersInfo.BranchName)*@
+                                    @usersInfo.FullName (@usersInfo.RoleName)
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="~/ViewProfile">

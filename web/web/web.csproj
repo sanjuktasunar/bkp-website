@@ -318,6 +318,8 @@
     <Compile Include="Utility\NumberSettings.cs" />
     <Compile Include="Utility\Register_Services.cs" />
     <Compile Include="Utility\Security.cs" />
+    <Compile Include="Utility\SessionCodes.cs" />
+    <Compile Include="Utility\SessionManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Backend\css\Custom.css" />

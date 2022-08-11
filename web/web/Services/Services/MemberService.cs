@@ -240,7 +240,6 @@ namespace web.Services.Services
 
                 resp.messageType = "success";
                 resp.message = "Member approved successfully!!!!!!";
-
                 _sql.trans.Commit();
             }
             catch (SqlException ex)

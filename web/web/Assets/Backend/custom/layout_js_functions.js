@@ -1,7 +1,8 @@
 ﻿
 $(document).ready(function () {
     PageLoad_Nav_Active_Inactive();
-})
+});
+
 
 function PageLoad_Nav_Active_Inactive() {
     var nav_Name = window.location.pathname.trim()
@@ -39,6 +40,8 @@ $(".ClearAllCache").click(function (event) {
         }
     })
 });
+
+
 
 /***********************not remove,will useful later*******************/
 //function PageLoad_Nav_Active_Inactive() {

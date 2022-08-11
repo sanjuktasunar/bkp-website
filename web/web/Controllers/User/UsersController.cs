@@ -10,7 +10,7 @@ using Web.Entity.Dto;
 
 namespace web.Controllers.User
 {
-    [Authorize]
+    //[Authorize]
     public class UsersController : BaseController
     {
         private IUsersService _usersService { get; set; }

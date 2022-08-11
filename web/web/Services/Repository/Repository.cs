@@ -8,7 +8,9 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using web.Utility;
 using web.Web.Entity.Infrastructure;
+using Web.Entity.Dto;
 
 namespace web.Web.Services
 {
@@ -21,6 +23,7 @@ namespace web.Web.Services
     {
         string con;
         int WaitingTime;
+        SessionManager sessionManager = new SessionManager();
         public Repository()
         {
             con = ConfigurationManager.ConnectionStrings["ConnectionString"].ToString();
@@ -272,11 +275,20 @@ namespace web.Web.Services
         public int UserIdentity()
         {
             int UserId = 0;
-            if (HttpContext.Current.User.Identity.IsAuthenticated)
-            {
-                UserId = Convert.ToInt32(HttpContext.Current.User.Identity.Name.ToString());
-            }
+            var usersDto = LoginUserData();
+            if (usersDto != null)
+                UserId = usersDto.UserId;
+
             return UserId;
+        }
+
+        public UsersDto LoginUserData()
+        {
+            var users = sessionManager.ReadFromSessionCookie();
+            if (users.UserId <= 0)
+                return null;
+
+            return users;
         }
     }
 }

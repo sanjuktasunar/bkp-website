@@ -7,7 +7,7 @@ using web.Utility;
 
 namespace web.Controllers.User
 {
-    [Authorize]
+    //[Authorize]
     public class DashboardController : BaseController
     {
         private readonly InitialSetupModel _initialSetupModel;

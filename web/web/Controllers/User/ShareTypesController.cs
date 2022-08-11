@@ -12,7 +12,7 @@ using Web.Services.Services;
 
 namespace web.Controllers.User
 {
-    [Authorize]
+    //[Authorize]
     public class ShareTypesController : BaseController
     {
         private IShareTypesService _shareTypeService { get; set; }

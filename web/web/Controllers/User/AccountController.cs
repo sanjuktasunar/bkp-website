@@ -12,17 +12,19 @@ using Web.Entity.Infrastructure;
 
 namespace web.Controllers.User
 {
-    [Authorize]
+    //[Authorize]
     public class AccountController : Controller
     {
         private IUsersService _usersService;
         private readonly InitialSetupModel setupModel;
         private readonly CacheManager cacheManager;
+        private readonly SessionManager sessionManager;
         public AccountController(IUsersService usersService)
         {
             _usersService = usersService;
             setupModel = new InitialSetupModel();
             cacheManager = new CacheManager();
+            sessionManager = new SessionManager();
         }
 
         [HttpGet]
@@ -30,14 +32,15 @@ namespace web.Controllers.User
         [Route("~/Login")]
         public ActionResult Login()
         {
-            if (User.Identity.IsAuthenticated)
+            if (Session.Count > 0)
             {
-                return Redirect(setupModel.RedirectUrl_Dashboard);
+                if (Session[SessionCodes.SITE_USER_LOGIN_ID].ToString() != null)
+                {
+                    return Redirect(setupModel.RedirectUrl_Dashboard);
+                }
+                sessionManager.ClearAllSession();
             }
-            else
-            {
-                return View();
-            }
+            return View();
         }
 
         [HttpPost]
@@ -56,7 +59,7 @@ namespace web.Controllers.User
                 {
                     resp.messageType = "success";
                     resp.message = "Login Successfull!!!";
-                    FormsAuthentication.SetAuthCookie(data.UserId.ToString(), true);
+                    sessionManager.SetToSessionCookie(data);
                 }
                 else if (data.UserStatusId == 2)
                 {
@@ -82,7 +85,7 @@ namespace web.Controllers.User
         {
             ClearCookie();
             cacheManager.ClearAllCache();
-            FormsAuthentication.SignOut();
+            sessionManager.ClearAllSession();
         }
 
         public void ClearCookie()

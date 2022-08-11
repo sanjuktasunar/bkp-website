@@ -12,7 +12,7 @@ using Web.Services.Services;
 
 namespace web.Controllers.User
 {
-    [Authorize]
+    //[Authorize]
     public class DepartmentController : BaseController
     {
         private IDepartmentService _departmentService { get; set; }

@@ -11,6 +11,7 @@ using Web.Services.Services;
 
 namespace web.Controllers.User
 {
+    //[Authorize]
     public class MenusController : BaseController
     {
         private IMenusService _menusService { get; set; }

@@ -2,7 +2,6 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div class="container-fluid" id="container-wrapper">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h2 class="h3 mb-0 text-gray-800">Member Details</h2>
@@ -157,6 +156,36 @@
                         </label>
                     </div>
                     <br />
+                    <b>Payment Details</b><br />
+                    <button class="btn btn-sm btn-success"
+                            type="submit" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                            title="Make New Payment">
+                        <i class="fas fa-plus"></i> New
+                    </button>
+                    <table class="table align-items-center table-flush table-hover" id="dataTable">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>S.N.</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ int i = 0; }
+                            @foreach (var x in Model.MemberPaymentLogDtos)
+                            {
+                                i++;
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@x.Amount</td>
+                                    <td>
+                                        @x.CreatedDate
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <br />
                     <a href="~/AddNewMember" class="btn btn-primary btn-sm">
                         <i class="fa fa-plus"></i>
                         Add New
@@ -173,5 +202,151 @@
             </div>
         </div>
     </div>
-    
 </div>
+
+<!-- add payment -->
+@*<div class="modal fade" id="mdlAddNewSharePayment" tabindex="-1" role="dialog" aria-labelledby="mdlAddNewSharePayment" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Make Share Payment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form id="member_Shareholder_form">
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Share Amount</label>
+                                                <input type="text" placeholder="Enter Share Amount"
+                                                       name="Amount" id="txtShareAmount"
+                                                       class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div style="float:right">
+                                    <button type="submit" id="btnAddSharePayment"
+                                            class="btn btn-primary">
+                                        Save
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<!-- Modal -->
+<div class="modal fade" id="mdlAddShareAmount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+     data-keyboard="false" data-backdrop="static"
+     aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabelLogout">
+                    Add/Modify Share Amount
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="AddShareAmount">
+                    <input type="hidden" value="@Model.MemberId" name="MemberId" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <input type="text" placeholder="Enter Amount"
+                                    class="form-control" name="Amount" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="divBankDetails">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Bank Name</label>
+                                <input type="text" placeholder="Enter Bank Name"
+                                       name="BankName" id="BankName"
+                                       class="form-control"
+                                       value="" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Cheque Number</label>
+                                <input type="text" placeholder="Enter Cheque Number"
+                                       name="ChequeNumber" id="ChequeNumber"
+                                       class="form-control"
+                                       value="" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Clearance Date (YYYY/MM/DD) </label>
+                                <input type="text"
+                                       value=""
+                                       class="form-control"
+                                       name="ClearanceDateBS"
+                                       id="ClearanceDateBS"
+                                       placeholder="Clear Date(YYYY/MM/DD)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary"
+                                id="btnAddPayment">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+                <div class="table-responsive p-3">
+                    <table class="table align-items-center table-flush table-hover"
+                           id="tblPaymentRecords">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>S.N.</th>
+                                <th>Payment Mode</th>
+                                <th>Amount</th>
+                                <th>Bank Details</th>
+                                <th>Cheque Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/web/backend/jquery-ui")
+<script>
+    $(document).ready(function () {
+        $("#exampleModal").modal();
+    })
+    //$("#btnMemberAddNewPayment").click(function (evt) {
+    //    $("modal").modal();
+    //    //$("mdlPayment").modal();
+    //    //clearAllTextBox();
+    //})
+
+    function clearAllTextBox() {
+        $("#txtShareAmount").val('');
+        unhighlightElement("#txtShareAmount");
+    }
+</script>

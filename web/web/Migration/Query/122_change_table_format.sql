@@ -334,3 +334,76 @@ GO
 UPDATE dbo.[Users] set FullName=N'System Admin'
 where UserId=1
 GO
+
+GO
+create table #staff_temp
+(
+	Id int Identity(1,1),
+	UserId int,
+	StaffName nvarchar(200)
+)
+
+insert into #staff_temp(UserId,StaffName)
+select UserId,StaffName from dbo.[Staffs]
+
+declare @count_user int,@user_id int,@staff_name nvarchar(200)
+set @count_user=(select max(Id) from dbo.#staff_temp)
+while(@count_user>0)
+begin
+	select @user_id=UserId,@staff_name=StaffName
+	from #staff_temp where Id=@count_user
+
+	update dbo.[Users] set FullName=@staff_name where UserId=@user_id
+	set @count_user=@count_user-1
+end
+
+drop table #staff_temp
+GO
+
+GO
+ALTER PROC [dbo].[MenuAccessFor_LoginUser]
+(
+	@UserId int,
+	@CheckMenuName nvarchar(100)
+)
+AS
+BEGIN
+
+-- exec [dbo].[MenuAccessFor_LoginUser] 1,'test'
+	declare @IsSuperAdmin bit,@RoleName nvarchar(100),@FullName nvarchar(200)
+	select @IsSuperAdmin=u.IsSuperAdmin,@RoleName=r.RoleName,@FullName=u.FullName
+					from dbo.[Users] u
+					left join dbo.[Role] r on r.RoleId=u.RoleId
+					where u.UserId=@UserId
+
+	if(@IsSuperAdmin=1)
+	begin
+		select 1 as AdminAccess,@RoleName as RoleName,@FullName as FullName
+		return;
+	end
+	else
+	begin
+		SELECT map.*,@RoleName as RoleName,u.FullName
+		FROM
+			dbo.MenuAccessPermission map
+		INNER JOIN 
+			dbo.Menus m on m.MenuId=map.MenuId
+		LEFT JOIN
+			dbo.[Role] r on r.RoleId=map.RoleId
+		LEFT JOIN
+			dbo.[Users] u on u.RoleId=r.RoleId
+
+		WHERE
+			u.UserId=@UserId
+			and
+			u.UserStatusId=1
+			and
+			m.[Status]=1
+			and
+			r.[Status]=1
+			and
+			TRIM(m.CheckMenuName)=TRIM(@CheckMenuName)
+	end
+	
+END
+GO

@@ -11,7 +11,7 @@ using Web.Entity.Dto;
 
 namespace web.Controllers.User
 {
-    [Authorize]
+    //[Authorize]
     public class MemberController : BaseController
     {
         private IMemberService _memberService { get; set; }
