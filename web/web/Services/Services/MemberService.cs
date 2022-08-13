@@ -88,6 +88,7 @@ namespace web.Services.Services
         public async Task<Response> Insert(MemberDto dto)
         {
             var resp = new Response();
+            var _sql = _repository.GetSqlTransactionDetails();
             resp.messageType = "error";
             try
             {
@@ -100,18 +101,31 @@ namespace web.Services.Services
                 if (dto.response.messageType == "error")
                     return dto.response;
 
-                int MemberId = await _repository.InsertAsync(dto.ToEntity());
+                int MemberId = await _repository.InsertAsync(dto.ToEntity(), 
+                    _sql.conn, _sql.trans);
+
+                var paymentLog = new MemberPaymentLog();
+                paymentLog.Amount = Convert.ToDecimal(dto.TotalSharePaidAmount);
+                paymentLog.MemberId = MemberId;
+                paymentLog.CreatedDate = DateTime.Now;
+                paymentLog.CreatedBy = _repository.UserIdentity();
+                paymentLog.IsDeleted = false;
+                await _memberPaymentRepository.InsertAsync(paymentLog, _sql.conn, _sql.trans);
+
                 resp = _messageClass.SaveMessage(MemberId);
+                _sql.trans.Commit();
             }
             catch (SqlException ex)
             {
                 resp.message = ex.Message.ToString();
+                _sql.trans.Rollback();
             }
             return resp;
         }
 
         public async Task<Response> Update(MemberDto dto)
         {
+            var _sql = _repository.GetSqlTransactionDetails();
             var resp = new Response();
             resp.messageType = "error";
             try
@@ -119,6 +133,12 @@ namespace web.Services.Services
                 var memberDto = await GetMemberById(dto.MemberId);
                 if (memberDto == null)
                     return _messageClass.NotFoundMessage();
+
+                if (memberDto.IsApproved != ApprovalStatus.UnApproved)
+                {
+                    resp.message = "This member is either approved or rejected,You cannot modify data from here,please go through another way!!!";
+                    return resp;
+                }
 
                 dto.IsApproved = ApprovalStatus.UnApproved;
                 dto = await ValidateMember(dto);
@@ -149,12 +169,32 @@ namespace web.Services.Services
                 memberDto.UpdatedBy = _repository.UserIdentity();
                 memberDto.UpdatedDate = DateTime.Now;
 
-                int MemberId = await _repository.UpdateAsync(memberDto.ToEntity());
+                int MemberId = await _repository.UpdateAsync(memberDto.ToEntity(),_sql.conn,_sql.trans);
+
+                var paymentDto = await _memberRepository.GetMemberPaymentLog(memberDto.MemberId);
+                if (paymentDto.Count() == 0)
+                {
+                    var paymentLog = new MemberPaymentLog();
+                    paymentLog.Amount = Convert.ToDecimal(dto.TotalSharePaidAmount);
+                    paymentLog.MemberId = MemberId;
+                    paymentLog.CreatedDate = DateTime.Now;
+                    paymentLog.CreatedBy = _repository.UserIdentity();
+                    paymentLog.IsDeleted = false;
+                    await _memberPaymentRepository.InsertAsync(paymentLog, _sql.conn, _sql.trans);
+                }
+                else
+                {
+                    var paymentLog = paymentDto.FirstOrDefault();
+                    paymentLog.Amount = Convert.ToDecimal(dto.TotalSharePaidAmount);
+                    await _memberPaymentRepository.UpdateAsync(paymentLog.ToEntity(), _sql.conn, _sql.trans);
+                }
                 resp = _messageClass.SaveMessage(MemberId);
+                _sql.trans.Commit();
             }
             catch (SqlException ex)
             {
                 resp.message = ex.Message.ToString();
+                _sql.trans.Rollback();
             }
             return resp;
         }
@@ -230,14 +270,6 @@ namespace web.Services.Services
                     return resp;
                 }
 
-                var paymentLog = new MemberPaymentLog();
-                paymentLog.Amount = Convert.ToDecimal(memberDto.TotalSharePaidAmount);
-                paymentLog.MemberId = memberDto.MemberId;
-                paymentLog.CreatedDate = DateTime.Now;
-                paymentLog.CreatedBy = _repository.UserIdentity();
-                paymentLog.IsDeleted = false;
-                await _memberPaymentRepository.InsertAsync(paymentLog, _sql.conn, _sql.trans);
-
                 resp.messageType = "success";
                 resp.message = "Member approved successfully!!!!!!";
                 _sql.trans.Commit();
@@ -291,6 +323,12 @@ namespace web.Services.Services
                 if (memberDto == null)
                     return _messageClass.NotFoundMessage();
 
+                if (memberDto.IsApproved != ApprovalStatus.Approved)
+                {
+                    resp.message = "Member must be approved to perform this action!!!!";
+                    return resp;
+                }
+
                 if (dto.Amount <= 0)
                 {
                     resp.message = "Payment amount must be greater than zero";
@@ -298,9 +336,15 @@ namespace web.Services.Services
                 }
 
                 var dueAmount = memberDto.TotalShareAmount - memberDto.TotalSharePaidAmount;
+                if (dueAmount == 0)
+                {
+                    resp.message = "No Due Left,All Payment has cleared";
+                    return resp;
+                }
                 if (dueAmount < dto.Amount)
                 {
-                    resp.message = "Due Amount is only " + dueAmount;
+                    resp.message = "Due amount is only "+dueAmount;
+                    return resp;
                 }
                 memberDto.TotalSharePaidAmount = Convert.ToDecimal(memberDto.TotalSharePaidAmount) + dto.Amount;
 

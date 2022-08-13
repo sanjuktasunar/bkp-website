@@ -285,9 +285,11 @@ namespace web.Web.Services
         public UsersDto LoginUserData()
         {
             var users = sessionManager.ReadFromSessionCookie();
-            if (users.UserId <= 0)
+            if (users == null)
                 return null;
 
+            if (users.UserId <= 0)
+                return null;
             return users;
         }
     }

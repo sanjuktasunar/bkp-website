@@ -1,6 +1,8 @@
 ﻿@model Web.Entity.Dto.MemberDto
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    NumberSettings numberSettings = new NumberSettings();
+    Web.Entity.Dto.MenuAccessPermissionDto menus = ViewBag.Menus;
 }
 <div class="container-fluid" id="container-wrapper">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -129,9 +131,18 @@
                         </label>
                         <label class="col-md-4">
                             DUE :
-                            <span class="badge badge-danger">
-                                @Model.TotalShareDueAmountString
-                            </span>
+                            @if (Model.TotalShareDueAmount > 0)
+                            {
+                                <span class="badge badge-danger">
+                                    @Model.TotalShareDueAmountString
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-success">
+                                    CLEARED
+                                </span>
+                            }
                         </label>
                     </div>
                     <b>Seller Details</b>
@@ -157,11 +168,15 @@
                     </div>
                     <br />
                     <b>Payment Details</b><br />
-                    <button class="btn btn-sm btn-success"
-                            type="submit" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                            title="Make New Payment">
-                        <i class="fas fa-plus"></i> New
-                    </button>
+                    @if (Model.TotalShareDueAmount > 0 && menus.WriteAccess && Model.IsApproved == Web.Entity.Infrastructure.ApprovalStatus.Approved)
+                    {
+                        <button class="btn btn-sm btn-success"
+                                type="submit" data-bs-toggle="modal"
+                                id="btnAddSharePayment"
+                                title="Make New Payment">
+                            <i class="fas fa-plus"></i> Payment
+                        </button>
+                    }
                     <table class="table align-items-center table-flush table-hover" id="dataTable">
                         <thead class="thead-light">
                             <tr>
@@ -177,7 +192,9 @@
                                 i++;
                                 <tr>
                                     <td>@i</td>
-                                    <td>@x.Amount</td>
+                                    <td>
+                                        @numberSettings.CommaSeparate(x.Amount)
+                                    </td>
                                     <td>
                                         @x.CreatedDate
                                     </td>
@@ -190,10 +207,23 @@
                         <i class="fa fa-plus"></i>
                         Add New
                     </a>
-                    <a href="~/ModifyMember/@Model.MemberId" class="btn btn-success btn-sm">
-                        <i class="fa fa-edit"></i>
-                        Modify
-                    </a>
+                    @if (Model.IsApproved == Web.Entity.Infrastructure.ApprovalStatus.UnApproved)
+                    {
+                        <a href="~/ModifyMember/@Model.MemberId" 
+                           class="btn btn-success btn-sm">
+                            <i class="fa fa-edit"></i>
+                            Modify
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="~/ModifyApprovedMember/@Model.MemberId" 
+                           class="btn btn-secondary btn-sm">
+                            <i class="fa fa-edit"></i>
+                            Modify
+                        </a>
+                    }
+
                     <a href="~/MemberList" class="btn btn-danger btn-sm">
                         <i class="fa fa-window-close"></i>
                         Close
@@ -204,52 +234,11 @@
     </div>
 </div>
 
-<!-- add payment -->
-@*<div class="modal fade" id="mdlAddNewSharePayment" tabindex="-1" role="dialog" aria-labelledby="mdlAddNewSharePayment" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Make Share Payment</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <form id="member_Shareholder_form">
-                                <fieldset>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Share Amount</label>
-                                                <input type="text" placeholder="Enter Share Amount"
-                                                       name="Amount" id="txtShareAmount"
-                                                       class="form-control" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                                <div style="float:right">
-                                    <button type="submit" id="btnAddSharePayment"
-                                            class="btn btn-primary">
-                                        Save
-                                    </button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>*@
-
 <!-- Modal -->
-<div class="modal fade" id="mdlAddShareAmount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+<div class="modal fade" id="mdlAddShareAmount" tabindex="-1" role="dialog" aria-labelledby="mdlAddShareAmount"
      data-keyboard="false" data-backdrop="static"
      aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabelLogout">
@@ -260,75 +249,35 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div class="row">
+                    <label class="col-md-12"><b>TOTAL DUE : </b>
+                        <span class="badge badge-danger">
+                            @Model.TotalShareDueAmountString
+                        </span>
+                    </label>
+                </div>
                 <form id="AddShareAmount">
                     <input type="hidden" value="@Model.MemberId" name="MemberId" />
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label>Amount</label>
                                 <input type="text" placeholder="Enter Amount"
-                                    class="form-control" name="Amount" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" id="divBankDetails">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Bank Name</label>
-                                <input type="text" placeholder="Enter Bank Name"
-                                       name="BankName" id="BankName"
-                                       class="form-control"
-                                       value="" />
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Cheque Number</label>
-                                <input type="text" placeholder="Enter Cheque Number"
-                                       name="ChequeNumber" id="ChequeNumber"
-                                       class="form-control"
-                                       value="" />
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Clearance Date (YYYY/MM/DD) </label>
-                                <input type="text"
-                                       value=""
-                                       class="form-control"
-                                       name="ClearanceDateBS"
-                                       id="ClearanceDateBS"
-                                       placeholder="Clear Date(YYYY/MM/DD)" />
+                                    class="form-control" name="Amount" id="txtShareAmount" />
                             </div>
                         </div>
                     </div>
                     <div>
                         <button type="submit" class="btn btn-primary"
-                                id="btnAddPayment">
+                                id="btnSaveShareAmount">
                             Save
                         </button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" 
+                                data-dismiss="modal">
+                            Cancel
+                        </button>
                     </div>
                 </form>
-                <div class="table-responsive p-3">
-                    <table class="table align-items-center table-flush table-hover"
-                           id="tblPaymentRecords">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>S.N.</th>
-                                <th>Payment Mode</th>
-                                <th>Amount</th>
-                                <th>Bank Details</th>
-                                <th>Cheque Status</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
             </div>
         </div>
     </div>
@@ -336,17 +285,38 @@
 
 @Scripts.Render("~/web/backend/jquery-ui")
 <script>
-    $(document).ready(function () {
-        $("#exampleModal").modal();
+    $("#btnAddSharePayment").click(function (evt) {
+        $("#mdlAddShareAmount").modal();
+        clearAllTextBox();
     })
-    //$("#btnMemberAddNewPayment").click(function (evt) {
-    //    $("modal").modal();
-    //    //$("mdlPayment").modal();
-    //    //clearAllTextBox();
-    //})
 
     function clearAllTextBox() {
         $("#txtShareAmount").val('');
         unhighlightElement("#txtShareAmount");
     }
+
+    $("#btnSaveShareAmount").click(function (evt) {
+        evt.preventDefault();
+        var txtAmount = $("#txtShareAmount").val();
+        if (!txtAmount.length) {
+            highlightElement("#txtShareAmount");
+            return false;
+        }
+
+        $("#btnSaveShareAmount").html('Saving......');
+        $("#btnSaveShareAmount").prop('disabled', true);
+        $.ajax({
+            type: 'post',
+            url: '/Member/AddPaymentLog',
+            data: { Amount: txtAmount, MemberId: '@Model.MemberId' },
+            success: function (resp) {
+                $("#btnSaveShareAmount").prop('disabled', false);
+                $("#btnSaveShareAmount").html('Save');
+                showResultMessage(resp, "/MemberDetails/@Model.MemberId");
+            },
+            error: function (resp) {
+                showResultMessage(resp);
+            },
+        });
+    })
 </script>

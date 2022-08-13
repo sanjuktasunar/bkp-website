@@ -18,6 +18,7 @@ namespace web.Services
         Task<string> GetMemberCode();
         Task<RefernceIdsDto> GetRefernceAgentMemberId(string ReferenceLicenceNumber,
             string PhoneNumber);
+        Task<IEnumerable<MemberPaymentLogDto>> GetMemberPaymentLog(int memberId);
     }
 
     public class MemberRepository:IMemberRepository

@@ -378,7 +378,7 @@ BEGIN
 
 	if(@IsSuperAdmin=1)
 	begin
-		select 1 as AdminAccess,@RoleName as RoleName,@FullName as FullName
+		select 1 as AdminAccess,@RoleName as RoleName,@FullName as FullName,@UserId as UserId
 		return;
 	end
 	else

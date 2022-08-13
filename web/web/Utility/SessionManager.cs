@@ -35,13 +35,13 @@ namespace web.Utility
 
             if (string.IsNullOrEmpty(session_user_id))
                 return null;
+
             usersDto.UserId = Convert.ToInt32(security.DecryptText(session_user_id));
             if (!string.IsNullOrEmpty(session_full_name))
                 usersDto.FullName = security.DecryptText(session_full_name);
 
             if (!string.IsNullOrEmpty(session_role_name))
                 usersDto.RoleName = security.DecryptText(session_role_name);
-
             return usersDto;
         }
 
