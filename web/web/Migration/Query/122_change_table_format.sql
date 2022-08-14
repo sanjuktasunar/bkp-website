@@ -407,3 +407,55 @@ BEGIN
 	
 END
 GO
+
+GO
+ALTER PROC [dbo].[FilterShareholder]
+(
+	@ReferenceId int,
+	@AgentId int,
+	@ShareTypeId int,
+	@SearchQuery nvarchar(50),
+	@Code nvarchar(50)
+)
+AS
+BEGIN
+	
+	SELECT s.ShareholderId,s.TotalKitta,s.ApprovedDate,s.IsActive,
+	m.MemberId,m.FullName,
+	m.ContactNumber,m.EmailAddress,m.CreatedDate,m.ReferalCode,m.MemberCode,
+	m.CitizenshipNumber,
+	(case when isnull(m.ReferenceId,0)=0 then a.AgentFullName else m1.FullName end)  as ReferenceFullName
+	,st.ShareTypeName
+	FROM dbo.[Shareholder] s
+	inner join dbo.[Member] m on s.MemberId=m.MemberId
+	inner join dbo.[ShareTypes] st on st.ShareTypeId=s.ShareTypeId
+	left join [dbo].[Member] m1 on m1.MemberId=m.ReferenceId
+	left join [dbo].[Agent] a on a.AgentId=m.AgentId
+	
+	WHERE
+	(
+		(isnull(@ReferenceId,0)=0 OR m.ReferenceId=@ReferenceId)
+		AND
+		(isnull(@AgentId,0)=0 OR m.AgentId=@AgentId)
+		AND
+		(isnull(@ShareTypeId,0)=0 OR m.ShareTypeId=@ShareTypeId)
+		AND
+		(
+			((isnull(@SearchQuery,'')='') OR
+			 (m.FullName like N'%'+@SearchQuery+'%') OR
+			 (m.EmailAddress like N'%'+@SearchQuery+'%') OR
+			 (m.ContactNumber like N'%'+@SearchQuery+'%') OR
+			 (m.CitizenshipNumber like N'%'+@SearchQuery+'%')
+			)
+		)
+		AND
+		(
+			((isnull(@Code,'')='') OR
+			 (m.MemberCode like N'%'+@Code+'%') OR
+			 (m.ReferalCode like N'%'+@Code+'%')
+			)
+		)
+	)
+	ORDER BY s.ApprovedDate desc
+END
+GO

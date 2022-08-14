@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using web.Model.Dto;
 using web.Web.Services;
 using Web.Entity.Dto;
 using Web.Entity.Entity;
@@ -19,6 +20,8 @@ namespace web.Services
         Task<RefernceIdsDto> GetRefernceAgentMemberId(string ReferenceLicenceNumber,
             string PhoneNumber);
         Task<IEnumerable<MemberPaymentLogDto>> GetMemberPaymentLog(int memberId);
+        Task<ShareholderDto> GetShareholderByMemberId(int memberId);
+        Task<ShareholderDto> GetShareholderByShareholderIdAsync(int id);
     }
 
     public class MemberRepository:IMemberRepository
@@ -70,6 +73,23 @@ namespace web.Services
                             "IsApproved=2";
 
             var obj = (await _repository.QueryAsync<MemberDto>(query, new { contactNumber })).FirstOrDefault();
+            return obj;
+        }
+
+        public async Task<ShareholderDto> GetShareholderByMemberId(int memberId)
+        {
+            string query = "select * from dbo.[Shareholder] " +
+                            "where MemberId=@memberId";
+
+            var obj = (await _repository.QueryAsync<ShareholderDto>(query, new { memberId })).FirstOrDefault();
+            return obj;
+        }
+
+        public async Task<ShareholderDto> GetShareholderByShareholderIdAsync(int id)
+        {
+            string query = "select top 1 * from dbo.[Shareholder] where ShareholderId=@id";
+            var obj = (await _repository.QueryAsync<ShareholderDto>
+                (query, new { id })).FirstOrDefault();
             return obj;
         }
 

@@ -72,6 +72,10 @@ namespace Web.Entity.Dto
         public string ApprovedByFullName { get; set; }
         public string CreatedByFullName { get; set; }
 
+        public int TotalKitta { get; set; }
+        public int ShareholderId { get; set; }
+        public bool IsActive { get; set; }
+
         public Response response { get; set; }
         public IEnumerable<MemberPaymentLogDto> MemberPaymentLogDtos { get; set; }
     }

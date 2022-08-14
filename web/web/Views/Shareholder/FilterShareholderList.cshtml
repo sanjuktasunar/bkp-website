@@ -20,7 +20,7 @@
         </tr>
     </thead>
     <tbody>
-        @{ int i = 0,totalShareKitta = 0,totalActiveShareKitta=0; }
+        @{ int i = 0, totalShareKitta = 0, totalActiveShareKitta = 0; }
         @foreach (var x in Model)
         {
             i++;
@@ -31,13 +31,15 @@
                     <input type="hidden" value="@x.ShareholderId" />
                 </td>
                 <td>
-                    <label>Fullname : @x.FullName </label><br />
-                    <label>Phone : @x.MobileNumber</label><br />
-                    <label>Email : @x.Email </label><br />
-                    <label>Citizen : @x.CitizenshipNumber </label><br />
-                    <label>
-                        Date : @Convert.ToDateTime(x.ApprovedDate).ToShortDateString()
-                    </label>
+                    <a href="~/MemberDetails/@x.MemberId" target="_blank">
+                        <label>Fullname : @x.FullName </label><br />
+                        <label>Phone : @x.ContactNumber</label><br />
+                        <label>Email : @x.EmailAddress </label><br />
+                        <label>Citizen : @x.CitizenshipNumber </label><br />
+                        <label>
+                            Date : @Convert.ToDateTime(x.ApprovedDate).ToShortDateString()
+                        </label>
+                    </a>
                 </td>
                 <td>
                     <label>@x.ReferalCode</label> <br />
@@ -49,11 +51,11 @@
                     {
                         totalActiveShareKitta += x.TotalKitta;
                         <span class="badge badge-success"> Active </span>
-                     }
-                     else
-                     {
+                    }
+                    else
+                    {
                         <span class="badge badge-danger"> InActive </span>
-                     }
+                    }
                 </td>
                 <td>
                     @x.ShareTypeName
@@ -62,28 +64,12 @@
                     @numberSettings.CommaSeparate(x.TotalKitta)
                 </td>
                 <td>
-
-                    @if (x.IsActive == true)
-                    {
-
-                    }
-                    <a href="~/MemberDetails/@x.MemberId"
-                       target="_blank"
-                       class="btn btn-primary btn-circle btn-sm"
-                       id="btnView" title="View Details">
-                        <i class="fas fa-eye"></i>
-                    </a>
                     @if (menu.ModifyAccess)
                     {
-                        <a href="~/ModifyShareholder/@x.ShareholderId"
+                        <a href="~/ModifyApprovedMember/@x.MemberId"
+                           target="_blank"
                            class="btn btn-success btn-circle btn-sm"
-                           title="Modify Data">
-                            <i class="fas fa-edit"></i>
-                        </a>
-
-                        <a href="~/ModifyMember/@x.MemberId?return_Url=/ShareholderList"
-                           class="btn btn-secondary btn-circle btn-sm"
-                           title="Modify Member">
+                           title="Modify Shareholder Data">
                             <i class="fas fa-edit"></i>
                         </a>
                     }
@@ -114,9 +100,9 @@
         </tr>
     </tfoot>
 </table>
-@Scripts.Render("~/web/back-end/js")
-<script src="~/Assets/Backend/vendor/bootstrap/js/bootstrap.min.js"></script>
-<script src="~/Assets/Backend/js/custom/filterMemberList.js"></script>
+@Scripts.Render("~/web/backend/jquery-ui")
+@Scripts.Render("~/web/backend/datatables")
+
 
 <script>
     $("#dataTable").on('click', '#btnDeleteShareholder', function (event) {

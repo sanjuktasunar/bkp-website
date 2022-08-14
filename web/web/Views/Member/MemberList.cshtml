@@ -133,6 +133,13 @@
                             <i class="fas fa-window-close"></i> Reject
                         </button>
                     }
+                    @if (menus.AdminAccess)
+                    {
+                        <button id="btnAddToShareholder"
+                                class="btn btn-secondary btn-sm btn-member-list">
+                            <i class="fas fa-plus"></i> Shareholder
+                        </button>
+                    }
                 </div>                
                 <div class="table-responsive p-3" id="result">
                     <i class="fas fa-cog"></i> Loading...............
@@ -193,10 +200,12 @@
         $("#btnApproveMember").show();
         $("#btnEditMember").show();
         $("#btnEditMemberApprove").hide();
+        $("#btnAddToShareholder").hide();
         if (ApprovalStatus == 2) {
             $("#btnApproveMember").hide();
             $("#btnEditMember").hide();
             $("#btnEditMemberApprove").show();
+            $("#btnAddToShareholder").show();
         }
         else if (ApprovalStatus==3) {
             $("#btnRejectMember").hide();

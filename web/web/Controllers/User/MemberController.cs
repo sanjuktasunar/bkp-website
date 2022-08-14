@@ -166,5 +166,15 @@ namespace web.Controllers.User
             var resp = await _memberService.AddMemberPaymentLog(dto);
             return Json(resp, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public async Task<JsonResult> AddMemberToShareholder(int memberId)
+        {
+            if (!menu.AdminAccess)
+                return null;
+
+            var resp = await _memberService.AddToShareholder(memberId);
+            return Json(resp, JsonRequestBehavior.AllowGet);
+        }
     }
 }

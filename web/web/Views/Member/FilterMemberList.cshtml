@@ -369,6 +369,34 @@
             });
     })
 
+    $("#btnAddToShareholder").click(function () {
+        var check = checkMemberSelection();
+        if (check == false)
+            return false;
+
+        swal({
+            text: "Are you sure you want to add this member to shareholder??",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Member/AddMemberToShareholder',
+                        data: { MemberId: memberId },
+                        success: function (resp) {
+                            showResultMessage(resp, getCurrentUrl())
+                        },
+                        error: function (resp) {
+                            showResultMessage(resp)
+                        }
+                    });
+                }
+            });
+    })
+
     function checkMemberSelection() {
         memberId = $("#hdnMemberIdFromSelection").val();
         if (memberId == null || memberId == '' || memberId == undefined || memberId == 0) {

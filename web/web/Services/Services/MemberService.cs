@@ -20,6 +20,7 @@ namespace web.Services.Services
     public interface IMemberService
     {
         Task<IEnumerable<MemberDto>> Filter(MemberFilterDto filterDto);
+        Task<IEnumerable<MemberDto>> FilterShareholder(MemberFilterDto filterDto);
         Task<MemberDto> GetMemberById(int? MemberId);
         Task<Response> Insert(MemberDto dto);
         Task<Response> Update(MemberDto dto);
@@ -27,12 +28,15 @@ namespace web.Services.Services
         Task<Response> Approve(int memberId);
         Task<Response> Reject(int memberId, string rejectRemarks);
         Task<Response> AddMemberPaymentLog(MemberPaymentLogDto dto);
+        Task<Response> AddToShareholder(int memberId);
+        Task<Response> DeleteShareholder(int id);
     }
 
     public class MemberService: IMemberService
     {
         private readonly Repository<Member> _repository;
         private readonly Repository<MemberPaymentLog> _memberPaymentRepository;
+        private readonly Repository<Shareholder> _shareholderRepository;
         private readonly MessageClass _messageClass;
         private readonly DateSettings _dateSettings;
         private readonly IMemberRepository _memberRepository;
@@ -42,6 +46,7 @@ namespace web.Services.Services
         {
             _repository = new Repository<Member>();
             _memberPaymentRepository = new Repository<MemberPaymentLog>();
+            _shareholderRepository = new Repository<Shareholder>();
             _messageClass = new MessageClass();
             _dateSettings = new DateSettings();
             _memberRepository = memberRepository;
@@ -176,7 +181,7 @@ namespace web.Services.Services
                 {
                     var paymentLog = new MemberPaymentLog();
                     paymentLog.Amount = Convert.ToDecimal(dto.TotalSharePaidAmount);
-                    paymentLog.MemberId = MemberId;
+                    paymentLog.MemberId = memberDto.MemberId;
                     paymentLog.CreatedDate = DateTime.Now;
                     paymentLog.CreatedBy = _repository.UserIdentity();
                     paymentLog.IsDeleted = false;
@@ -282,6 +287,63 @@ namespace web.Services.Services
             return resp;
         }
 
+        public async Task<Response> AddToShareholder(int memberId)
+        {
+            var _sql = _repository.GetSqlTransactionDetails();
+            var resp = new Response();
+            resp.messageType = "error";
+            resp.message = "Something went wrong,please contact to admin!!!!!";
+            try
+            {
+                var memberDto = await GetMemberById(memberId);
+                if (memberDto == null)
+                    return _messageClass.NotFoundMessage();
+
+                if (memberDto.IsApproved != ApprovalStatus.Approved)
+                {
+                    resp.message = "Member must be approved to perform this action";
+                    return resp;
+                }
+                if (memberDto.TotalShareAmount > memberDto.TotalSharePaidAmount)
+                {
+                    resp.message = "Please make full payment!!!!!";
+                    return resp;
+                }
+                var shareholderDto = await _memberRepository.GetShareholderByMemberId(memberId);
+
+                if (shareholderDto != null)
+                {
+                    resp.message = "Shareholder already exists !!";
+                    return resp;
+                }
+
+                memberDto.IsShareholder = 1;
+                int UpdateId = await _repository.UpdateAsync(memberDto.ToEntity(), _sql.conn, _sql.trans);
+                if (UpdateId < 0)
+                {
+                    resp.message = "Something went wrong,please contact to admin!!!";
+                    return resp;
+                }
+                var dto = new ShareholderDto();
+                dto.MemberId = memberId;
+                dto.ShareTypeId = Convert.ToInt32(memberDto.ShareTypeId);
+                dto.TotalKitta = Convert.ToInt32(memberDto.AppliedShareKitta);
+                dto.IsActive = 1;
+                dto.ApprovedDate = DateTime.Now;
+                await _shareholderRepository.InsertAsync(dto.ToEntity(), _sql.conn, _sql.trans);
+
+                resp.messageType = "success";
+                resp.message = "Shareholder added successfully!!!!!!";
+                _sql.trans.Commit();
+            }
+            catch (SqlException ex)
+            {
+                resp.message = ex.Message.ToString();
+                _sql.trans.Rollback();
+            }
+            return resp;
+        }
+
         public async Task<Response> Reject(int memberId,string rejectRemarks)
         {
             var resp = new Response();
@@ -364,6 +426,39 @@ namespace web.Services.Services
             }
             return resp;
         }
+
+        public async Task<Response> DeleteShareholder(int id)
+        {
+            var _sql = _repository.GetSqlTransactionDetails();
+            var response = new Response();
+            response.messageType = "error";
+            var shareholderDto = await _memberRepository.GetShareholderByShareholderIdAsync(id);
+            if (shareholderDto is null)
+            {
+                response.message = "Invalid shareholder!!!";
+                return response;
+            }
+            var memberDto = await GetMemberById(shareholderDto.MemberId);
+            try
+            {
+                if (memberDto != null)
+                {
+                    var member = memberDto.ToEntity();
+                    member.IsShareholder = 0;
+                    await _repository.UpdateAsync(member, _sql.conn, _sql.trans);
+                }
+                await _shareholderRepository.DeleteAsync(id, _sql.conn, _sql.trans);
+                response = _messageClass.DeleteMessage(1);
+                _sql.trans.Commit();
+            }
+            catch (SqlException ex)
+            {
+                response.message = ex.Message.ToString();
+                _sql.trans.Rollback();
+            }
+            return response;
+        }
+
 
         public Response ChecMemberDetailskBeforeApprove(MemberDto dto)
         {
