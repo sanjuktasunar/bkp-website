@@ -167,7 +167,6 @@
     <Compile Include="Controllers\User\DesignationController.cs" />
     <Compile Include="Controllers\User\FiscalYearController.cs" />
     <Compile Include="Controllers\User\MemberController.cs" />
-    <Compile Include="Controllers\User\Member_OldController.cs" />
     <Compile Include="Controllers\User\MenusController.cs" />
     <Compile Include="Controllers\User\RoleController.cs" />
     <Compile Include="Controllers\User\ShareholderController.cs" />
@@ -2545,11 +2544,6 @@
     <Content Include="Views\Designation\Designation.cshtml" />
     <Content Include="Views\FiscalYear\AddModifyFiscalYear.cshtml" />
     <Content Include="Views\FiscalYear\FiscalYearList.cshtml" />
-    <Content Include="Views\Member_Old\AddModifyNewMember.cshtml" />
-    <Content Include="Views\Member_Old\FilterMemberList1.cshtml" />
-    <Content Include="Views\Member_Old\MemberDetails.cshtml" />
-    <Content Include="Views\Member_Old\MemberList.cshtml" />
-    <Content Include="Views\Member_Old\ModifyMember.cshtml" />
     <Content Include="Views\Menus\AddModifyMenus.cshtml" />
     <Content Include="Views\Menus\Menus.cshtml" />
     <Content Include="Views\PublicProduct\Product.cshtml" />
@@ -2562,7 +2556,6 @@
     <Content Include="Views\Staffs\AddModifyStaff.cshtml" />
     <Content Include="Views\Staffs\MenuAccessPermission.cshtml" />
     <Content Include="Views\Staffs\Staffs.cshtml" />
-    <Content Include="Views\Member_Old\FilterMemberList.cshtml" />
     <Content Include="Views\Shareholder\ShareholderList.cshtml" />
     <Content Include="Views\Shareholder\FilterShareholderList.cshtml" />
     <Content Include="Views\Shareholder\ModifyShareholder.cshtml" />
