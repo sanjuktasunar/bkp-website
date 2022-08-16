@@ -377,7 +377,7 @@
                 data: $("#AddModifyForm").serialize(),
                 success: function (resp) {
                     debugger;
-                    showResultMessage(resp, "/MemberList")
+                    showResultMessage(resp, "/MemberDetails/" + resp.id);
                 },
                 error: function (resp) {
                     showResultMessage(resp)

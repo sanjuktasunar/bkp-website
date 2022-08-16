@@ -105,7 +105,8 @@ namespace web.Services
         public async Task<string> GetReferalCode()
         {
             var members = (await _repository.QueryAsync<Member>("SELECT TOP 1 " +
-                "ReferalCode,MemberId FROM Member where ReferalCode is not null ORDER BY ReferalCode DESC"));
+                "ReferalCode,MemberId FROM Member where ReferalCode is not null " +
+                "ORDER BY cast((substring(ReferalCode, 10,20)) as int ) DESC"));
             DateTime currentDate = DateTime.Now;
             string referalCode = "";
             int i = 888;
@@ -121,14 +122,33 @@ namespace web.Services
 
         public async Task<string> GetMemberCode()
         {
-            var members = (await _repository.QueryAsync<Member>("SELECT TOP 1 MemberCode," +
-                "MemberId FROM Member where MemberCode is not null ORDER BY MemberCode DESC"));
-            DateTime currentDate = DateTime.Now;
-            string memberCode = "";
+            var memberDto = (await _repository.QueryAsync<MemberDto>("SELECT TOP 1 " +
+                "MemberCode FROM Member " +
+                "where MemberCode is not null " +
+                "ORDER BY cast((substring(MemberCode, 10,20)) as int ) DESC"))
+                .FirstOrDefault();
+
+            string memberCode = MakeMemberCodeString(memberDto);
+            return memberCode;
+        }
+
+        public async Task<MemberDto> GetMemberByMemberCode(string memberCode)
+        {
+            var memberDto = (await _repository.QueryAsync<MemberDto>("select top 1 " +
+                "MemberCode from dbo.Member " +
+                "where MemberCode=@memberCode", new { memberCode })).FirstOrDefault();
+
+            return memberDto;
+        }
+
+        public string MakeMemberCodeString(MemberDto memberDto)
+        {
+            string memberCode = string.Empty;
             int i = 78;
-            if (members.Count() > 0)
+            DateTime currentDate = DateTime.Now;
+            if (memberDto!=null)
             {
-                var number = members.FirstOrDefault().MemberCode.Split('-');
+                var number = memberDto.MemberCode.Split('-');
                 i = Convert.ToInt32(number[2]);
                 i = i + 1;
             }

@@ -32,7 +32,7 @@ namespace web.Controllers.User
             if (!menu.ReadAccess)
                 return Redirect(Logout_Url);
 
-            ViewBag.ApprovalStatus = ApprovalStatus == null ? 2 : ApprovalStatus;
+            ViewBag.ApprovalStatus = ApprovalStatus == null ? 1 : ApprovalStatus;
             ViewBag.ReferenceId = ReferenceId;
             ViewBag.ShareTypeId = ShareTypeId;
             ViewBag.AgentId = AgentId;

@@ -54,9 +54,6 @@ namespace web.Services.Services
         }
         public async Task<IEnumerable<MemberDto>> Filter(MemberFilterDto filterDto)
         {
-            if (filterDto.ApprovalStatus == 2)
-                filterDto.FormStatus = null;
-
             var obj = await _repository.StoredProcedureAsync<MemberDto>("[dbo].[FilterMember]"
                , new
                {
@@ -118,6 +115,7 @@ namespace web.Services.Services
                 await _memberPaymentRepository.InsertAsync(paymentLog, _sql.conn, _sql.trans);
 
                 resp = _messageClass.SaveMessage(MemberId);
+                resp.id = MemberId;
                 _sql.trans.Commit();
             }
             catch (SqlException ex)
@@ -194,6 +192,7 @@ namespace web.Services.Services
                     await _memberPaymentRepository.UpdateAsync(paymentLog.ToEntity(), _sql.conn, _sql.trans);
                 }
                 resp = _messageClass.SaveMessage(MemberId);
+                resp.id = memberDto.MemberId;
                 _sql.trans.Commit();
             }
             catch (SqlException ex)
