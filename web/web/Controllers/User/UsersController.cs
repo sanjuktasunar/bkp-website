@@ -74,5 +74,15 @@ namespace web.Controllers.User
             var response = await _usersService.Update(dto);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public async Task<JsonResult> ChangePassword(UsersDto dto)
+        {
+            if (!menu.AdminAccess)
+                return null;
+
+            var response = await _usersService.ChangePassword(dto);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
     }
 }

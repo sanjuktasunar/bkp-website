@@ -1,71 +1,86 @@
 ﻿@model Web.Entity.Dto.AgentDto
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    Web.Entity.Dto.MenuAccessPermissionDto menus = ViewBag.Menus;
 }
 
-<h6 class="h6 mb-2 text-gray-800">Agent Details</h6>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <label class="col-md-4">
-                        Full Name : @Model.AgentFullName
-                    </label>
-                    <label class="col-md-4">
-                        Contact Number 1 : @Model.ContactNumber1
-                    </label>
-                    <label class="col-md-4">
-                        Contact Number 2 : @Model.ContactNumber2
-                    </label>
-                    <label class="col-md-4">
-                        Email Address : @Model.EmailAddress
-                    </label>
-                    <label class="col-md-4">
-                        Citizenship Number : @Model.CitizenshipNumber
-                    </label>
-                    <label class="col-md-4">
-                        Occupation : @Model.Occupation
-                    </label>
-                    <label class="col-md-8">
-                        Address:
-                        @Model.MunicipalityName-@Model.WardNumber
-                        @if (!string.IsNullOrEmpty(Model.ToleName))
-                        {
-                            <label>
-                                @Model.ToleName
-                            </label>
-                        }
-                        , @Model.DistrictName, @Model.ProvinceName
-                    </label>
-                    <label class="col-md-4">
-                        Qualification : @Model.Qualification
-                    </label>
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h2 class="h3 mb-0 text-gray-800">Agent Details</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Fund Development</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Agent</li>
+        </ol>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <label class="col-md-4">
+                            Full Name : @Model.AgentFullName
+                        </label>
+                        <label class="col-md-4">
+                            Contact Number 1 : @Model.ContactNumber1
+                        </label>
+                        <label class="col-md-4">
+                            Contact Number 2 : @Model.ContactNumber2
+                        </label>
+                        <label class="col-md-4">
+                            Email Address : @Model.EmailAddress
+                        </label>
+                        <label class="col-md-4">
+                            Citizenship Number : @Model.CitizenshipNumber
+                        </label>
+                        <label class="col-md-4">
+                            Occupation : @Model.Occupation
+                        </label>
+                        <label class="col-md-8">
+                            Address:
+                            @Model.MunicipalityName-@Model.WardNumber
+                            @if (!string.IsNullOrEmpty(Model.ToleName))
+                            {
+                                <label>
+                                    @Model.ToleName
+                                </label>
+                            }
+                            , @Model.DistrictName, @Model.ProvinceName
+                        </label>
+                        <label class="col-md-4">
+                            Qualification : @Model.Qualification
+                        </label>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-4">
+                            Lincence No : @Model.LicenceNumber
+                        </label>
+                        <label class="col-md-8">
+                            Referred By : @Model.ReferenceAgentName
+                        </label>
+                        <label class="col-md-4">
+                            Referred By Lin. No : @Model.ReferenceLicenceNumber
+                        </label>
+                    </div>
+                    <br />
+                    @if (menus.WriteAccess)
+                    {
+                        <a href="~/AddAgent" class="btn btn-primary btn-sm">
+                            <i class="fa fa-plus"></i>
+                            Add New
+                        </a>
+                    }
+                    @if (menus.ModifyAccess)
+                    {
+                        <a href="~/ModifyAgent/@Model.AgentId" class="btn btn-success btn-sm">
+                            <i class="fa fa-edit"></i>
+                            Modify
+                        </a>
+                    }
+                    <a href="~/AgentList" class="btn btn-danger btn-sm">
+                        <i class="fa fa-window-close"></i>
+                        Close
+                    </a>
                 </div>
-                <div class="row">
-                    <label class="col-md-4">
-                        Lincence No : @Model.LicenceNumber
-                    </label>
-                    <label class="col-md-8">
-                        Referred By : @Model.ReferenceAgentName
-                    </label>
-                    <label class="col-md-4">
-                        Referred By Lin. No : @Model.ReferenceLicenceNumber
-                    </label>
-                </div>
-                <br />
-                <a href="~/AddAgent" class="btn btn-primary btn-sm">
-                    <i class="fa fa-plus"></i>
-                    Add New
-                </a>
-                <a href="~/ModifyAgent/@Model.AgentId" class="btn btn-success btn-sm">
-                    <i class="fa fa-edit"></i>
-                    Modify
-                </a>
-                <a href="~/AgentList" class="btn btn-danger btn-sm">
-                    <i class="fa fa-window-close"></i>
-                    Close
-                </a>
             </div>
         </div>
     </div>

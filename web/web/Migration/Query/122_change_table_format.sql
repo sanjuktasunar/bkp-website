@@ -14,6 +14,7 @@ from		[dbo].[Users] u
 left join	dbo.[UserType] ut on ut.UserTypeId=u.UserTypeId
 left join	dbo.[Role] r on r.RoleId=u.RoleId
 left join	dbo.[UserStatus] us on us.StatusId=u.UserStatusId
+--left join   dbo.Staffs
 GO
 
 GO
@@ -458,4 +459,16 @@ BEGIN
 	)
 	ORDER BY s.ApprovedDate desc
 END
+GO
+
+GO
+ALTER TABLE [dbo].[Agent] DROP CONSTRAINT [Agent_MemberId_fk]
+GO
+
+GO
+ALTER TABLE [dbo].[Agent]  WITH CHECK ADD  CONSTRAINT [Agent_MemberId_fk] FOREIGN KEY([MemberId])
+REFERENCES [dbo].[Member] ([MemberId])
+GO
+GO
+ALTER TABLE [dbo].[Agent] CHECK CONSTRAINT [Agent_MemberId_fk]
 GO

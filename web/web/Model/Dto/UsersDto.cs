@@ -16,6 +16,7 @@ namespace Web.Entity.Dto
 
         [Required]
         public string UserName { get; set; }
+        public string EncryptUserName { get; set; }
         public string DescryptUserName { get; set; }
 
         public string Password { get; set; }
@@ -30,5 +31,6 @@ namespace Web.Entity.Dto
         public string StatusName { get; set; }
         public string UserTypeTitle { get; set; }
         public string FullName { get; set; }
+        public string ConfirmPassword { get; set; }
     }
 }

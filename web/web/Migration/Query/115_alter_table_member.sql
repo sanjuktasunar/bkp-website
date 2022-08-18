@@ -87,7 +87,7 @@ FROM    dbo.Address AS A LEFT OUTER JOIN
 GO
 
 GO
-CREATE OR ALTER PROC [dbo].[Sp_MemberReportAddressWise]
+CREATE PROC [dbo].[Sp_MemberReportAddressWise]
 (
 	@ProvinceId int,
 	@DistrictId int,

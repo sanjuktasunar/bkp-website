@@ -19,6 +19,7 @@ namespace web.Web.Services.Services
         Task<IEnumerable<UsersDto>> GetUsersList();
         Task<Response> Insert(UsersDto dto);
         Task<Response> Update(UsersDto dto);
+        Task<Response> ChangePassword(UsersDto dto);
     }
 
     public class UsersService : IUsersService
@@ -57,7 +58,7 @@ namespace web.Web.Services.Services
             if (user == null)
                 return null;
 
-            user.UserName = _security.DecryptText(user.UserName);
+            user.DescryptUserName = _security.DecryptText(user.UserName);
             return user;
         }
 
@@ -121,6 +122,33 @@ namespace web.Web.Services.Services
                 usersDto.UpdatedDate = DateTime.Now;
                 usersDto.UpdatedBy = _repository.UserIdentity();
 
+                int resp = await _repository.UpdateAsync(usersDto.ToEntity());
+                result = _messageClass.SaveMessage(resp);
+            }
+            catch (SqlException ex)
+            {
+                result.message = ex.Message.ToString();
+            }
+            return result;
+        }
+
+        public async Task<Response> ChangePassword(UsersDto dto)
+        {
+            var result = new Response();
+            result.messageType = "error";
+            try
+            {
+                var usersDto = await GetUserById(dto.UserId);
+                if (usersDto == null)
+                    return _messageClass.NotFoundMessage();
+
+                if (dto.Password != dto.ConfirmPassword)
+                {
+                    result.message = "Password do not match !!!! ";
+                    return result;
+                }
+
+                usersDto.Password = _security.EncryptText(dto.Password);
                 int resp = await _repository.UpdateAsync(usersDto.ToEntity());
                 result = _messageClass.SaveMessage(resp);
             }

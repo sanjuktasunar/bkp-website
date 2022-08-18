@@ -27,6 +27,7 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>S.N.</th>
+                                <th>Full Name</th>
                                 <th>User Name</th>
                                 <th>Type</th>
                                 <th>Role</th>
@@ -43,10 +44,11 @@
                                 <tr>
                                     <td>
                                         @i
-                                        <input type="hidden" value="@x.UserId"/>
+                                        <input type="hidden" value="@x.UserId" />
                                     </td>
+                                    <td>@x.FullName</td>
                                     <td>
-                                        @x.DescryptUserName <br />
+                                        @x.DescryptUserName
                                     </td>
                                     <td>@x.UserTypeTitle</td>
                                     <td>@x.RoleName</td>
@@ -72,17 +74,22 @@
                                         }
                                     </td>
                                     <td>
-                                        <a href="~/ModifyUser/@x.UserId"
-                                           class="btn btn-success btn-circle btn-sm"
-                                           id="btnEdit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        @*<a href="~/MenuAccessPermission/@x.StaffId"
+                                        @if (menus.ModifyAccess)
+                                        {
+                                            <a href="~/ModifyUser/@x.UserId"
+                                               class="btn btn-success btn-circle btn-sm"
+                                               id="btnEdit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        }
+                                        @if (menus.AdminAccess)
+                                        {
+                                            <a href="#"
                                                class="btn btn-primary btn-circle btn-sm"
-                                               id="btnEdit"
-                                               title="Menu Access Permission">
-                                                <i class="fas fa-book"></i>
-                                            </a>*@
+                                               id="btnChangePassword">
+                                                <i class="fas fa-key"></i>
+                                            </a>
+                                        }
                                     </td>
                                 </tr>
                             }
@@ -93,5 +100,162 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="mdlChangeUserPassword" tabindex="-1" role="dialog" aria-labelledby="mdlChangeUserPassword"
+     data-keyboard="false" data-backdrop="static"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabelLogout">
+                    Change Password
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <label class="col-md-6">
+                        <b>Full Name</b> : <span id="mdlLblFullName"></span>
+                    </label>
+                    <label class="col-md-6">
+                        <b>User Name</b> : <span id="mdlLblUserName"></span>
+                    </label>
+                </div>
+                <br />
+                <form id="formChangePassword">
+                    <input type="hidden" name="UserId" id="mdlTxtUserId" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="text" placeholder="Enter Password"
+                                       class="form-control" name="Password"
+                                       id="txtPassword" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input type="text" placeholder="Enter Password"
+                                       class="form-control" name="ConfirmPassword"
+                                       id="txtConfirmPassword" />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary"
+                                id="btnChangeUserPassword">
+                            Change
+                        </button>
+                        <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @Scripts.Render("~/web/backend/jquery-ui")
 @Scripts.Render("~/web/backend/datatables")
+<script src="~/Assets/Backend/js/jquery.validate.min.js"></script>
+
+<script>
+    $("#dataTable").on('click', '#btnChangePassword', function (evt) {
+        evt.preventDefault();
+        clearAllLabelTextBox();
+
+        var currentRow = $(this).closest("tr");
+        var userId = currentRow.find("td:eq(0)").find('input').val();
+        var fullName = currentRow.find("td:eq(1)").html();
+        var userName = currentRow.find("td:eq(2)").html();
+
+        $("#mdlTxtUserId").val(userId);
+        $("#mdlLblFullName").text(fullName);
+        $("#mdlLblUserName").text(userName);
+
+        $("#mdlChangeUserPassword").modal();
+    });
+
+    function clearAllLabelTextBox() {
+        $("#mdlTxtUserId").val('');
+        $("#txtPassword").val('');
+        $("#txtConfirmPassword").val('');
+
+        unhighlightElement("#txtPassword");
+        unhighlightElement("#txtConfirmPassword");
+
+        $("#mdlLblUserName").text('');
+        $("#mdlLblFullName").text('');
+
+        $("#btnChangeUserPassword").prop('disabled', false);
+        $("#btnChangeUserPassword").html('Change');
+    }
+
+    var $checkoutForm = $('#formChangePassword').validate({
+        ignore: [],
+        rules: {
+            'Password': {
+                required: true,
+                maxlength: 50
+            },
+            'ConfirmPassword': {
+                required: true,
+                maxlength: 50,
+                equalTo: "#txtPassword",
+            },
+        },
+        submitHandler: function (form) {
+            $("#btnChangeUserPassword").prop('disabled', true)
+            $("#btnChangeUserPassword").html('Changing....')
+
+            $.ajax({
+                type: "POST",
+                url: "/Users/ChangePassword",
+                data: $("#formChangePassword").serialize(),
+                success: function (message) {
+                    $("#btnChangeUserPassword").prop('disabled', false)
+                    $("#btnChangeUserPassword").html('Change')
+                    showResultMessage(message, "/UserList")
+                },
+                error: function (message) {
+                    $("#btnChangeUserPassword").prop('disabled', false)
+                    $("#btnChangeUserPassword").html('Change')
+                    showResultMessage(message)
+                }
+            })
+        },
+
+        errorPlacement: function errorPlacement(error, element) {
+            var $parent = $(element).parents('.form-group');
+
+            // Do not duplicate errors
+            if ($parent.find('.jquery-validation-error').length) {
+                return false;
+            }
+
+            $parent.append(
+                error.addClass('jquery-validation-error small form-text invalid-feedback')
+            );
+        },
+        highlight: function (element) {
+            var $el = $(element);
+            var $parent = $el.parents('.form-group');
+
+            $el.addClass('is-invalid');
+
+            // Select2 and Tagsinput
+            if ($el.hasClass('select2-hidden-accessible') || $el.attr('data-role') === 'tagsinput') {
+                $el.parent().addClass('is-invalid');
+            }
+
+        },
+        unhighlight: function (element) {
+            $(element).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
+        }
+    });
+</script>
