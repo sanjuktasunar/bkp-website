@@ -60,6 +60,15 @@
                                         {
                                             <span class="badge badge-danger">Inactive</span>
                                         }
+                                        <br />
+                                        @if (x.IsPrimary == true)
+                                        {
+                                            <span class="badge badge-success">PRIMARY</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-danger">NOT_PRIMARY</span>
+                                        }
                                     </td>
                                     <td>
                                         <a href="~/ModifyShareType/@x.ShareTypeId"

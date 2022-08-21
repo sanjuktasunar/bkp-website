@@ -21,7 +21,7 @@
             </select>
         </div>
 
-        <div class="col-sm-2 col-md-2">
+        <div class="col-sm-4 col-md-4">
             <div class="form-group">
                 <label>District</label>
                 <select class="form-control" id="DistrictId">
@@ -139,6 +139,7 @@
     if (parseInt('@ViewBag.ProvinceId') > 0) {
         LoadDistrict('@ViewBag.DistrictId', '@ViewBag.ProvinceId');
     }
+    $("#DistrictId").select2();
     $("#ProvinceId").change(function () {
         var provinceId = $("#ProvinceId").val();
         LoadDistrict(0, provinceId);

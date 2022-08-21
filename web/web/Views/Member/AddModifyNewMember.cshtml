@@ -269,7 +269,7 @@
     $("#SellerMemberId").select2();
 
     LoadDistrict('@Model.TemporaryDistrictId', 0, "#TemporaryDistrictId");
-    LoadShareTypesWithDetails('@Model.ShareTypeId', "#ShareTypeId",
+    LoadIsPrimaryShareTypesWithDetails('@Model.ShareTypeId', "#ShareTypeId",
         "#SharePricePerKitta");
     LoadShareholder('@Model.SellerMemberId', "#SellerMemberId");
 
