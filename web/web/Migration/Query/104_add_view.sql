@@ -12,7 +12,7 @@ JOIN [dbo].[ProductImage] AS C ON C.ProductId=A.ProductId AND C.IsPrimary=1
 GO
 
 GO
-CREATE OR ALTER PROC [dbo].[Sp_SearchProductForDisplay]
+CREATE PROC [dbo].[Sp_SearchProductForDisplay]
 (
 	@query nvarchar(50)
 )

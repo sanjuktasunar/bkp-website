@@ -47,7 +47,11 @@ namespace Web.Services.Mapping
                 IsSuperAdmin=dto.IsSuperAdmin,
                 CreatedBy=dto.CreatedBy,
                 CreatedDate=dto.CreatedDate,
-                UserStatusId = dto.UserStatusId
+                UserStatusId = dto.UserStatusId,
+                FullName=dto.FullName,
+                UpdatedBy=dto.UpdatedBy,
+                UpdatedDate=dto.UpdatedDate,
+                RoleId=dto.RoleId,
             };
         }
 
@@ -59,13 +63,8 @@ namespace Web.Services.Mapping
             return new Menus
             {
                 MenuId = dto.MenuId,
-                //ParentMenuId = dto.ParentMenuId,
                 MenuNameEnglish = dto.MenuNameEnglish?.Trim(),
-                //MenuNameNepali = dto.MenuNameNepali?.Trim(),
                 CheckMenuName = dto.CheckMenuName?.Trim(),
-                //MenuLink = dto.MenuLink?.Trim(),
-                //MenuOrder = dto.MenuOrder,
-                //MenuIcon = dto.MenuIcon?.Trim(),
                 Status=dto.Status,
             };
         }

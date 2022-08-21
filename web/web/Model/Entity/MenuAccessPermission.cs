@@ -26,9 +26,9 @@ namespace Web.Entity.Entity
 
         public bool AdminAccess { get; set; }
 
-        public bool? ApprovalAccess { get; set; }
+        public bool ApprovalAccess { get; set; }
 
-        public bool? RejectAccess { get; set; }
+        public bool RejectAccess { get; set; }
 
         public int? RoleId { get; set; }
     }

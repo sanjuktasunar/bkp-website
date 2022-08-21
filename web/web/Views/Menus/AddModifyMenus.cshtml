@@ -2,68 +2,85 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h3 class="h3 mb-2 text-gray-800">Add/Modify Menus</h3>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <form id="form_validation">
-                    <input type="hidden" value="@Model.MenuId" name="MenuId" />
-                    <div class="row">
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Menu Name</label>
-                                <input type="text" value="@Model.MenuNameEnglish"
-                                       name="MenuNameEnglish" placeholder="Enter Menu Name"
-                                       class="form-control" />
-                            </div>
-                        </div>
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Add/Modify Menus</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Settings</a></li>
+            <li class="breadcrumb-item">Menus</li>
+        </ol>
+    </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Check Menu Name</label>
-                                <input type="text" value="@Model.CheckMenuName"
-                                       name="CheckMenuName"
-                                       placeholder="Enter Check Menu Name"
-                                       class="form-control" />
-                            </div>
-                        </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Basic -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form id="AddModifyForm">
+                        <div class="row">
+                            <input type="hidden" value="@Model.MenuId"
+                                   name="MenuId" />
 
-
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        @if (Model.Status == false && Model.MenuId > 0)
-                                        {
-                                            <input class="form-check-input" name="Status" value="true" type="checkbox" />
-                                        }
-                                        else
-                                        {
-                                            <input class="form-check-input" name="Status" value="true" type="checkbox" checked="checked" />
-                                        }
-                                        Is Active
-                                    </label>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" class="form-control"
+                                           name="MenuNameEnglish"
+                                           value="@Model.MenuNameEnglish"
+                                           placeholder="Enter Menu Name">
                                 </div>
                             </div>
-
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Check Menu Name</label>
+                                    <input type="text" class="form-control"
+                                           name="CheckMenuName"
+                                           value="@Model.CheckMenuName"
+                                           placeholder="Enter Check Menu Name">
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <button type="submit" id="btnSave" name="SaveButton" class="btn btn-primary btn-md"><i class="fa fa-save"></i> <span>Save</span> </button>
-                    <a href="/MenuList" class="btn btn-danger"><i class="fa fa-window-close"></i> Close</a>
-                </form>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            @if (Model.Status == false && Model.MenuId > 0)
+                                            {
+                                                <input class="form-check-input"
+                                                       name="Status"
+                                                       value="true" type="checkbox" />
+                                            }
+                                            else
+                                            {
+                                                <input class="form-check-input"
+                                                       name="Status" value="true"
+                                                       type="checkbox"
+                                                       checked="checked" />
+                                            }
+                                            Is Active ?
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
+                        <a href="~/MenuList" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
             </div>
         </div>
+
+
     </div>
+    <!--Row-->
 </div>
-
-@Scripts.Render("~/web/back-end/js")
-<script src="~/Assets/Backend/js/custom/plugin/jquery.validate.min.js"></script>
-
+@Scripts.Render("~/web/backend/jquery-ui")
+<script src="~/Assets/Backend/js/jquery.validate.min.js"></script>
 <script>
-    var $checkoutForm = $('#form_validation').validate({
+    var $checkoutForm = $('#AddModifyForm').validate({
         ignore: [],
         rules: {
             'MenuNameEnglish': {
@@ -72,59 +89,30 @@
             },
             'CheckMenuName': {
                 required: true,
-                maxlength: 100,
-            },
-            //'MenuNameNepali': {
-            //    required: true,
-            //    maxlength: 100,
-            //},
-            //'MenuLink': {
-            //    required: true,
-            //    maxlength: 100,
-            //},
-            //'MenuOrder': {
-            //    required: true,
-            //    maxlength: 100,
-            //    min: 1,
-            //},
+                maxlength: 20
+            }
         },
         submitHandler: function (form) {
             $("#btnSave").prop('disabled', true)
             $("#btnSave span").html('Saving...')
 
             var id = $('input[name="MenuId"').val();
+            var url = "/Menus/Insert";
             if (parseInt(id) > 0) {
-                $.ajax({
-                    type: "POST",
-                    url: "/Menus/Update",
-                    data: $("#form_validation").serialize(),
-                    success: function (resp) {
-                        debugger;
-                        console.log(resp);
-                        showResultMessage(resp, "/MenuList")
-                    },
-                    error: function (resp) {
-                        console.log(resp);
-                        showResultMessage(resp)
-                    }
-                })
+                url = "/Menus/Update";
             }
-            else {
-                $.ajax({
-                    type: "POST",
-                    url: "/Menus/Insert",
-                    data: $("#form_validation").serialize(),
-                    success: function (resp) {
-                        console.log(resp);
-                        showResultMessage(resp, "/MenuList")
-                    },
-                    error: function (resp) {
-                        console.log(resp);
-                        showResultMessage(resp)
-                    }
-                })
-            }
-
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: $("#AddModifyForm").serialize(),
+                success: function (resp) {
+                    debugger;
+                    showResultMessage(resp, "/MenuList")
+                },
+                error: function (resp) {
+                    showResultMessage(resp)
+                }
+            })
         },
 
         errorPlacement: function errorPlacement(error, element) {
@@ -155,12 +143,6 @@
             $(element).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
         }
     });
-
-    function AllowPositiveNumber(event) {
-        if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
-            event.preventDefault();
-        }
-    }
 </script>
 
 

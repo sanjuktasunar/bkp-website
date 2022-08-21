@@ -15,17 +15,22 @@ namespace web.Web.Services.Services
         IEnumerable<DropdownDto> GetDropDownDesignation();
         IEnumerable<DropdownDto> GetDropDownGender();
         IEnumerable<DropdownDto> GetDropDownUserStatus();
+        IEnumerable<DropdownDto> GetDropDownUserType();
+        IEnumerable<DropdownDto> GetDropDownUserTypeForUserList();
         IEnumerable<DropdownDto> GetDropDownFiscalYear();
         IEnumerable<DropdownDto> GetDropDownProvince();
         IEnumerable<DropdownDto> GetDropDownDistrict(int? ProvinceId = null);
         IEnumerable<DropdownDto> GetDropDownOccupation();
         IEnumerable<DropdownDto> GetDropDownShareTypes();
+        IEnumerable<DropdownDto> GetDropDownShareTypesWithDetails();
         IEnumerable<DropdownDto> GetDropDownAgentStatus();
         IEnumerable<DropdownDto> GetDropDownAccountHead();
         IEnumerable<DropdownDto> GetDropDownMaritalStatus();
         IEnumerable<DropdownDto> GetOutsideCountry();
         IEnumerable<DropdownDto> GetReferenceAgentList();
         IEnumerable<DropdownDto> GetReferenceMemberList();
+        IEnumerable<DropdownDto> GetShareholderList();
+        IEnumerable<DropdownDto> GetDropDownIsPrimaryShareTypesWithDetails();
     }
 
     public class DropDownService:IDropDownService
@@ -115,6 +120,48 @@ namespace web.Web.Services.Services
             else
             {
                 data = HttpRuntime.Cache[CacheCodes.USER_STATUS_LIST] as List<DropdownDto>;
+            }
+            return data;
+        }
+
+        public IEnumerable<DropdownDto> GetDropDownUserType()
+        {
+            var data = new List<DropdownDto>();
+            if (HttpRuntime.Cache[CacheCodes.USER_TYPE_LIST] == null)
+            {
+                data = _repository.Query<DropdownDto>
+                    (
+                        "select UserTypeId as [Key]," +
+                        "UserTypeTitle as [Value] " +
+                        "from dbo.[UserType] " +
+                        "where [Status]=1"
+                    ).ToList();
+                HttpRuntime.Cache[CacheCodes.USER_TYPE_LIST] = data;
+            }
+            else
+            {
+                data = HttpRuntime.Cache[CacheCodes.USER_TYPE_LIST] as List<DropdownDto>;
+            }
+            return data;
+        }
+
+        public IEnumerable<DropdownDto> GetDropDownUserTypeForUserList()
+        {
+            var data = new List<DropdownDto>();
+            if (HttpRuntime.Cache[CacheCodes.USER_TYPE_LIST_FOR_USER_LIST] == null)
+            {
+                data = _repository.Query<DropdownDto>
+                    (
+                        "select UserTypeId as [Key]," +
+                        "UserTypeTitle as [Value] " +
+                        "from dbo.[UserType] " +
+                        "where [Status]=1 and lower(UserTypeTitle)<>'staff'"
+                    ).ToList();
+                HttpRuntime.Cache[CacheCodes.USER_TYPE_LIST_FOR_USER_LIST] = data;
+            }
+            else
+            {
+                data = HttpRuntime.Cache[CacheCodes.USER_TYPE_LIST_FOR_USER_LIST] as List<DropdownDto>;
             }
             return data;
         }
@@ -227,6 +274,51 @@ namespace web.Web.Services.Services
             return data;
         }
 
+        public IEnumerable<DropdownDto> GetDropDownShareTypesWithDetails()
+        {
+            var data = new List<DropdownDto>();
+            if (HttpRuntime.Cache[CacheCodes.SHARE_TYPE_DETAIL_LIST] == null)
+            {
+                data = _repository.Query<DropdownDto>
+                        (
+                            "select ShareTypeId as [Key]," +
+                            "ShareTypeName as [Value],PricePerKitta as [Value1]," +
+                            "IsPrimary as [Value2] " +
+                            "from dbo.[ShareTypes] " +
+                            "where [Status]=1 order by IsPrimary desc"
+                        ).ToList();
+                HttpRuntime.Cache[CacheCodes.SHARE_TYPE_DETAIL_LIST] = data;
+            }
+            else
+            {
+                data = HttpRuntime.Cache[CacheCodes.SHARE_TYPE_DETAIL_LIST] as List<DropdownDto>;
+            }
+            return data;
+        }
+
+        public IEnumerable<DropdownDto> GetDropDownIsPrimaryShareTypesWithDetails()
+        {
+            var data = new List<DropdownDto>();
+            if (HttpRuntime.Cache[CacheCodes.IS_PRIMARY_SHARE_TYPE_DETAIL_LIST] == null)
+            {
+                data = _repository.Query<DropdownDto>
+                        (
+                            "select ShareTypeId as [Key]," +
+                            "ShareTypeName as [Value],PricePerKitta as [Value1]," +
+                            "IsPrimary as [Value2] " +
+                            "from dbo.[ShareTypes] " +
+                            "where [Status]=1 and [IsPrimary]=1 " +
+                            "order by IsPrimary desc"
+                        ).ToList();
+                HttpRuntime.Cache[CacheCodes.IS_PRIMARY_SHARE_TYPE_DETAIL_LIST] = data;
+            }
+            else
+            {
+                data = HttpRuntime.Cache[CacheCodes.IS_PRIMARY_SHARE_TYPE_DETAIL_LIST] as List<DropdownDto>;
+            }
+            return data;
+        }
+
         public IEnumerable<DropdownDto> GetDropDownAgentStatus()
         {
             var data = new List<DropdownDto>();
@@ -325,6 +417,29 @@ namespace web.Web.Services.Services
                         (
                            "[dbo].[Sp_GetReferenceMembers]"
                         ).ToList();
+            return data;
+        }
+
+        public IEnumerable<DropdownDto> GetShareholderList()
+        {
+            string query = "select MemberId as [Key]," +
+                "FullName+' ('+ContactNumber+')' as [Value] " +
+                "from dbo.[ShareholderView] " +
+                "where IsActive=1";
+            var data = new List<DropdownDto>();
+            if (HttpContext.Current.Cache[CacheCodes.SHAREHOLDER_LIST] == null)
+            {
+               data = _repository.Query<DropdownDto>
+                        (
+                           query
+                        ).ToList();
+                //HttpContext.Current.Cache[CacheCodes.SHAREHOLDER_LIST] = data;
+            }
+            else
+            {
+                data = HttpContext.Current.Cache[CacheCodes.SHAREHOLDER_LIST] as 
+                        List<DropdownDto>;
+            }
             return data;
         }
     }

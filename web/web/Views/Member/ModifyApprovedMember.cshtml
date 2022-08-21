@@ -1,0 +1,318 @@
+﻿@model Web.Entity.Dto.MemberDto
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string age = string.Empty;
+    if (Convert.ToInt32(Model.Age) > 0)
+    {
+        age = Model.Age.ToString();
+    }
+}
+
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Add/Modify Approved Member</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Settings</a></li>
+            <li class="breadcrumb-item">Fund Development</li>
+        </ol>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Basic -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form id="AddModifyForm">
+                        <b>Personal Details</b>
+                        <div class="row">
+                            <input type="hidden" value="@Model.MemberId"
+                                   name="MemberId" />
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label>Full Name </label>
+                                    <input type="text" value="@Model.FullName"
+                                           name="FullName"
+                                           placeholder="Enter Full Name"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Citizenship Number </label>
+                                    <input type="text" value="@Model.CitizenshipNumber"
+                                           name="CitizenshipNumber"
+                                           onkeypress="ValidateCitizenshipNumber(event)"
+                                           placeholder="Enter Citizenship Number"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Age </label>
+                                    <input type="text" value="@age"
+                                           name="Age"
+                                           onkeypress="AllowNumberOnly(event)"
+                                           placeholder="Enter Age"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Father's Name </label>
+                                    <input type="text" value="@Model.FathersName"
+                                           name="FathersName"
+                                           placeholder="Enter Father's Name"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Husband's Name </label>
+                                    <input type="text" value="@Model.HusbandName"
+                                           name="HusbandName"
+                                           placeholder="Enter Husband's Name"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <b>Contact Details</b>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Phone Number </label>
+                                    <input type="text" value="@Model.ContactNumber"
+                                           name="ContactNumber"
+                                           placeholder="Enter Phone Number"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>EmailAddress </label>
+                                    <input type="text" value="@Model.EmailAddress"
+                                           name="EmailAddress"
+                                           placeholder="Enter Email Address"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <b>Address Details</b>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Citizenship's Former Address </label>
+                                    <input type="text" value="@Model.FormerAddress"
+                                           name="FormerAddress"
+                                           placeholder="Enter Former Address"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Citizenship's Changed Address </label>
+                                    <input type="text" value="@Model.PermanentAddress"
+                                           name="PermanentAddress"
+                                           placeholder="Enter Changed Address"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <label>Temporary Address</label>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>District</label>
+                                    <select class="form-control"
+                                            name="TemporaryDistrictId"
+                                            id="TemporaryDistrictId">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label>Municipality Name</label>
+                                    <input type="text" value="@Model.TemporaryMunicipalityName"
+                                           name="TemporaryMunicipalityName"
+                                           placeholder="Enter Municipality Name"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Ward Number</label>
+                                    <input type="text" value="@Model.TemporaryWardNumber"
+                                           name="TemporaryWardNumber"
+                                           onkeypress="AllowNumberOnly(event)"
+                                           placeholder="Enter Ward Number"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <b>Share Details</b>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label>Select Seller</label>
+                                    <select class="form-control"
+                                            name="SellerMemberId"
+                                            id="SellerMemberId">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Ref. Code/ Licences No.</label>
+                                    <input type="text"
+                                           value="@Model.ReferenceLicenceNumber"
+                                           name="ReferenceLicenceNumber"
+                                           placeholder="Enter Ref. Code/Licenes No."
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Agent/Member Phone Number</label>
+                                    <input type="text"
+                                           onkeypress="AllowNumberOnly(event)"
+                                           value="@Model.ReferencePhoneNumber"
+                                           name="ReferencePhoneNumber"
+                                           placeholder="Agent/Member Phone No."
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Nominee Name</label>
+                                    <input type="text"
+                                           value="@Model.NomineeName"
+                                           name="NomineeName"
+                                           placeholder="Enter Nominee Name"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
+                        <a href="~/MemberList" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Row-->
+</div>
+@Scripts.Render("~/web/backend/jquery-ui")
+<script src="~/Assets/Backend/js/jquery.validate.min.js"></script>
+<script>
+    $("#TemporaryDistrictId").select2();
+    $("#SellerMemberId").select2();
+
+    LoadDistrict('@Model.TemporaryDistrictId', 0, "#TemporaryDistrictId");
+    LoadShareholder('@Model.SellerMemberId', "#SellerMemberId");
+    
+    var $checkoutForm = $('#AddModifyForm').validate({
+        ignore: [],
+        rules: {
+            'FullName': {
+                required: true,
+                maxlength: 100
+            },
+            'CitizenshipNumber': {
+                required: true,
+                maxlength: 30
+            },
+            'Age': {
+                required: true,
+                maxlength: 2
+            },
+            'ContactNumber': {
+                required: true,
+                maxlength: 10
+            },
+            'FormerAddress': {
+                required: true,
+                maxlength: 200
+            },
+            'PermanentAddress': {
+                required: true,
+                maxlength: 200
+            },
+            'TemporaryDistrictId': {
+                required: true,
+            },
+            'TemporaryMunicipalityName': {
+                required: true,
+                maxlength: 100
+            },
+            'TemporaryWardNumber': {
+                required: true,
+                maxlength: 3
+            },
+            'ReferenceLicenceNumber': {
+                required: function () {
+                    if ($('input[name="ReferencePhoneNumber"]').val().length)
+                        return false;
+                    return true;
+                },
+                maxlength: 30
+            },
+            'ReferencePhoneNumber': {
+                maxlength: 10,
+            },
+            'FathersName': {
+                required: function () {
+                    if ($('input[name="HusbandName"]').val().length)
+                        return false;
+                    return true;
+                },
+                maxlength: 100
+            }
+        },
+        submitHandler: function (form) {
+            $("#btnSave").prop('disabled', true)
+            $("#btnSave span").html('Saving...')
+            $.ajax({
+                type: "POST",
+                url: "/Member/UpdateApprovedMember",
+                data: $("#AddModifyForm").serialize(),
+                success: function (resp) {
+                    debugger;
+                    showResultMessage(resp, "/MemberList")
+                },
+                error: function (resp) {
+                    showResultMessage(resp)
+                }
+            })
+        },
+
+        errorPlacement: function errorPlacement(error, element) {
+            var $parent = $(element).parents('.form-group');
+
+            // Do not duplicate errors
+            if ($parent.find('.jquery-validation-error').length) {
+                return false;
+            }
+
+            $parent.append(
+                error.addClass('jquery-validation-error small form-text invalid-feedback')
+            );
+        },
+        highlight: function (element) {
+            var $el = $(element);
+            var $parent = $el.parents('.form-group');
+
+            $el.addClass('is-invalid');
+
+            // Select2 and Tagsinput
+            if ($el.hasClass('select2-hidden-accessible') || $el.attr('data-role') === 'tagsinput') {
+                $el.parent().addClass('is-invalid');
+            }
+
+        },
+        unhighlight: function (element) {
+            $(element).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
+        }
+    });
+</script>

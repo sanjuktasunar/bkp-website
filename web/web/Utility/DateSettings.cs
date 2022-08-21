@@ -38,7 +38,8 @@ namespace web.Utility
 
         public List<string> SplitNepaliDate(string nepaliDateStr)
         {
-            string[] str = nepaliDateStr.Split('/');
+            nepaliDateStr = nepaliDateStr.Replace('/', '-');
+            string[] str = nepaliDateStr.Split('-');
             if (str.Count() < 3)
             {
                 return null;

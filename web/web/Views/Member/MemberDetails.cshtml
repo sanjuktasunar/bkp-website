@@ -1,295 +1,322 @@
 ﻿@model Web.Entity.Dto.MemberDto
 @{
-    ViewBag.Title = "MemberDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string base_Url = System.Web.Configuration.WebConfigurationManager
-                    .AppSettings["Image_Base_Url"];
+    NumberSettings numberSettings = new NumberSettings();
+    Web.Entity.Dto.MenuAccessPermissionDto menus = ViewBag.Menus;
 }
-<link href="~/Assets/Backend/css/custom/member-detail.css" rel="stylesheet" />
-<div class="card-body">
-    <div class="card-header py-3">
-        <b>Member Details</b>
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h2 class="h3 mb-0 text-gray-800">Member Details</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Fund Development</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Member</li>
+        </ol>
     </div>
-    <div class="table-responsive">
-        <table class="table table-bordered" width="100%" cellspacing="0">
-            <tbody>
-                <tr>
-                    <td><b>First Name : </b> @Model.FirstName</td>
-                    <td><b>Middle Name : </b> @Model.MiddleName</td>
-                    <td><b>Last Name : </b> @Model.LastName</td>
-                </tr>
-                <tr>
-                    <td><b>Gender : </b> @Model.GenderName</td>
-                    <td>
-                        <b>Date of Birth : </b>
-                        @Model.DateOfBirthBS (B.S.)<br />
-                        @Convert.ToDateTime(Model.DateOfBirthAD).ToShortDateString().Replace('/', '-') (A.D.)
-                    </td>
-                    <td><b>Citizenship Number : </b> @Model.CitizenshipNumber</td>
-                </tr>
-                <tr>
-                    <td><b>Form Status : </b> @Model.FormStatus</td>
-                    <td>
-                        <b>Approval Status : </b>
-                        @if (Model.ApprovalStatus == Web.Entity.Infrastructure.ApprovalStatus.Approved)
-                        {
-                            <span class="badge badge-success">
-                                Approved
-                            </span>
-                            if (Model.ApprovedDate != null)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <b>Personal Details</b>
+                    <div class="row">
+                        <label class="col-md-6">
+                            Full Name : @Model.FullName
+                        </label>
+                        <label class="col-md-6">
+                            Father's Name : @Model.FathersName
+                        </label>
+                        <label class="col-md-5">
+                            Husband's Name : @Model.HusbandName
+                        </label>
+                        <label class="col-md-2">
+                            Age : @Model.Age
+                        </label>
+                        <label class="col-md-5">
+                            Citizenship Number: @Model.CitizenshipNumber
+                        </label>
+
+                        <label class="col-md-6">
+                            Is Approved :
+                            @if (Model.IsApproved ==
+                                Web.Entity.Infrastructure.ApprovalStatus.Approved)
                             {
-                                <label>
-                                    @Convert.ToDateTime(Model.ApprovedDate).ToShortDateString()
-                                </label>
+                                <span class="badge badge-success">
+                                    APPROVED
+                                </span>
+                                <span>@Model.ApprovedByFullName , @Model.ApprovedDate</span>
                             }
-                        }
-                        else if (Model.ApprovalStatus == Web.Entity.Infrastructure.ApprovalStatus.UnApproved)
-                        {
-                            <span class="badge badge-primary">
-                                Approval Pending
-                            </span>
-                        }
-                        else if (Model.ApprovalStatus == Web.Entity.Infrastructure.ApprovalStatus.Rejected)
-                        {
-                            <span class="badge badge-danger">
-                                Rejected
-                            </span>
-                            if (!string.IsNullOrEmpty(Model.ApprovalRemarks))
+                            else if (Model.IsApproved ==
+                                Web.Entity.Infrastructure.ApprovalStatus.UnApproved)
                             {
-                                <span class="badge badge-dark">
-                                    @Model.ApprovalRemarks
+                                <span class="badge badge-primary">
+                                    UNAPPROVED
                                 </span>
                             }
-                        }
-                    </td>
-                    <td>
-                        <b>Is Active : </b>
-                        @if (Model.IsActive == true)
-                        {
-                            <span class="badge badge-success">Active</span>
-                        }
-                        else
-                        {
-                            <span class="badge badge-danger">InActive</span>
-                        }
-                    </td>
-                </tr>
-                <tr>
-                    <td><b>Mobile Number : </b> @Model.MobileNumber</td>
-                    <td><b>Email : </b> @Model.Email</td>
-                    <td>
-                        <b>Occupation : </b>
-                        @if (Model.OcuupationName?.ToLower() == "other")
-                        {
-                            <label>@Model.OtherOccupationRemarks</label>
-                        }
-                        else
-                        {
-                            <label>@Model.OcuupationName</label>
-                        }
-                    </td>
-                </tr>
-                <tr>
-                    <td><b>Member Code : </b> @Model.MemberCode</td>
-                    <td><b>Referal Code : </b> @Model.ReferalCode</td>
-                    <td><b>Referred By : </b> @Model.ReferenceFullName</td>
-                    @*<td><b>Share Type : </b> @Model.ShareTypeName</td>*@
-                </tr>
-                <tr>
-                    @*<td><b>Referred By : </b> @Model.ReferenceFullName</td>
-                    <td><b>Amount : </b> @Model.Amount</td>*@
-                    <td>
-                        <b>Is Shareholder? : </b>
-                        @if (Model.ShareholderId > 0 && Model.ShareholderIsActive==1)
-                        {
-                            <span class="badge badge-success">Yes</span> 
-                            @Convert.ToDateTime(Model.ShareholderDate).ToShortDateString()
-                        }
-                        else
-                        {
-                            <span class="badge badge-danger">No</span>
-                        }
-                    </td>
-                    <td colspan="2">
-                        <b>Created Date : </b> @Model.CreatedDate.ToShortDateString()
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-bordered" width="100%" cellspacing="0">
-            <tbody>
-                <tr>
-                    <th colspan="3">Share Details : </th>
-                </tr>
-                <tr>
-                    <td><b>Share Type : </b> @Model.ShareTypeName</td>
-                    <td><b>Registeration Amount : </b> @Model.Amount</td>
-                    <td><b>Total Kitta : </b> @Model.TotalKitta</td>
-                </tr>
-               
-            </tbody>
-        </table>
-        <table class="table table-bordered" width="100%" cellspacing="0">
-            <tbody>
-                <tr>
-                    <th colspan="3">Former Address : </th>
-                </tr>
-                <tr>
-                    <td><b>District : </b> @Model.FormerDistrictName</td>
-                    <td><b>VDC/Municiplaity : </b> @Model.FormerMunicipalityName</td>
-                    <td><b>Ward No. : </b> @Model.FormerWardNumber</td>
-                </tr>
-                <tr>
-                    <th colspan="3">Permanent Address : </th>
-                </tr>
-                <tr>
-                    <td>
-                        <b>District : </b>
-                        @Model.PermanentDistrictName (@Model.PermanentProvinceName)
-                    </td>
-                    <td><b>RM/Municiplaity : </b> @Model.PermanentMunicipality</td>
-                    <td><b>Ward No. : </b> @Model.PermanentWardNumber</td>
-                </tr>
-                <tr>
-                    <th colspan="3">Temporary Address : </th>
-                </tr>
-                @if (Model.TemporaryIsOutsideNepal == false)
-                {
-                    <tr>
-                        <td>
-                            <b>District : </b>
-                            @Model.TemporaryDistrictName (@Model.TemporaryProvinceName)
-                        </td>
-                        <td><b>RM/Municiplaity : </b> @Model.TemporaryMunicipality</td>
-                        <td><b>Ward No. : </b> @Model.TemporaryWardNumber</td>
-                    </tr>
-                }
-                else
-                {
-                    <tr>
-                        <td><b>Country Name : </b> @Model.TemporaryCountryName</td>
-                        <td colspan="2"><b>Address : </b> @Model.TemporaryAddress</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <table class="table table-bordered" width="100%" cellspacing="0" id="documentTable">
-            <tbody>
-                <tr>
-                    <th colspan="4">
-                        Documents
-                        <button class="btn btn-sm btn-success" id="btnShowDocument"
-                                onclick="showDocument()">
-                            <i class="fas fa-eye"></i>
+                            else if (Model.IsApproved ==
+                                Web.Entity.Infrastructure.ApprovalStatus.Rejected)
+                            {
+                                <span class="badge badge-danger">
+                                    REJECTED
+                                </span>
+                                <span class="badge badge-dark">
+                                    @Model.RejectRemarks
+                                </span>
+                            }
+                        </label>
+
+                        <label class="col-md-3">
+                            <b>Member Code</b> : @Model.MemberCode
+                        </label>
+                        <label class="col-md-3">
+                            <b>Referal Code</b> : @Model.ReferalCode
+                        </label>
+                        <label class="col-md-12">
+                            Created On : @Model.CreatedDate , @Model.CreatedByFullName
+                        </label>
+
+                    </div>
+                    <b>Contact Details</b>
+                    <div class="row">
+                        <label class="col-md-6">
+                            Contact Number : @Model.ContactNumber
+                        </label>
+                        <label class="col-md-6">
+                            Email Address : @Model.EmailAddress
+                        </label>
+                    </div>
+                    <b>Address Details</b>
+                    <div class="row">
+                        <label class="col-md-4">
+                            Former Address : @Model.FormerAddress
+                        </label>
+
+                        <label class="col-md-4">
+                            Changed Address : @Model.PermanentAddress
+                        </label>
+
+                        <label class="col-md-4">
+                            Temporary Address :  @Model.TemporaryMunicipalityName-@Model.TemporaryWardNumber
+                            , @Model.TemporaryDistrictName
+                        </label>
+                    </div>
+
+                    <b>Nominee Details</b>
+                    <div class="row">
+                        <label class="col-md-6">
+                            Full Name : @Model.NomineeName
+                        </label>
+                    </div>
+                    <br />
+                    <b>Share Details</b>
+                    <div class="row">
+                        <label class="col-md-4">
+                            Share Type : @Model.ShareTypeName
+                        </label>
+                        <label class="col-md-4">
+                            Price Per Kitta : @Model.SharePricePerKittaString
+                        </label>
+                        <label class="col-md-4">
+                            Applied Share Kitta : @Model.AppliedShareKittaString
+                        </label>
+                        <label class="col-md-4">
+                            Total Amount :
+                            <span class="badge badge-info">
+                                @Model.TotalShareAmountString
+                            </span>
+                        </label>
+                        <label class="col-md-4">
+                            Paid Amount :
+                            <span class="badge badge-success">
+                                @Model.TotalSharePaidAmountString
+                            </span>
+                        </label>
+                        <label class="col-md-4">
+                            DUE :
+                            @if (Model.TotalShareDueAmount > 0)
+                            {
+                                <span class="badge badge-danger">
+                                    @Model.TotalShareDueAmountString
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-success">
+                                    CLEARED
+                                </span>
+                            }
+                        </label>
+                    </div>
+                    <b>Seller Details</b>
+                    <div class="row">
+                        <label class="col-md-4">
+                            Name : @Model.SellerFullName
+                        </label>
+                        <label class="col-md-4">
+                            Phone Number : @Model.SellerPhoneNumber
+                        </label>
+                    </div>
+                    <b>Reference Details</b>
+                    <div class="row">
+                        <label class="col-md-4">
+                            Name : @Model.ReferenceFullName
+                        </label>
+                        <label class="col-md-4">
+                            Phone Number : @Model.ReferencePhoneNumber
+                        </label>
+                        <label class="col-md-4">
+                            Ref Code/Licences No. : @Model.ReferenceLicenceNumber
+                        </label>
+                    </div>
+                    <br />
+                    <b>Payment Details</b><br />
+                    @if (Model.TotalShareDueAmount > 0 && menus.WriteAccess && Model.IsApproved == Web.Entity.Infrastructure.ApprovalStatus.Approved)
+                    {
+                        <button class="btn btn-sm btn-success"
+                                type="submit" data-bs-toggle="modal"
+                                id="btnAddSharePayment"
+                                title="Make New Payment">
+                            <i class="fas fa-plus"></i> Payment
                         </button>
-                    </th>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="hidden" id="CitizenShipFrontImageString" />
-                        Citizenship Front
-                    </td>
-                    <td>
-                        <a href="#">
-                            <img id="CitizenShipFrontImage" />
+                    }
+                    <table class="table align-items-center table-flush table-hover" id="dataTable">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>S.N.</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ int i = 0; }
+                            @foreach (var x in Model.MemberPaymentLogDtos)
+                            {
+                                i++;
+                                <tr>
+                                    <td>@i</td>
+                                    <td>
+                                        @numberSettings.CommaSeparate(x.Amount)
+                                    </td>
+                                    <td>
+                                        @x.CreatedDate
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <br />
+                    <a href="~/AddMember" class="btn btn-primary btn-sm">
+                        <i class="fa fa-plus"></i>
+                        Add New
+                    </a>
+                    @if (Model.IsApproved == Web.Entity.Infrastructure.ApprovalStatus.UnApproved)
+                    {
+                        <a href="~/ModifyMember/@Model.MemberId" 
+                           class="btn btn-success btn-sm">
+                            <i class="fa fa-edit"></i>
+                            Modify
                         </a>
-                    </td>
-                    <td>
-                        <input type="hidden" id="CitizenShipBackImageString" />
-                        Citizenship Back
+                    }
+                    else
+                    {
+                        <a href="~/ModifyApprovedMember/@Model.MemberId" 
+                           class="btn btn-secondary btn-sm">
+                            <i class="fa fa-edit"></i>
+                            Modify
+                        </a>
+                    }
 
-                    </td>
-                    <td>
-                        <a href="#">
-                            <img id="CitizenShipBackImage" />
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="hidden" id="PhotoImageString" />
-                        Photo
-
-                    </td>
-                    <td>
-                        <a href="#">
-                            <img id="PhotoImage" />
-                        </a>
-                    </td>
-                    <td>
-                        <input type="hidden" id="PaymentImageString" />
-                        Payment Proof
-                    </td>
-                    <td>
-                        <a href="#">
-                            <img id="PaymentImage" />
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <a href="/MemberList" class="btn btn-danger"><i class="fa fa-window-close"></i> Close </a>
-    </div>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <img id="ImagePreview" />
+                    <a href="~/MemberList" class="btn btn-danger btn-sm">
+                        <i class="fa fa-window-close"></i>
+                        Close
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-@Scripts.Render("~/web/back-end/js")
+<!-- Modal -->
+<div class="modal fade" id="mdlAddShareAmount" tabindex="-1" role="dialog" aria-labelledby="mdlAddShareAmount"
+     data-keyboard="false" data-backdrop="static"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabelLogout">
+                    Add/Modify Share Amount
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <label class="col-md-12"><b>TOTAL DUE : </b>
+                        <span class="badge badge-danger">
+                            @Model.TotalShareDueAmountString
+                        </span>
+                    </label>
+                </div>
+                <form id="AddShareAmount">
+                    <input type="hidden" value="@Model.MemberId" name="MemberId" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <input type="text" placeholder="Enter Amount"
+                                    class="form-control" name="Amount" id="txtShareAmount" />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary"
+                                id="btnSaveShareAmount">
+                            Save
+                        </button>
+                        <button type="button" class="btn btn-secondary" 
+                                data-dismiss="modal">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/web/backend/jquery-ui")
 <script>
-    var path = ("@base_Url" + "ImageStorage/").replace('~', '');
-    function ShowImage(imageName) {
-        $("#ImagePreview").empty();
-        $("#exampleModal").modal();
-        $("#ImagePreview").attr("src", path + imageName);
+    $("#btnAddSharePayment").click(function (evt) {
+        $("#mdlAddShareAmount").modal();
+        clearAllTextBox();
+    })
+
+    function clearAllTextBox() {
+        $("#txtShareAmount").val('');
+        unhighlightElement("#txtShareAmount");
     }
 
-    function showDocument() {
-        var memberId = '@Model.MemberId';
-        $("#btnShowDocument").prop('disabled', true);
+    $("#btnSaveShareAmount").click(function (evt) {
+        evt.preventDefault();
+        var txtAmount = $("#txtShareAmount").val();
+        if (!txtAmount.length) {
+            highlightElement("#txtShareAmount");
+            return false;
+        }
 
+        $("#btnSaveShareAmount").html('Saving......');
+        $("#btnSaveShareAmount").prop('disabled', true);
         $.ajax({
-            type: "post",
-            url: "/Member/GetMemberDocuments",
-            data: { memberId },
+            type: 'post',
+            url: '/Member/AddPaymentLog',
+            data: { Amount: txtAmount, MemberId: '@Model.MemberId' },
             success: function (resp) {
-                if (resp != null) {
-                    $("#PhotoImage").attr("src", path + resp.Photo);
-                    $("#CitizenShipFrontImage").attr("src", path + resp.CitizenshipFront);
-                    $("#CitizenShipBackImage").attr("src", path + resp.CitizenshipBack);
-                    $("#PaymentImage").attr("src", path + resp.VoucherImage);
-
-                    $("#PhotoImageString").val(resp.Photo);
-                    $("#CitizenShipFrontImageString").val(resp.CitizenshipFront);
-                    $("#CitizenShipBackImageString").val(resp.CitizenshipBack);
-                    $("#PaymentImageString").val(resp.VoucherImage);
-                }
+                $("#btnSaveShareAmount").prop('disabled', false);
+                $("#btnSaveShareAmount").html('Save');
+                showResultMessage(resp, "/MemberDetails/@Model.MemberId");
             },
             error: function (resp) {
-                showResultMessage(resp)
-                $("#documentTable button").prop('disabled', false);
-            }
-        })
-    }
-
-    $("#documentTable").on('click', 'a img', function (event) {
-        event.preventDefault();
-        var idName = $(this).attr("id");
-        var image_name = $("#" + idName + "String").val();
-        ShowImage(image_name);
-    });
+                showResultMessage(resp);
+            },
+        });
+    })
 </script>

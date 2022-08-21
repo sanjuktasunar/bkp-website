@@ -4,11 +4,12 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using web.Services;
 using web.Utility;
-using web.Web.Services.Mapping;
 using Web.Entity.Dto;
 using Web.Entity.Entity;
 using Web.Entity.Infrastructure;
+using Web.Services.Mapping;
 
 namespace web.Web.Services.Services
 {
@@ -18,7 +19,6 @@ namespace web.Web.Services.Services
         Task<AgentDto> GetAgentById(int? id);
         Task<Response> Insert(AgentDto dto);
         Task<Response> Update(AgentDto dto);
-        Task<AgentDto> GetAgentByLicenceNumber(string LicenceNumber);
     }
 
     public class AgentService : IAgentService
@@ -26,13 +26,16 @@ namespace web.Web.Services.Services
         private readonly Repository<Agent> _repository;
         private readonly MessageClass _messageClass;
         private readonly InitialSetupModel initialSetupModel;
-        private readonly IMemberService _memberService;
-        public AgentService(IMemberService memberService)
+        private readonly IMemberRepository _memberRepository;
+        private readonly IAgentRepository _agentRepository;
+        public AgentService(IMemberRepository memberRepository,
+            IAgentRepository agentRepository)
         {
             _repository = new Repository<Agent>();
             _messageClass = new MessageClass();
             initialSetupModel = new InitialSetupModel();
-            _memberService = memberService;
+            _agentRepository = agentRepository;
+            _memberRepository = memberRepository;
         }
 
         public async Task<IEnumerable<AgentDto>> GetAllAgent(int ? ProvinceId, int? DistrictId,int ? AgentStatusId, bool AdminAccess=false)
@@ -41,9 +44,8 @@ namespace web.Web.Services.Services
             if (!AdminAccess)
                 UserId = _repository.UserIdentity();
 
-            string _query = "select * from dbo.[AgentView] " +
-                "where " +
-                "(isnull(@ProvinceId,0)=0 or ProvinceId=@ProvinceId) and " +
+            string _query = "select * from dbo.[AgentView] where " +
+                //"(isnull(@ProvinceId,0)=0 or ProvinceId=@ProvinceId) and " +
                 "(isnull(@DistrictId,0)=0 or DistrictId=@DistrictId) and " +
                 "(isnull(@AgentStatusId,0)=0 or AgentStatusId=@AgentStatusId) and " +
                 "(isnull(@UserId,0)=0 or CreatedBy=@UserId)";
@@ -68,39 +70,17 @@ namespace web.Web.Services.Services
             result.messageType = "error";
             try
             {
+                dto = await ValidateAgent(dto);
+                if (dto.response.messageType == "error")
+                    return dto.response;
+                
+                dto.IsActive = true;
+                dto.LicenceNumber = await _agentRepository.GetLicenceNumberAsync();
+                dto.AgentStatusId = 1;
+                dto.CreatedBy = _repository.UserIdentity();
+                dto.CreatedDate = DateTime.Now;
+
                 var entity = dto.ToEntity();
-                entity.CitizenshipNumber = dto.CitizenshipNumber.Replace("/", "-");
-                entity.IsActive = true;
-                entity.LicenceNumber = await GetLicenceNumber();
-                bool isValidCitizen = initialSetupModel.ValidateCitizenshipNumber(entity.CitizenshipNumber);
-
-                if (isValidCitizen == false)
-                {
-                    result.message = "Citizenship Number is not Valid !!!!";
-                    return result;
-                }
-
-                var member = await _memberService
-                                .GetMemberByReferalCode(dto.ReferenceLicenceNumber.ToUpper());
-                if (member != null)
-                {
-                    entity.MemberId = member.MemberId;
-                }
-                else
-                {
-                    var agent = await GetAgentByLicenceNumber(dto.ReferenceLicenceNumber.ToUpper());
-                    if (agent != null)
-                        entity.ReferenceAgentId = agent.AgentId;
-                }
-
-                if(entity.ReferenceAgentId == null && entity.MemberId == null)
-                {
-                    result.message = "Lincence Number or Referal Code is not Valid !!!!";
-                    return result;
-                }
-                entity.AgentStatusId = 1;
-                entity.CreatedBy = _repository.UserIdentity();
-                entity.CreatedDate = DateTime.Now;
                 int agentId = await _repository.InsertAsync(entity);
                 result = _messageClass.SaveMessage(agentId);
                 result.id = agentId;
@@ -123,44 +103,49 @@ namespace web.Web.Services.Services
                 if (agentDto == null)
                     return _messageClass.NotFoundMessage();
 
-                var entity = agentDto.ToEntity();
-                entity.CitizenshipNumber = dto.CitizenshipNumber.Replace("/", "-");
-                bool isValidCitizen = initialSetupModel.ValidateCitizenshipNumber(entity.CitizenshipNumber);
-                if (isValidCitizen == false)
-                {
-                    result.message = "Citizenship Number is not Valid !!!!";
-                    return result;
-                }
+                dto = await ValidateAgent(dto);
+                if (dto.response.messageType == "error")
+                    return dto.response;
 
-                if (dto.ReferenceLicenceNumber != agentDto.ReferenceLicenceNumber)
-                {
-                    entity.MemberId = null;
-                    entity.ReferenceAgentId = null;
-                    var member = await _memberService
-                                    .GetMemberByReferalCode(dto.ReferenceLicenceNumber.ToUpper());
-                    if (member != null)
-                    {
-                        entity.MemberId = member.MemberId;
-                    }
-                    else
-                    {
-                        var agent = await GetAgentByLicenceNumber(dto.ReferenceLicenceNumber.ToUpper());
-                        if (agent != null)
-                            entity.ReferenceAgentId = agent.AgentId;
-                    }
-                }
-                if (entity.ReferenceAgentId == null && entity.MemberId == null)
-                {
-                    result.message = "Lincence Number or Referal Code is not Valid !!!!";
-                    return result;
-                }
+                var entity = agentDto.ToEntity();
+                //entity.CitizenshipNumber = dto.CitizenshipNumber.Replace("/", "-");
+                //bool isValidCitizen = initialSetupModel.ValidateCitizenshipNumber(entity.CitizenshipNumber);
+                //if (isValidCitizen == false)
+                //{
+                //    result.message = "Citizenship Number is not Valid !!!!";
+                //    return result;
+                //}
+
+                //if (dto.ReferenceLicenceNumber != agentDto.ReferenceLicenceNumber)
+                //{
+                //    entity.MemberId = null;
+                //    entity.ReferenceAgentId = null;
+                //    var member = await _memberService
+                //                    .GetMemberByReferalCode(dto.ReferenceLicenceNumber.ToUpper());
+                //    if (member != null)
+                //    {
+                //        entity.MemberId = member.MemberId;
+                //    }
+                //    else
+                //    {
+                //        var agent = await GetAgentByLicenceNumber(dto.ReferenceLicenceNumber.ToUpper());
+                //        if (agent != null)
+                //            entity.ReferenceAgentId = agent.AgentId;
+                //    }
+                //}
+                //if (entity.ReferenceAgentId == null && entity.MemberId == null)
+                //{
+                //    result.message = "Lincence Number or Referal Code is not Valid !!!!";
+                //    return result;
+                //}
                 entity.AgentFullName = dto.AgentFullName;
                 entity.ContactNumber1 = dto.ContactNumber1;
                 entity.ContactNumber2 = dto.ContactNumber2;
                 entity.EmailAddress = dto.EmailAddress;
                 entity.Occupation = dto.Occupation;
-                entity.ProvinceId = dto.ProvinceId;
                 entity.DistrictId = dto.DistrictId;
+                entity.MemberId = dto.MemberId;
+                entity.ReferenceAgentId = dto.ReferenceAgentId;
                 entity.MunicipalityName = dto.MunicipalityName;
                 entity.WardNumber = dto.WardNumber;
                 entity.ToleName = dto.ToleName;
@@ -179,27 +164,36 @@ namespace web.Web.Services.Services
             return result;
         }
 
-        public async Task<AgentDto> GetAgentByLicenceNumber(string LicenceNumber)
+        public async Task<AgentDto> ValidateAgent(AgentDto dto)
         {
-            string _query = "select AgentId,AgentFullName,LicenceNumber from dbo.[Agent] where LicenceNumber=@LicenceNumber " +
-                            "and IsActive=1";
-            var obj = await _repository.QueryAsync<AgentDto>(_query,new { LicenceNumber });
-            return obj.FirstOrDefault();
-        }
+            var response = new Response();
+            dto.response = new Response();
+            response.messageType = "success";
+            var messageList = new List<string>();
 
-        public async Task<string> GetLicenceNumber()
-        {
-            string LincenceNumber = "LIN-01";
-            string _query = "select top 1 LicenceNumber from dbo.[Agent] order by AgentId desc";
-            var agent = (await _repository.QueryAsync<AgentDto>(_query)).FirstOrDefault();
-            if (agent != null)
+            dto.CitizenshipNumber = dto.CitizenshipNumber.Replace("/", "-");
+            bool isValidCitizen = initialSetupModel.ValidateCitizenshipNumber(dto.CitizenshipNumber);
+
+            if (isValidCitizen == false)
+                messageList.Add("Citizenship Number is not Valid !!!!");
+
+            var reference = await _memberRepository.GetRefernceAgentMemberId(dto.ReferenceLicenceNumber, dto.ReferencePhoneNumber);
+            dto.ReferenceAgentId = reference.AgentId;
+            dto.MemberId = reference.MemberId;
+
+            if (dto.ReferenceAgentId == null && dto.MemberId == null)
             {
-                int linLastNum = Convert.ToInt32(agent.LicenceNumber.Split('-')[1])+1;
-                string linLastNumString = (linLastNum > 10 ? linLastNum.ToString()
-                                           : ("0" + linLastNum));
-                LincenceNumber = "LIN-" + linLastNumString;
+                messageList.Add("Lincence Number or Referal Code or Phone Number " +
+                    "is not Valid !!!!");
             }
-            return LincenceNumber;
+
+            if (messageList.Count() > 0)
+            {
+                response.messageType = "error";
+                response.message = String.Join("\r\n", messageList);
+            }
+            dto.response = response;
+            return dto;
         }
     }
 }

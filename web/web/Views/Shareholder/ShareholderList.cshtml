@@ -1,76 +1,85 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-
     Web.Entity.Dto.MenuAccessPermissionDto menu = ViewBag.Menus;
 }
-<h6 class="h6 mb-2 text-gray-800">Shareholder List</h6>
-<div class="row">
-    <div class="col-md-12">
-        <form id="form_validation">
-            <div class="row">
-                <div class="col-sm-4 col-md-4">
-                    <div class="form-group">
-                        <label>Referred By</label>
-                        <select class="form-control" id="ddlReferenceId">
-                            <option value="">Referred By</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-4 col-md-4">
-                    <div class="form-group">
-                        <label>Select Agent</label>
-                        <select class="form-control" id="ddlAgentId">
-                            <option value="">Select Value</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-4 col-md-4">
-                    <div class="form-group">
-                        <label>Share Type</label>
-                        <select class="form-control" id="ddlShareTypeId">
-                            <option value="">Select Value</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6 col-md-6">
-                    <div class="form-group">
-                        <label>Search Query</label>
-                        <input type="text" class="form-control"
-                               value="@ViewBag.SearchQuery"
-                               placeholder="Name/Phone No./Email/Citizenship"
-                               id="txtSearchQuery" />
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-6">
-                    <div class="form-group">
-                        <label>Code</label>
-                        <input type="text" class="form-control"
-                               value="@ViewBag.Code"
-                               placeholder="Referal/Member Code"
-                               id="txtCode" />
-                    </div>
-                </div>
-            </div>
-            <button type="submit" id="btnSearch" class="btn btn-primary">Search</button>
-            <button type="button" id="btnClear" class="btn btn-secondary" data-dismiss="modal">Clear</button>
-        </form>
+
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h2 class="h3 mb-0 text-gray-800">Shareholder List</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Fund Development</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Shareholder</li>
+        </ol>
     </div>
-</div>
-<br />
-<div class="card shadow mb-4">
-    <div class="card-body">
-        <div class="table-responsive">
-            <div id="result">
-                <i class="fas fa-cog"></i> Loading...............
+    <div class="row">
+        <div class="col-md-12">
+            <form id="form_validation">
+                <div class="row">
+                    <div class="col-sm-3 col-md-3">
+                        <div class="form-group">
+                            <label>Referred By</label>
+                            <select class="form-control" id="ddlReferenceId">
+                                <option value="">Referred By</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-md-3">
+                        <div class="form-group">
+                            <label>Select Agent</label>
+                            <select class="form-control" id="ddlAgentId">
+                                <option value="">Select Value</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <div class="form-group">
+                            <label>Share Type</label>
+                            <select class="form-control" id="ddlShareTypeId">
+                                <option value="">Select Value</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <div class="form-group">
+                            <label>Search Query</label>
+                            <input type="text" class="form-control"
+                                   value="@ViewBag.SearchQuery"
+                                   placeholder="Name/Phone No./Email/Citizenship"
+                                   id="txtSearchQuery" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3 col-md-3">
+                        <div class="form-group">
+                            <label>Code</label>
+                            <input type="text" class="form-control"
+                                   value="@ViewBag.Code"
+                                   placeholder="Referal/Member Code"
+                                   id="txtCode" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" id="btnSearch" class="btn btn-primary">Search</button>
+                        <button type="button" id="btnClear" class="btn btn-secondary">Clear</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                </div>
+                <div class="table-responsive p-3" id="result">
+                    <i class="fas fa-cog"></i> Loading...............
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-@Scripts.Render("~/web/back-end/js")
-<script src="~/Assets/Backend/js/custom/plugin/select2/select2.min.js"></script>
+@Scripts.Render("~/web/backend/jquery-ui")
 <script>
     $('#ddlReferenceId').select2();
     $('#ddlAgentId').select2();
@@ -82,7 +91,7 @@
         evt.preventDefault();
         $("#btnSearch").prop('disabled', true);
         $("#btnSearch").html('Searching....')
-       
+
         var ReferenceId = $('#ddlReferenceId').find(':selected').val();
         var AgentId = $('#ddlAgentId').find(':selected').val();
         var ShareTypeId = $('#ddlShareTypeId').val();
@@ -117,4 +126,5 @@
             }
         });
     })
+
 </script>

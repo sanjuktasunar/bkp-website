@@ -27,8 +27,20 @@ namespace web.Controllers.User
         public JsonResult Index(DropdownRequestDto requestDto)
         {
             var dropdown = new List<DropdownDto>();
-            switch(requestDto.type)
+            switch(requestDto.type.ToLower())
             {
+                case "role_list":
+                    dropdown = _dropDownService.GetDropDownRole().ToList();
+                    break;
+                case "user_type_list":
+                    dropdown = _dropDownService.GetDropDownUserType().ToList();
+                    break;
+                case "user_type_for_user_list":
+                    dropdown = _dropDownService.GetDropDownUserTypeForUserList().ToList();
+                    break;
+                case "user_status_list":
+                    dropdown = _dropDownService.GetDropDownUserStatus().ToList();
+                    break;
                 case "fiscal_year_list":
                     dropdown = _dropDownService.GetDropDownFiscalYear().ToList();
                     break;
@@ -49,23 +61,32 @@ namespace web.Controllers.User
                 case "share_type_list":
                     dropdown = _dropDownService.GetDropDownShareTypes().ToList();
                     break;
-                case "agent_Status_list":
+                case "share_type_with_detail_list":
+                    dropdown = _dropDownService.GetDropDownShareTypesWithDetails().ToList();
+                    break;
+                case "is_primary_share_type_detail_list":
+                    dropdown = _dropDownService.GetDropDownIsPrimaryShareTypesWithDetails().ToList();
+                    break;
+                case "agent_status_list":
                     dropdown = _dropDownService.GetDropDownAgentStatus().ToList();
                     break;
-                case "account_Head_list":
+                case "account_head_list":
                     dropdown = _dropDownService.GetDropDownAccountHead().ToList();
                     break;
-                case "marital_Status_List":
+                case "marital_status_list":
                     dropdown = _dropDownService.GetDropDownMaritalStatus().ToList();
                     break;
-                case "outside_country_List":
+                case "outside_country_list":
                     dropdown = _dropDownService.GetOutsideCountry().ToList();
                     break;
-                case "reference_Agent_List":
+                case "reference_agent_list":
                     dropdown = _dropDownService.GetReferenceAgentList().ToList();
                     break;
-                case "reference_Member_List":
+                case "reference_member_list":
                     dropdown = _dropDownService.GetReferenceMemberList().ToList();
+                    break;
+                case "shareholder_list":
+                    dropdown = _dropDownService.GetShareholderList().ToList();
                     break;
                 default:
                     break;

@@ -1,530 +1,366 @@
 ﻿@model Web.Entity.Dto.MemberDto
 @{
+    ViewBag.Title = "AddModifyNewMember";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string base_Url = System.Web.Configuration.WebConfigurationManager
-                    .AppSettings["Image_Base_Url"];
+    string age = string.Empty;
+    if(Model.Age>0)
+    {
+        age = Model.Age.ToString();
+    }
 }
 
-<h6 class="h6 mb-2 text-gray-800">Add/Modify Member</h6>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <form id="form_validation">
-                    <input type="hidden" value="@Model.MemberId" name="MemberId" />
-                    <div class="row">
 
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Citizenship Number </label>
-                                <input type="text" value="@Model.CitizenshipNumber"
-                                       name="CitizenshipNumber"
-                                       onkeypress="ValidateCitizenshipNumber(event)"
-                                       placeholder="Citizenship Number"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>First Name</label>
-                                <input type="text" value="@Model.FirstName"
-                                       name="FirstName" placeholder="First Name"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Middle Name</label>
-                                <input type="text" value="@Model.MiddleName"
-                                       name="MiddleName" placeholder="Middle Name"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Last Name</label>
-                                <input type="text" value="@Model.LastName"
-                                       name="LastName" placeholder="Last Name"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Date Of Birth (YYYY/MM/DD) </label>
-                                <input type="text" value="@Model.DateOfBirthBS"
-                                       onkeypress="ValidateNepaliDate(event)"
-                                       name="DateOfBirthBS" placeholder="Date Of Birth"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Gender</label>
-                                <select class="form-control"
-                                        name="GenderId"
-                                        id="GenderId">
-                                    <option value=""></option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Marital Status</label>
-                                <select class="form-control"
-                                        name="MaritalStatusId"
-                                        id="MaritalStatusId">
-                                    <option value=""></option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Mobile Number</label>
-                                <input type="text" value="@Model.MobileNumber"
-                                       onkeypress="ValidateMobileNumber(event)"
-                                       name="MobileNumber" placeholder="Mobile Number"
-                                       class="form-control" />
-                            </div>
-                        </div>
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Add/Modify Member</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Settings</a></li>
+            <li class="breadcrumb-item">Fund Development</li>
+        </ol>
+    </div>
 
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input type="text" value="@Model.Email"
-                                       name="Email" placeholder="Email"
-                                       class="form-control" />
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Basic -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form id="AddModifyForm">
+                        <b>Personal Details</b>
+                        <div class="row">
+                            <input type="hidden" value="@Model.MemberId"
+                                   name="MemberId" />
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label>Full Name </label>
+                                    <input type="text" value="@Model.FullName"
+                                           name="FullName"
+                                           placeholder="Enter Full Name"
+                                           class="form-control" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Occupation</label>
-                                <select class="form-control"
-                                        id="OccupationId"
-                                        name="OccupationId">
-                                    <option value=""></option>
-                                </select>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Citizenship Number </label>
+                                    <input type="text" value="@Model.CitizenshipNumber"
+                                           name="CitizenshipNumber"
+                                           onkeypress="ValidateCitizenshipNumber(event)"
+                                           placeholder="Enter Citizenship Number"
+                                           class="form-control" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Remarks</label>
-                                <input type="text" value="@Model.OtherOccupationRemarks"
-                                       name="OtherOccupationRemarks" placeholder="Remarks"
-                                       class="form-control" />
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Age </label>
+                                    <input type="text" value="@age"
+                                           name="Age"
+                                           onkeypress="AllowNumberOnly(event)"
+                                           placeholder="Enter Age"
+                                           class="form-control" />
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <label><b>Former Address</b></label>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>District</label>
-                                <select class="form-control"
-                                        id="FormerDistrictId"
-                                        name="FormerDistrictId">
-                                    <option value="">Select Value</option>
-                                </select>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Father's Name </label>
+                                    <input type="text" value="@Model.FathersName"
+                                           name="FathersName"
+                                           placeholder="Enter Father's Name"
+                                           class="form-control" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Municipality Name</label>
-                                <input type="text" value="@Model.FormerMunicipalityName"
-                                    name="FormerMunicipalityName" placeholder="Municipality Name"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Ward Number</label>
-                                <input type="text" value="@Model.FormerWardNumber"
-                                     name="FormerWardNumber" placeholder="Ward Number"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-                    <label><b>Permanent Address</b></label>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>District</label>
-                                <select class="form-control"
-                                        id="PermanentDistrictId"
-                                        name="PermanentDistrictId">
-                                    <option value="">Select Value</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Municipality Name</label>
-                                <input type="text" value="@Model.PermanentMunicipality"
-                                       name="PermanentMunicipality" placeholder="Municipality Name"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Ward Number</label>
-                                <input type="text" value="@Model.PermanentWardNumber"
-                                       name="PermanentWardNumber" placeholder="Ward Number"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-                    <label><b>Temporary Address</b></label>
-                    <br />
-                    <b>Is Outside Nepal? </b>
-                    @if (Model.TemporaryIsOutsideNepal)
-                    {
-                        <label for="outside-nepal">
-                            <span>Yes</span>
-                            <input type="radio" id="TemporaryIsOutsideNepal" checked="checked"
-                                   name="TemporaryIsOutsideNepal" value="true">
-                        </label>
-                        <label for="inside-nepal">
-                            <span>No</span>
-                            <input type="radio" id="TemporaryIsOutsideNepal"
-                                   name="TemporaryIsOutsideNepal" value="false">
-                        </label>
-                    }
-                    else
-                    {
-                        <label for="outside-nepal">
-                            <span>Yes</span>
-                            <input type="radio" id="TemporaryIsOutsideNepal"
-                                   name="TemporaryIsOutsideNepal" value="true">
-                        </label>
-                        <label for="inside-nepal">
-                            <span>No</span>
-                            <input type="radio" id="TemporaryIsOutsideNepal" checked="checked"
-                                   name="TemporaryIsOutsideNepal" value="false">
-                        </label>
-                    }
-                    <div class="row" id="InsideNepalDiv">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>District</label>
-                                <select class="form-control"
-                                        id="TemporaryDistrictId"
-                                        name="TemporaryDistrictId">
-                                    <option value=""></option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Municipality Name</label>
-                                <input type="text" value="@Model.TemporaryMunicipality"
-                                       name="TemporaryMunicipality" id="TemporaryMunicipality"
-                                       placeholder="TemporaryMunicipality"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Ward Number</label>
-                                <input type="text" value="@Model.TemporaryWardNumber"
-                                       id="TemporaryWardNumber"
-                                       name="TemporaryWardNumber" placeholder="Ward Number"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" id="OutsideNepalDiv">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Select Country</label>
-                                <select class="form-control"
-                                        id="TemporaryCountryId"
-                                        name="TemporaryCountryId">
-                                    <option value=""></option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Address</label>
-                                <input type="text" value="@Model.TemporaryAddress"
-                                       name="TemporaryAddress" id="TemporaryAddress"
-                                       placeholder="Temporary Address"
-                                       class="form-control" />
-                            </div>
-                        </div>
-                        
-                    </div>
-
-                    <label><b>Upload Documents</b></label>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Photo</label>
-                                <input type="file"
-                                       name="PhotoString" class="form-control PhotoString" />
-
-                                <input type="hidden" name="Photo" value="@Model.Photo"
-                                       id="Photo" />
-                                <input type="hidden" name="MemberPhotoString"
-                                       id="PhotoString" />
-
-                                <div  class="wizard-image-div" id="DivPhotoString" >
-                                    <img src="" id="ShowPhoto" />
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Husband's Name </label>
+                                    <input type="text" value="@Model.HusbandName"
+                                           name="HusbandName"
+                                           placeholder="Enter Husband's Name"
+                                           class="form-control" />
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Citizenship Front</label>
-                                <input type="file"
-                                       name="CitizenshipFrontString"
-                                       class="form-control CitizenshipFrontString" />
-
-                                <input type="hidden" name="CitizenshipFront"
-                                       value="@Model.CitizenshipFront"
-                                       id="CitizenshipFront" />
-                                <input type="hidden" name="CitizenshipFrontImageString"
-                                       id="CitizenshipFrontString" />
-
-                                <div class="wizard-image-div" id="DivCitizenshipFrontString">
-                                    <img src="" id="ShowCitizenshipFront"/>
+                        <b>Contact Details</b>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Phone Number </label>
+                                    <input type="text" value="@Model.ContactNumber"
+                                           name="ContactNumber"
+                                           placeholder="Enter Phone Number"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>EmailAddress </label>
+                                    <input type="text" value="@Model.EmailAddress"
+                                           name="EmailAddress"
+                                           placeholder="Enter Email Address"
+                                           class="form-control" />
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Citizenship Back</label>
-                                <input type="file"
-                                       name="CitizenshipBackString"
-                                       class="form-control CitizenshipBackString" />
-
-                                <input type="hidden" name="CitizenshipBack"
-                                       value="@Model.CitizenshipBack"
-                                       id="CitizenshipBack" />
-                                <input type="hidden" name="CitizenshipBackImageString"
-                                       id="CitizenshipBackString" />
-
-                                <div class="wizard-image-div" id="DivCitizenshipBackString" >
-                                    <img src="" id="ShowCitizenshipBack" />
+                        <b>Address Details</b>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Citizenship's Former Address </label>
+                                    <input type="text" value="@Model.FormerAddress"
+                                           name="FormerAddress"
+                                           placeholder="Enter Former Address"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Citizenship's Changed Address </label>
+                                    <input type="text" value="@Model.PermanentAddress"
+                                           name="PermanentAddress"
+                                           placeholder="Enter Changed Address"
+                                           class="form-control" />
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <label><b>Payment Details</b></label>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Referred By</label>
-                                <input type="text" value="@Model.ReferenceReferalCode"
-                                       name="ReferenceReferalCode"
-                                       placeholder="Enter Referal Code"
-                                       class="form-control" />
+
+                        <label>Temporary Address</label>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>District</label>
+                                    <select class="form-control"
+                                            name="TemporaryDistrictId"
+                                            id="TemporaryDistrictId">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Payment Voucher / Screenshot</label>
-                                <input type="file"
-                                       name="VoucherImageString"
-                                       class="form-control VoucherImageString" />
-
-                                <input type="hidden" name="VoucherImage"
-                                       value="@Model.VoucherImage"
-                                       id="VoucherImage" />
-
-                                <input type="hidden" name="VoucherImageString"
-                                       id="VoucherImageString" />
-
-                                <div class="wizard-image-div" id="DivVoucherImageString">
-                                    <img src="" id="ShowVoucherImage" />
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label>Municipality Name</label>
+                                    <input type="text" value="@Model.TemporaryMunicipalityName"
+                                           name="TemporaryMunicipalityName"
+                                           placeholder="Enter Municipality Name"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Ward Number</label>
+                                    <input type="text" value="@Model.TemporaryWardNumber"
+                                           name="TemporaryWardNumber"
+                                           onkeypress="AllowNumberOnly(event)"
+                                           placeholder="Enter Ward Number"
+                                           class="form-control" />
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <button type="submit" id="btnSave" name="SaveButton" class="btn btn-primary btn-md"><i class="fa fa-save"></i> <span> Save </span> </button>
-                    <a href="@ViewBag.ReturnUrl" class="btn btn-danger"><i class="fa fa-window-close"></i> Close </a>
-                </form>
+
+                        <b>Share Details</b>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Share Type</label>
+                                    <select class="form-control"
+                                            name="ShareTypeId"
+                                            id="ShareTypeId">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Price Per Kitta</label>
+                                    <input type="text" value="@Model.SharePricePerKitta"
+                                           name="SharePricePerKitta"
+                                           id="SharePricePerKitta"
+                                           readonly="readonly"
+                                           placeholder="Price Per Kitta"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Applied Share Kitta</label>
+                                    <input type="text" value="@Model.AppliedShareKitta"
+                                           name="AppliedShareKitta" id="AppliedShareKitta"
+                                           placeholder="Applied Kitta"
+                                           onkeypress="AllowNumberOnly(event)"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Total Share Amount</label>
+                                    <input type="text"
+                                           value="@Model.TotalShareAmount"
+                                           readonly="readonly"
+                                           name="TotalShareAmount"
+                                           id="TotalShareAmount"
+                                           placeholder="Total Share Amount"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Total Share Paid Amount</label>
+                                    <input type="text"
+                                           value="@Model.TotalSharePaidAmount"
+                                           name="TotalSharePaidAmount"
+                                           placeholder="Total Share Paid Amount"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label>Select Seller</label>
+                                    <select class="form-control"
+                                            name="SellerMemberId"
+                                            id="SellerMemberId">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Ref. Code/ Licences No.</label>
+                                    <input type="text"
+                                           value="@Model.ReferenceLicenceNumber"
+                                           name="ReferenceLicenceNumber"
+                                           placeholder="Enter Ref. Code/Licenes No."
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Agent/Member Phone Number</label>
+                                    <input type="text"
+                                           onkeypress="AllowNumberOnly(event)"
+                                           value="@Model.ReferencePhoneNumber"
+                                           name="ReferencePhoneNumber"
+                                           placeholder="Agent/Member Phone No."
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Nominee Name</label>
+                                    <input type="text"
+                                           value="@Model.NomineeName"
+                                           name="NomineeName"
+                                           placeholder="Enter Nominee Name"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
+                        <a href="~/MemberList" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
             </div>
         </div>
+
+
     </div>
+    <!--Row-->
 </div>
-
-@Scripts.Render("~/web/back-end/js")
-<script src="~/Assets/Backend/js/custom/plugin/jquery.validate.min.js"></script>
-<script src="~/Assets/Backend/js/custom/custom.js"></script>
-
+@Scripts.Render("~/web/backend/jquery-ui")
+<script src="~/Assets/Backend/js/jquery.validate.min.js"></script>
 <script>
-    var path = ("@base_Url" + "ImageStorage/").replace('~', '');
-    $(document).ready(function () {
-        LoadDataOn_PageLoad();
-        $("input[name='TemporaryIsOutsideNepal']").click(function () {
-            var isOutside = $("input[name='TemporaryIsOutsideNepal']:checked").val();
-            showHideDiv(isOutside);
+    var $share_tye_list = new Array();
+    $("#TemporaryDistrictId").select2();
+    $("#SellerMemberId").select2();
+
+    LoadDistrict('@Model.TemporaryDistrictId', 0, "#TemporaryDistrictId");
+    LoadIsPrimaryShareTypesWithDetails('@Model.ShareTypeId', "#ShareTypeId",
+        "#SharePricePerKitta");
+    LoadShareholder('@Model.SellerMemberId', "#SellerMemberId");
+
+    $("#ShareTypeId").change(function () {
+        var ShareTypeId = $("#ShareTypeId").val();
+        var $Share_Type_Filter = $share_tye_list.filter(item => item.Key == ShareTypeId);
+        $.each($Share_Type_Filter, function (index, row) {
+            $("#SharePricePerKitta").val(parseFloat(row.Value1).toFixed(2));
         })
+        getTotalShareAmount();
     })
 
-    function showHideDiv(isOutsideNepal) {
-        if (isOutsideNepal.toLowerCase() == "true" || isOutsideNepal == true) {
-            $("#OutsideNepalDiv").show();
-            $("#InsideNepalDiv").hide();
+    $("#AppliedShareKitta").change(function () {
+        getTotalShareAmount();
+    })
 
-            $("#TemporaryDistrictId").parents('.form-group').find('.is-invalid')
-                .removeClass('is-invalid');
-            $("#TemporaryMunicipality").parents('.form-group').find('.is-invalid')
-                .removeClass('is-invalid');
-            $("#TemporaryWardNumber").parents('.form-group').find('.is-invalid')
-                .removeClass('is-invalid');
-        }
-        else {
-            $("#OutsideNepalDiv").hide();
-            $("#InsideNepalDiv").show();
-
-            $("#TemporaryCountryId").parents('.form-group').find('.is-invalid')
-                .removeClass('is-invalid');
-            $("#TemporaryAddress").parents('.form-group').find('.is-invalid')
-                .removeClass('is-invalid');
-        }
+    function getTotalShareAmount() {
+        $("#TotalShareAmount").val('');
+        var sharePricePerKitta = parseFloat($("#SharePricePerKitta").val());
+        var appliedKitta = parseFloat($("#AppliedShareKitta").val());
+        var totalShareAmount = sharePricePerKitta * appliedKitta;
+        if (totalShareAmount > 0)
+            $("#TotalShareAmount").val(GetNumberWithComma(totalShareAmount));
     }
 
-    function ShowImages() {
-        if ('@Model.Photo'.length > 0) {
-            $("#ShowPhoto").attr("src", path + '@Model.Photo');
-        }
-        if ('@Model.CitizenshipFront'.length > 0) {
-            $("#ShowCitizenshipFront").attr("src", path + '@Model.CitizenshipFront');
-        }
-        if ('@Model.CitizenshipBack'.length > 0) {
-            $("#ShowCitizenshipBack").attr("src", path + '@Model.CitizenshipBack');
-        }
-
-        if ('@Model.VoucherImage'.length > 0) {
-            $("#ShowVoucherImage").attr("src", path + '@Model.VoucherImage');
-        }
-    }
-
-    function LoadDataOn_PageLoad() {
-        ShowImages()
-        LoadGender('@Model.GenderId');
-        LoadMaritalStatus('@Model.MaritalStatusId',"#MaritalStatusId");
-        LoadOccupation('@Model.OccupationId');
-        LoadShareTypes('@Model.ShareTypeId');
-        LoadOutsideCountry('@Model.TemporaryCountryId', "#TemporaryCountryId");
-
-        LoadDistrict('@Model.FormerDistrictId', 0, "#FormerDistrictId");
-        LoadDistrict('@Model.PermanentDistrictId',0 ,"#PermanentDistrictId");
-        LoadDistrict('@Model.TemporaryDistrictId',0,"#TemporaryDistrictId");
-        $(".wizard-image-div").show();
-
-        showHideDiv('@Model.TemporaryIsOutsideNepal');
-    }
-
-    var $checkoutForm = $('#form_validation').validate({
+    var $checkoutForm = $('#AddModifyForm').validate({
         ignore: [],
         rules: {
+            'FullName': {
+                required: true,
+                maxlength: 100
+            },
             'CitizenshipNumber': {
                 required: true,
                 maxlength: 30
             },
-            'FirstName': {
+            'Age': {
                 required: true,
-                maxlength: 50
+                maxlength: 2
             },
-            'LastName': {
-                required: true,
-                maxlength: 50
-            },
-            'DateOfBirthBS': {
+            'ContactNumber': {
                 required: true,
                 maxlength: 10
             },
-            'GenderId': {
-                required: true
-            },
-            'MaritalStatusId': {
-                required: true
-            },
-            'MobileNumber': {
+            'FormerAddress': {
                 required: true,
-                maxlength: 20
+                maxlength: 200
             },
-            'FormerDistrictId': {
-                required: true
-            },
-            'FormerMunicipalityName': {
+            'PermanentAddress': {
                 required: true,
-                maxlength: 30
+                maxlength: 200
             },
-            'FormerWardNumber': {
-                required: true,
-                maxlength: 3
-            },
-            
-            'PermanentDistrictId': {
-                required: true
-            },
-            'PermanentMunicipality': {
-                required: true,
-                maxlength: 30
-            },
-            'PermanentWardNumber': {
-                required: true,
-                maxlength: 3
-            },
-            
             'TemporaryDistrictId': {
-                required: function () {
-                    var isOutside = $("input[name='TemporaryIsOutsideNepal']:checked").val();
-                    if (isOutside == "false") {
-                        return true;
-                    }
-                    return false;
-                }
+                required: true,
             },
-            'TemporaryMunicipality': {
-                required: function () {
-                    var isOutside = $("input[name='TemporaryIsOutsideNepal']:checked").val();
-                    if (isOutside == "false") {
-                        return true;
-                    }
-                    return false;
-                },
-                maxlength: 30
+            'TemporaryMunicipalityName': {
+                required: true,
+                maxlength: 100
             },
             'TemporaryWardNumber': {
-                required: function () {
-                    var isOutside = $("input[name='TemporaryIsOutsideNepal']:checked").val();
-                    if (isOutside == "false") {
-                        return true;
-                    }
-                    return false;
-                },
+                required: true,
                 maxlength: 3
             },
-            'TemporaryCountryId': {
-                required: function () {
-                    var isOutside = $("input[name='TemporaryIsOutsideNepal']:checked").val();
-                    if (isOutside == "true") {
-                        return true;
-                    }
-                    return false;
-                },
-            },
-            'TemporaryAddress': {
-                required: function () {
-                    var isOutside = $("input[name='TemporaryIsOutsideNepal']:checked").val();
-                    if (isOutside == "true") {
-                        return true;
-                    }
-                    return false;
-                },
-                maxlength:200
-            },
-            'ReferenceReferalCode': {
+            'AppliedShareKitta': {
                 required: true,
+            },
+            'TotalSharePaidAmount': {
+                required: true,
+            },
+            'SellerMemberId': {
+                required: true,
+            },
+            'ReferenceLicenceNumber': {
+                required: function () {
+                    if ($('input[name="ReferencePhoneNumber"]').val().length)
+                        return false;
+                    return true;
+                },
                 maxlength: 30
             },
+            'ReferencePhoneNumber': {
+                maxlength: 10,
+            },
+            'FathersName': {
+                required: function () {
+                    if ($('input[name="HusbandName"]').val().length)
+                        return false;
+                    return true;
+                },
+                maxlength: 100
+            }
         },
         submitHandler: function (form) {
             $("#btnSave").prop('disabled', true)
@@ -538,12 +374,13 @@
             $.ajax({
                 type: "POST",
                 url: url,
-                data: $("#form_validation").serialize(),
-                success: function (message) {
-                    showResultMessage(message, '@ViewBag.ReturnUrl')
+                data: $("#AddModifyForm").serialize(),
+                success: function (resp) {
+                    debugger;
+                    showResultMessage(resp, "/MemberDetails/" + resp.id);
                 },
-                error: function (message) {
-                    showResultMessage(message)
+                error: function (resp) {
+                    showResultMessage(resp)
                 }
             })
         },
@@ -563,6 +400,7 @@
         highlight: function (element) {
             var $el = $(element);
             var $parent = $el.parents('.form-group');
+
             $el.addClass('is-invalid');
 
             // Select2 and Tagsinput
@@ -576,4 +414,3 @@
         }
     });
 </script>
-

@@ -12,11 +12,13 @@ namespace web.Utility
         public string RedirectUrl_Logout { get; set; }
         public string RedirectUrl_Dashboard { get; set; }
         public string LoginUrl { get; set; }
+        private SessionManager sessionManager;
         public InitialSetupModel()
         {
             RedirectUrl_Logout = "~/Logout";
             RedirectUrl_Dashboard = "~/Dashboard";
             LoginUrl= "~/Login";
+            sessionManager = new SessionManager();
         }
         private Repository<UsersDto> _repository = new Repository<UsersDto>();
         public string GetCurrentVersionInfo()
@@ -44,25 +46,15 @@ namespace web.Utility
             }
             return version_info;
         }
-
-        public int LoginUserId()
-        {
-            int UserId = 0;
-            if (HttpContext.Current.User.Identity.IsAuthenticated)
-            {
-                UserId = Convert.ToInt32(HttpContext.Current.User.Identity.Name.ToString());
-            }
-            return UserId;
-        }
-
         public MenuAccessPermissionDto GetMenuPermissionForLoginUser(string checkMenuName)
         {
             var menus = _repository.StoredProcedure<MenuAccessPermissionDto>("[dbo].[MenuAccessFor_LoginUser]",
-               new { UserId = LoginUserId(), CheckMenuName= checkMenuName });
-
+               new { UserId = _repository.UserIdentity(), CheckMenuName= checkMenuName });
             if (menus.Count() == 0)
                 return new MenuAccessPermissionDto { CheckMenuName = checkMenuName };
+
             var menu = menus.FirstOrDefault();
+            sessionManager.SetToSessionCookie(menu);
             if (menu.AdminAccess)
             {
                 menu.ReadAccess = menu.WriteAccess = menu.ModifyAccess = menu.DeleteAccess = true;

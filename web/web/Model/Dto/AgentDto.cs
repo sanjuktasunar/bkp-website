@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Web.Entity.Infrastructure;
 
 namespace Web.Entity.Dto
 {
@@ -31,6 +32,7 @@ namespace Web.Entity.Dto
         public string ReferenceAgentName { get; set; }
         public string CreatedByName { get; set; }
         public string ReferenceLicenceNumber { get; set; }
+        public string ReferencePhoneNumber { get; set; }
 
         public int ProvinceId { get; set; }
         public int DistrictId { get; set; }
@@ -40,5 +42,7 @@ namespace Web.Entity.Dto
 
         public string ProvinceName { get; set; }
         public string DistrictName { get; set; }
+
+        public Response response { get; set; } 
     }
 }

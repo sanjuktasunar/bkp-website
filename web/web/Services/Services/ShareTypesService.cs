@@ -35,7 +35,7 @@ namespace web.Web.Services.Services
 
         public async Task<IEnumerable<ShareTypesDto>> GetShareTypesAsync()
         {
-            var obj = (await _repository.QueryAsync<ShareTypesDto>("SELECT * FROM [dbo].[ShareTypeView] WHERE Status=1"));
+            var obj = (await _repository.QueryAsync<ShareTypesDto>("SELECT * FROM [dbo].[ShareTypeView]"));
             return obj;
         }
 

@@ -148,6 +148,10 @@ namespace web.Web.Services.Services
                 var list = await GetMenuAccessByRoleIdAsync(RoleId);
                 foreach (var d in dtos)
                 {
+                    if (d.AdminAccess)
+                    {
+                        d.ReadAccess = d.WriteAccess = d.ModifyAccess = d.DeleteAccess = d.ApprovalAccess = d.RejectAccess = true;
+                    }
                     var entity = d.ToEntity();
                     var dto = list.Where(a=>a.MenuAccessPermissionId== d.MenuAccessPermissionId).FirstOrDefault();
                     if (dto is null)

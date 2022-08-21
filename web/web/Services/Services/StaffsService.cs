@@ -101,6 +101,8 @@ namespace web.Web.Services.Services
                 if (staff == null)
                     return null;
                 var user = await GetUserByIdAsync(staff.UserId);
+
+                user.RoleId = dto.RoleId;
                 user.UserName = security.EncryptText(dto.UserName);
                 user.EmailAddress = dto.EmailAddress;
                 user.ContactNumber = dto.ContactNumber;

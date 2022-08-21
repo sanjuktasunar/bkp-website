@@ -34,16 +34,20 @@ namespace Web.Entity.Dto
 
         public bool AdminAccess { get; set; }
 
-        public bool? ApprovalAccess { get; set; }
+        public bool ApprovalAccess { get; set; }
 
-        public bool? RejectAccess { get; set; }
+        public bool RejectAccess { get; set; }
 
         public string MenuName { get; set; }
+        public string FullName { get; set; }
+        public string RoleName { get; set; }
         public string ParentMenuName { get; set; }
 
         public IEnumerable<MenuAccessPermissionDto> GetParentMenus { get; set; }
         public IEnumerable<MenuAccessPermissionDto> GetChildMenus { get; set; }
 
         public int? RoleId { get; set; }
+
+        public int UserId { get; set; }
     }
 }

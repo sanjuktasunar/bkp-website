@@ -156,9 +156,9 @@ ALTER TABLE dbo.Member
 ADD ShareholderId int null Constraint Member_ShareholderId_fk References dbo.Shareholder(ShareholderId)
 GO
 
-GO
-DROP VIEW [dbo].[MemberDetailView]
-GO
+--GO
+--DROP VIEW [dbo].[MemberDetailView]
+--GO
 
 GO
 CREATE VIEW [dbo].[MemberDetailView]

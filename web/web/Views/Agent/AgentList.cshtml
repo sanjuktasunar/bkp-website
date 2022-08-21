@@ -1,135 +1,153 @@
 ﻿@model IEnumerable<Web.Entity.Dto.AgentDto>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    Web.Entity.Dto.MenuAccessPermissionDto menu = ViewBag.Menus;
+    Web.Entity.Dto.MenuAccessPermissionDto menus = ViewBag.Menus;
 }
-<h6 class="h6 mb-2 text-gray-800">Agent List</h6>
-<div class="row">
-    <div class="col-md-2">
-        <label>Province</label>
-        <select class="form-control" id="ProvinceId">
-            <option value="">Select Value</option>
-        </select>
-    </div>
 
-    <div class="col-sm-2 col-md-2">
-        <div class="form-group">
-            <label>District</label>
-            <select class="form-control" id="DistrictId">
+
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h2 class="h3 mb-0 text-gray-800">Agent List</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Fund Development</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Agent</li>
+        </ol>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label>Province</label>
+            <select class="form-control" id="ProvinceId">
                 <option value="">Select Value</option>
             </select>
         </div>
-    </div>
-    <div class="col-sm-2 col-md-2">
-        <div class="form-group">
-            <label>Status</label>
-            <select class="form-control" id="AgentStatusId">
-                <option value="">Select Value</option>
-            </select>
+
+        <div class="col-sm-4 col-md-4">
+            <div class="form-group">
+                <label>District</label>
+                <select class="form-control" id="DistrictId">
+                    <option value="">Select Value</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-2 col-md-2">
+            <div class="form-group">
+                <label>Status</label>
+                <select class="form-control" id="AgentStatusId">
+                    <option value="">Select Value</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4" style="margin-top:2.5%;">
+            <button type="submit" id="btnSearch" class="btn btn-primary">Search</button>
+            <a href="~/AgentList" id="btnClear" class="btn btn-secondary">
+                Clear
+            </a>
         </div>
     </div>
-    <div class="col-md-4" style="margin-top:2.5%;">
-        <button type="submit" id="btnSearch" class="btn btn-primary">Search</button>
-        <a href="~/AgentList" id="btnClear" class="btn btn-secondary">
-            Clear
-        </a>
-    </div>
-</div>
 
-<br />
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <a href="~/AddAgent" class="btn btn-success btn-sm">
-            <i class="fas fa-plus"></i> Add New
-        </a>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>S.N.</th>
-                        <th>Name</th>
-                        <th>Contact Details</th>
-                        <th>Address</th>
-                        <th>Referred By</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{ int i = 0; }
-                    @foreach (var x in Model)
-                    {
-                        i++;
-                        <tr>
-                            <td>
-                                @i
-                                <input type="hidden" value="@x.AgentId" />
-                            </td>
-                            <td>
-                                @x.AgentFullName <br />
-                                (@x.LicenceNumber)
-                            </td>
-                            <td>
-                                @x.ContactNumber1
-                                @if (!string.IsNullOrEmpty(x.EmailAddress))
-                                {
-                                    <br />
-                                    <label> @x.EmailAddress </label>
-                                }
-                            </td>
-                            <td>
-                                @x.MunicipalityName-@x.WardNumber , @x.DistrictName
-                            </td>
-                            <td>@x.ReferenceAgentName</td>
-                            <td>
-                                @x.AgentStatusName<br />
-                                @if (x.IsActive == true)
-                                {
-                                    <span class="badge badge-success">Active</span>
-                                }
-                                else
-                                {
-                                    <span class="badge badge-danger">Inactive</span>
-                                }
-                            </td>
-                            <td>
-                                @if (menu.ModifyAccess)
-                                {
-                                    <a href="~/ModifyAgent/@x.AgentId"
-                                       class="btn btn-success btn-circle btn-sm" id="btnEdit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                }
-                                <a href="~/AgentDetails/@x.AgentId"
-                                   target="_blank" title="View Agent Details"
-                                   class="btn btn-info btn-circle btn-sm">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+    <br />
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card mb-4">
+                @if (menus.WriteAccess)
+                {
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <a href="~/AddAgent" class="btn btn-success btn-sm">
+                            <i class="fas fa-plus"></i> Add New
+                        </a>
+                    </div>
+                }
+                <div class="table-responsive p-3">
+                    <table class="table align-items-center table-flush table-hover" id="dataTable">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>S.N.</th>
+                                <th>Name</th>
+                                <th>Contact Details</th>
+                                <th>Address</th>
+                                <th>Referred By</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ int i = 0; }
+                            @foreach (var x in Model)
+                            {
+                                i++;
+                                <tr>
+                                    <td>
+                                        @i
+                                        <input type="hidden" value="@x.AgentId" />
+                                    </td>
+                                    <td>
+                                        @x.AgentFullName <br />
+                                        (@x.LicenceNumber)
+                                    </td>
+                                    <td>
+                                        @x.ContactNumber1
+                                        @if (!string.IsNullOrEmpty(x.EmailAddress))
+                                        {
+                                            <br />
+                                            <label> @x.EmailAddress </label>
+                                        }
+                                    </td>
+                                    <td>
+                                        @x.MunicipalityName-@x.WardNumber , @x.DistrictName
+                                    </td>
+                                    <td>@x.ReferenceAgentName</td>
+                                    <td>
+                                        @x.AgentStatusName<br />
+                                        @if (x.IsActive == true)
+                                        {
+                                            <span class="badge badge-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-danger">Inactive</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (menus.ModifyAccess)
+                                        {
+                                            <a href="~/ModifyAgent/@x.AgentId"
+                                               class="btn btn-success btn-circle btn-sm"
+                                               id="btnEdit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        }
+                                        <a href="~/AgentDetails/@x.AgentId"
+                                           target="_blank" title="View Agent Details"
+                                           class="btn btn-info btn-circle btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-@Scripts.Render("~/web/back-end/js")
-
+@Scripts.Render("~/web/backend/jquery-ui")
+@Scripts.Render("~/web/backend/datatables")
 <script>
     LoadProvince('@ViewBag.ProvinceId', "#ProvinceId");
     LoadAgentStatus('@ViewBag.AgentStatusId', "#AgentStatusId");
     if (parseInt('@ViewBag.ProvinceId') > 0) {
         LoadDistrict('@ViewBag.DistrictId', '@ViewBag.ProvinceId');
     }
+    $("#DistrictId").select2();
     $("#ProvinceId").change(function () {
         var provinceId = $("#ProvinceId").val();
         LoadDistrict(0, provinceId);
     })
 
     $("#btnSearch").click(function () {
+        $("#btnSearch").prop('disabled', true);
+        $("#btnSearch").html('Searching......')
         var ProvinceId = $("#ProvinceId").val();
         var DistrictId = $("#DistrictId").val();
         var AgentStatusId = $("#AgentStatusId").val();
@@ -137,3 +155,8 @@
                                + "&AgentStatusId=" + AgentStatusId;
     })
 </script>
+
+
+
+
+

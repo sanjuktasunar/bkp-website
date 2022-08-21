@@ -22,15 +22,21 @@ namespace web.Utility
         public static string MENU_LIST = "MENU_LIST";
         public static string GENDER_LIST = "GENDER_LIST";
         public static string USER_STATUS_LIST = "USER_STATUS_LIST";
+        public static string USER_TYPE_LIST = "USER_TYPE_LIST";
+        public static string USER_TYPE_LIST_FOR_USER_LIST = "USER_TYPE_LIST_FOR_USER_LIST";
         public static string PARENT_CATEGORY_LIST = "PARENT_CATEGORY_LIST";
         public static string PROVINCE_LIST = "PROVINCE_LIST";
         public static string DISTRICT_LIST = "DISTRICT_LIST";
         public static string OCCUPATION_LIST = "OCCUPATION_LIST";
         public static string SHARE_TYPE_LIST = "SHARE_TYPE_LIST";
+        public static string SHARE_TYPE_DETAIL_LIST = "SHARE_TYPE_DETAIL_LIST";
+        public static string IS_PRIMARY_SHARE_TYPE_DETAIL_LIST = 
+                                        "IS_PRIMARY_SHARE_TYPE_DETAIL_LIST";
         public static string AGENT_STATUS = "AGENT_STATUS";
         public static string ACCOUNT_HEAD_LIST = "ACCOUNT_HEAD_LIST";
         public static string MARITAL_STATUS_LIST = "MARITAL_STATUS_LIST";
         public static string OUTSIDE_COUNTRY_LIST = "OUTSIDE_COUNTRY_LIST";
+        public static string SHAREHOLDER_LIST = "SHAREHOLDER_LIST";
 
 
     }

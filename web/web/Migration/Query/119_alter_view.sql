@@ -36,7 +36,7 @@ FROM            dbo.Member AS B LEFT OUTER JOIN
 GO
 
 GO
-CREATE OR ALTER PROC [dbo].[Sp_GetReferenceMembers]
+CREATE PROC [dbo].[Sp_GetReferenceMembers]
 AS
 BEGIN
 create table #temp

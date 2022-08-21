@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using web.Model.Dto;
+using web.Services.Services;
 using web.Utility;
 using web.Web.Services.Services;
 using Web.Entity.Dto;
@@ -55,26 +56,6 @@ namespace web.Controllers.User
 
             var obj = await _memberService.FilterShareholder(dto);
             return PartialView("FilterShareholderList", obj);
-        }
-
-        [Route("~/ModifyShareholder/{id}")]
-        public async Task<ActionResult> ModifyShareholder(int id)
-        {
-            if (!menu.ModifyAccess)
-                return Redirect(Logout_Url);
-
-            var obj = await _memberService.GetShareholderByShareholderId(id);
-            return View(obj);
-        }
-
-        [HttpPost]
-        public async Task<JsonResult> ModifyShareholder(ShareholderDto dto)
-        {
-            if (!menu.ModifyAccess)
-                return null;
-
-            var obj = await _memberService.ModifyShareholder(dto);
-            return Json(obj,JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

@@ -11,7 +11,7 @@ using Web.Entity.Infrastructure;
 
 namespace web.Controllers.User
 {
-    [Authorize]
+    //[Authorize]
     public class StaffsController : BaseController
     {
         private IDesignationService _designationService { get; set; }

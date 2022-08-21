@@ -4,97 +4,108 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h6 class="h6 mb-2 text-gray-800">Add/Modify Share Types</h6>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <form id="form_validation">
-                    <input type="hidden" value="@Model.ShareTypeId" name="ShareTypeId" />
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" value="@Model.ShareTypeName"
-                                       name="ShareTypeName"
-                                       placeholder="Share Type Name"
-                                       class="form-control" />
-                            </div>
-                        </div>
+<div class="container-fluid" id="container-wrapper">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Add/Modify Share Type</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="./">Settings</a></li>
+            <li class="breadcrumb-item">Share Type</li>
+        </ol>
+    </div>
 
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="floating-label">Fiscal Year</label>
-                                <select name="FiscalYearId" id="FiscalYearId"
-                                        class="form-control">
-                                    <option value="">Select Fiscal Year</option>
-                                </select>
-                            </div>
-                        </div>
-                        @{
-                            long? totalShare = null;
-                            int? minShare = null, maxShare = null;
-                            double ? registrationAmount=null;
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Basic -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form id="AddModifyForm">
+                        <div class="row">
+                            <input type="hidden" value="@Model.ShareTypeId"
+                                   name="ShareTypeId" />
 
-                            totalShare = Model.NumberOfIssuedShares;
-                            maxShare = Model.MaxSharePerPerson;
-                            minShare = Model.MinSharePerPerson;
-                            if (Model.RegistrationAmount > 0)
-                            {
-                                registrationAmount = Model.RegistrationAmount;
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" value="@Model.ShareTypeName"
+                                           name="ShareTypeName"
+                                           placeholder="Share Type Name"
+                                           class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="floating-label">Fiscal Year</label>
+                                    <select name="FiscalYearId" id="FiscalYearId"
+                                            class="form-control">
+                                        <option value="">Select Fiscal Year</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            @{
+                                long? totalShare = null;
+                                int? minShare = null, maxShare = null;
+                                double? registrationAmount = null;
+
+                                totalShare = Model.NumberOfIssuedShares;
+                                maxShare = Model.MaxSharePerPerson;
+                                minShare = Model.MinSharePerPerson;
+                                if (Model.RegistrationAmount > 0)
+                                {
+                                    registrationAmount = Model.RegistrationAmount;
+                                }
                             }
-                        }
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Total Issued Shares</label>
-                                <input type="text" value="@totalShare"
-                                       name="NumberOfIssuedShares"
-                                       placeholder="Total Issued Shares"
-                                       class="form-control"
-                                       onkeypress="AllowPositiveNumber(event)" />
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Total Issued Shares</label>
+                                    <input type="text" value="@totalShare"
+                                           name="NumberOfIssuedShares"
+                                           placeholder="Total Issued Shares"
+                                           class="form-control"
+                                           onkeypress="AllowPositiveNumber(event)" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Price Per Kitta</label>
-                                <input type="text" value="@Model.PricePerKitta"
-                                       name="PricePerKitta"
-                                       placeholder="Price Per Kitta"
-                                       class="form-control"
-                                       onkeypress="AllowPositiveNumber(event)" />
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Price Per Kitta</label>
+                                    <input type="text" value="@Model.PricePerKitta"
+                                           name="PricePerKitta"
+                                           placeholder="Price Per Kitta"
+                                           class="form-control"
+                                           onkeypress="AllowPositiveNumber(event)" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Min Share Per Person</label>
-                                <input type="text" value="@minShare"
-                                       name="MinSharePerPerson"
-                                       placeholder="Min Share"
-                                       class="form-control"
-                                       onkeypress="AllowPositiveNumber(event)" />
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Min Share Per Person</label>
+                                    <input type="text" value="@minShare"
+                                           name="MinSharePerPerson"
+                                           placeholder="Min Share"
+                                           class="form-control"
+                                           onkeypress="AllowPositiveNumber(event)" />
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Max Share Per Person</label>
-                                <input type="text" value="@maxShare"
-                                       name="MaxSharePerPerson"
-                                       placeholder="Max Share"
-                                       class="form-control"
-                                       onkeypress="AllowPositiveNumber(event)" />
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Max Share Per Person</label>
+                                    <input type="text" value="@maxShare"
+                                           name="MaxSharePerPerson"
+                                           placeholder="Max Share"
+                                           class="form-control"
+                                           onkeypress="AllowPositiveNumber(event)" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Registration Amount</label>
-                                <input type="text" value="@registrationAmount"
-                                       name="RegistrationAmount"
-                                       placeholder="Enter Registration Amount"
-                                       class="form-control"
-                                       onkeypress="AllowPositiveNumber(event)" />
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Registration Amount</label>
+                                    <input type="text" value="@registrationAmount"
+                                           name="RegistrationAmount"
+                                           placeholder="Enter Registration Amount"
+                                           class="form-control"
+                                           onkeypress="AllowPositiveNumber(event)" />
+                                </div>
                             </div>
-                        </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <div class="form-check">
@@ -131,20 +142,26 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <button type="submit" id="btnSave" name="SaveButton" class="btn btn-primary btn-md"><i class="fa fa-save"></i> <span> Save </span> </button>
-                    <a href="/ShareTypeList" class="btn btn-danger"><i class="fa fa-window-close"></i> Close </a>
-                </form>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
+                        <a href="~/ShareTypeList" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+    <!--Row-->
 </div>
+@Scripts.Render("~/web/backend/jquery-ui")
+<script src="~/Assets/Backend/js/jquery.validate.min.js"></script>
 
-@Scripts.Render("~/web/back-end/js")
-<script src="~/Assets/Backend/js/custom/plugin/jquery.validate.min.js"></script>
-<script src="~/Assets/Backend/js/custom/Dropdown.js"></script>
 <script>
-    var $checkoutForm = $('#form_validation').validate({
+    $(document).ready(function () {
+        var id = '@Model.FiscalYearId';
+        LoadFiscalYear(id);
+    })
+    var $checkoutForm = $('#AddModifyForm').validate({
         ignore: [],
         rules: {
             'ShareTypeName': {
@@ -162,13 +179,6 @@
                 required: true,
                 maxlength: 20
             },
-            'RegistrationAmount': {
-                required: true,
-            },
-            //'MaxSharePerPerson': {
-            //    required: true,
-            //    maxlength: 10
-            //},
         },
         submitHandler: function (form) {
             $("#btnSave").prop('disabled', true)
@@ -182,7 +192,7 @@
             $.ajax({
                 type: "POST",
                 url: url,
-                data: $("#form_validation").serialize(),
+                data: $("#AddModifyForm").serialize(),
                 success: function (message) {
                     showResultMessage(message, "/ShareTypeList")
                 },
@@ -219,17 +229,5 @@
             $(element).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
         }
     });
-
-    function AllowPositiveNumber(event) {
-        if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
-            event.preventDefault();
-        }
-    }
 </script>
 
-<script>
-    $(document).ready(function () {
-        var id = '@Model.FiscalYearId';
-        LoadFiscalYear(id);
-    })
-</script>

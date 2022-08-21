@@ -1,199 +1,181 @@
 ﻿@model IEnumerable<Web.Entity.Dto.MemberDto>
-
 @{
     Layout = null;
     Web.Entity.Dto.MenuAccessPermissionDto menu = ViewBag.Menus;
+    NumberSettings numberSettings = new NumberSettings();
 }
 
-<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+<input type="hidden" id="hdnMemberIdFromSelection" />
+<table class="table align-items-center table-flush table-hover" id="dataTable">
     <thead>
         <tr>
             <th>S.N.</th>
-            <th hidden="hidden"></th>
             <th>Details</th>
-            <th>Status</th>
-            <th>Referal Code</th>
+            <th>Share Details</th>
+            <th>Seller Details</th>
             <th>Referred By</th>
             <th>Status</th>
-            @*<th>Applied Kitta</th>*@
-            <th>Type</th>
-            <th>Action</th>
         </tr>
     </thead>
     <tbody>
-        @{ int i = 0; }
+        @{
+            int i = 0;
+            decimal totalShareAmount = 0, totalSharePaidAmount = 0, totalShareDueAmount = 0;
+            int totalShareKitta = 0;
+            string totalShareAmountString = "",
+                totalSharePaidAmountString = "",
+                totalShareDueAmountString = "",
+                totalShareKittaString = "";
+        }
         @foreach (var x in Model)
         {
             string approvalClassName = "";
+            x.TotalShareDueAmount = Convert.ToDecimal(x.TotalShareAmount) - Convert.ToDecimal(x.TotalSharePaidAmount);
+            x.TotalShareDueAmountString = numberSettings.CommaSeparate(x.TotalShareDueAmount);
+            x.TotalShareAmountString = numberSettings.CommaSeparate(Convert.ToDecimal(x.TotalShareAmount));
+            x.TotalSharePaidAmountString = numberSettings.CommaSeparate(Convert.ToDecimal(x.TotalSharePaidAmount));
+
+            totalShareAmount += Convert.ToDecimal(x.TotalShareAmount);
+            totalSharePaidAmount += Convert.ToDecimal(x.TotalSharePaidAmount);
+            totalShareDueAmount += Convert.ToDecimal(x.TotalShareDueAmount);
+            totalShareKitta += Convert.ToInt32(x.AppliedShareKitta);
+
             i++;
             <tr>
                 <td>
+                    <input type="checkbox" name="chkSelectMember" value="true" />
+                    <input type="hidden" name="hdnMemberId" value="@x.MemberId" />
                     @i
-                    <input type="hidden" value="@x.AppliedKitta" name="AppliedKitta" />
-                    <input type="hidden" value="@x.ShareTypeId" name="ShareTypeId" />
-                    <input type="hidden" value="@x.ShareholderId" name="ShareholderId" />
                 </td>
-                <td hidden="hidden">@x.MemberId</td>
                 <td>
-                    <label>Fullname : @x.FullName </label><br />
-                    <label>Phone : @x.MobileNumber</label><br />
-                    <label>Email : @x.Email </label><br />
-                    <label>Created Date : @x.CreatedDate.ToShortDateString()</label><br />
+                    <a href="~/MemberDetails/@x.MemberId"
+                       target="_blank">
+                        @x.FullName
+                        @if (!string.IsNullOrEmpty(x.ContactNumber))
+                        {
+                            <br />
+                            <label>@x.ContactNumber</label>
+                        }
+                        @if (!string.IsNullOrEmpty(x.EmailAddress))
+                        {
+                            <br />
+                            <label>@x.EmailAddress</label>
+                        }
+                        @if (!string.IsNullOrEmpty(x.ReferalCode))
+                        {
+                            <br />
+                            <label>@x.ReferalCode</label>
+                        }
+                    </a>
                 </td>
-
+                <td>
+                    @x.ShareTypeName <br />
+                    @if (x.AppliedShareKitta > 0)
+                    {
+                        <b>Kitta : </b> <label>@x.AppliedShareKitta</label>
+                    }
+                    @if (x.ShareTypeId > 0)
+                    {
+                        <br />
+                        <span class="badge badge-primary">
+                            <b>TOTAL :</b>
+                            @x.TotalShareAmountString
+                        </span>
+                        if (x.TotalShareDueAmount > 0)
+                        {
+                            <br />
+                            <span class="badge badge-danger">
+                                DUE : @x.TotalShareDueAmountString
+                            </span>
+                            <br />
+                            <span class="badge badge-success">
+                                PAID : @x.TotalSharePaidAmountString
+                            </span>
+                        }
+                        else if (x.TotalShareDueAmount == 0 && x.AppliedShareKitta > 0)
+                        {
+                            <br />
+                            <span class="badge badge-success">
+                                PAID
+                            </span>
+                        }
+                    }
+                </td>
+                <td>
+                    @x.SellerFullName <br />
+                    @x.SellerPhoneNumber
+                </td>
+                <td>
+                    @x.ReferenceFullName <br />
+                    @x.ReferencePhoneNumber
+                </td>
                 <td>
                     <label>
-                        @if (x.ApprovalStatus == Web.Entity.Infrastructure.ApprovalStatus.Approved)
+                        @if (x.IsApproved == Web.Entity.Infrastructure.ApprovalStatus.Approved)
                         {
                             approvalClassName = "badge badge-success";
                         }
-                        else if (x.ApprovalStatus == Web.Entity.Infrastructure.ApprovalStatus.Rejected)
+                        else if (x.IsApproved == Web.Entity.Infrastructure.ApprovalStatus.Rejected)
                         {
                             approvalClassName = "badge badge-danger";
                         }
                         else
                         {
-                            <label>@x.FormStatus</label> <br />
                             approvalClassName = "badge badge-primary";
                         }
-                        <span class="@approvalClassName">@x.ApprovalStatus</span>
-                        @if (x.ApprovalStatus == Web.Entity.Infrastructure.ApprovalStatus.Approved)
+                        <span class="@approvalClassName">@x.IsApproved</span>
+                        @if (x.IsApproved == Web.Entity.Infrastructure.ApprovalStatus.Approved)
                         {
                             <label>
                                 @Convert.ToDateTime(x.ApprovedDate).ToShortDateString()
                             </label>
                         }
 
-                        @if (!string.IsNullOrEmpty(x.ApprovalRemarks) &&
-                            x.ApprovalStatus == Web.Entity.Infrastructure.ApprovalStatus.Rejected)
+                        @if (!string.IsNullOrEmpty(x.RejectRemarks) &&
+                            x.IsApproved == Web.Entity.Infrastructure.ApprovalStatus.Rejected)
                         {
                             <br />
-                            <span class="badge badge-dark">@x.ApprovalRemarks</span>
+                            <span class="badge badge-dark">@x.RejectRemarks</span>
                         }
                     </label>
-                </td>
-                <td>
-                    <label>@x.ReferalCode</label>
-                </td>
-                <td>@x.ReferenceFullName</td>
-                <td>
-                    @if (x.IsActive == true)
-                    {
-                        <span class="badge badge-success"> Active </span>
-                    }
-                    else
-                    {
-                        <span class="badge badge-danger"> InActive </span>
-                    }
-                </td>
-                <td>
-                    @x.ShareTypeName
-                </td>
-                <td>
-                    @if (x.FormStatus ==
-                        Web.Entity.Infrastructure.FormStatus.Complete &&
-                            menu.ApprovalAccess == true && (x.ApprovalStatus ==
-                            Web.Entity.Infrastructure.ApprovalStatus.UnApproved || x.ApprovalStatus ==
-                            Web.Entity.Infrastructure.ApprovalStatus.Rejected))
-                    {
-                        <button class="btn btn-success btn-circle btn-sm"
-                                id="btnApprove" title="Approve">
-                            <i class="fas fa-check"></i>
-                        </button>
-                    }
-                    @if (menu.RejectAccess == true && x.ApprovalStatus != Web.Entity.Infrastructure.ApprovalStatus.Rejected)
-                    {
-                        <button class="btn btn-danger btn-circle btn-sm"
-                                id="btnReject" title="Reject">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                    }
-                    @if (x.IsActive == true)
-                    {
-                        @*<a class="btn btn-secondary btn-circle btn-sm" href="#"
-                               onclick="SendEmail('@x.MemberId')" title="Send Email">
-                                <i class="fas fa-envelope"></i>
-                            </a>*@
-                    }
-                    <a href="~/MemberDetails/@x.MemberId"
-                       target="_blank"
-                       class="btn btn-primary btn-circle btn-sm"
-                       id="btnView" title="View Details">
-                        <i class="fas fa-eye"></i>
-                    </a>
-                    @if (menu.ModifyAccess == true)
-                    {
-                        <a href="~/ModifyMember/@x.MemberId?return_Url=/MemberList"
-                           class="btn btn-secondary btn-circle btn-sm"
-                           title="Modify Member">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                    }
-                    @if (x.ApprovalStatus == Web.Entity.Infrastructure.ApprovalStatus.Approved && x.ShareholderId == null && menu.ApprovalAccess == true)
-                    {
-                        <a href="#" class="btn btn-secondary btn-circle btn-sm"
-                           id="btnAddMemberToShareholder" title="Add to Shareholder">
-                            <i class="fas fa-plus"></i>
-                        </a>
-                    }
                 </td>
             </tr>
         }
     </tbody>
+    <tfoot>
+        @{
+            totalShareAmountString = numberSettings.CommaSeparate(totalShareAmount);
+            totalSharePaidAmountString = numberSettings.CommaSeparate(totalSharePaidAmount);
+            totalShareDueAmountString = numberSettings.CommaSeparate(totalShareDueAmount);
+            totalShareKittaString = numberSettings.CommaSeparate(totalShareKitta);
+        }
+        <tr>
+            <td>
+                <span class="badge badge-info">
+                    <b>Total Kitta</b> : @totalShareKittaString
+                </span>
+            </td>
+            <td colspan="2">
+                <span class="badge badge-info">
+                    <b>Total Amount</b> : @totalShareAmountString
+                </span>
+            </td>
+            <td colspan="2">
+                <span class="badge badge-success">
+                    <b>Total Paid Amount</b> : @totalSharePaidAmountString
+                </span>
+            </td>
+            <td>
+                <span class="badge badge-danger">
+                    <b>Total Due</b> : @totalShareDueAmountString
+                </span>
+            </td>
+        </tr>
+    </tfoot>
 </table>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Approve Member</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <form id="form_validation">
-                            <input type="hidden" name="MemberId"
-                                   id="MemberId" />
-                            <fieldset>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="floating-label">Account Head</label>
-                                            <select name="AccountHeadId" id="AccountHeadId"
-                                                    class="form-control">
-                                                <option value="">Select Account Head</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="floating-label">Share Type</label>
-                                            <select name="ShareTypeId" id="ShareTypeId"
-                                                    class="form-control">
-                                                <option value="">Select Share Type</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <div style="float:right">
-                                <button type="submit" id="btnSave" class="btn btn-primary" onclick="SaveData(event)">Save</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- reject Modal -->
-<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel" aria-hidden="true">
+<div class="modal fade" id="mdlRejectMember" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -207,19 +189,27 @@
                     <div class="col-md-12">
                         <form id="form_validation">
                             <input type="hidden"
-                                   id="MemberId1" />
+                                   id="hdnRejectMemberId" />
                             <fieldset>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input type="text" placeholder="Remarks" class="form-control" id="Remarks" />
+                                            <input type="text" placeholder="Enter Remarks"
+                                                   class="form-control"
+                                                   id="txtmdlRejectRemarks" />
                                         </div>
                                     </div>
                                 </div>
                             </fieldset>
                             <div style="float:right">
-                                <button type="submit" id="btnSave" class="btn btn-primary" onclick="SaveRejectData(event)">Save</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" id="mdlBtnSaveRejectMember"
+                                        class="btn btn-primary">
+                                    Save
+                                </button>
+                                <button type="button" class="btn btn-secondary"
+                                        data-dismiss="modal">
+                                    Close
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -228,6 +218,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- add member to shareholder Modal -->
 <div class="modal fade" id="addMemberToShareholder" tabindex="-1" role="dialog" aria-labelledby="addMemberToShareholder" aria-hidden="true">
@@ -245,14 +236,14 @@
                         <form id="member_Shareholder_form">
                             <input type="hidden" id="hdnMemberId" name="MemberId" />
                             <input type="hidden" id="hdnShareholderId" name="ShareholderId" />
-                                   
+
                             <fieldset>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Applied Kitta</label>
                                             <input type="text" placeholder="Applied Kitta"
-                                                   name="TotalKitta" 
+                                                   name="TotalKitta"
                                                    class="form-control" id="txtAppliedKitta" />
                                         </div>
                                     </div>
@@ -269,9 +260,9 @@
                                         <div class="form-group">
                                             <div class="form-check">
                                                 <label class="form-check-label">
-                                                    <input class="form-check-input" 
-                                                        name="Status" checked="checked"
-                                                        value="true" type="checkbox" />
+                                                    <input class="form-check-input"
+                                                           name="Status" checked="checked"
+                                                           value="true" type="checkbox" />
                                                     Is Active
                                                 </label>
                                             </div>
@@ -294,24 +285,156 @@
     </div>
 </div>
 
-@Scripts.Render("~/web/back-end/js")
-<script src="~/Assets/Backend/vendor/bootstrap/js/bootstrap.min.js"></script>
-<script src="~/Assets/Backend/js/custom/filterMemberList.js"></script>
+@Scripts.Render("~/web/backend/jquery-ui")
+@Scripts.Render("~/web/backend/datatables")
+
 <script>
-    LoadAccountHead(null, "#AccountHeadId");
-    $("#dataTable").on('click', '#btnApprove', function () {
+    $("#dataTable").on('click', 'input[name="chkSelectMember"]', function () {
+        $("#hdnMemberIdFromSelection").val('');
         var currentRow = $(this).closest("tr");
-        var data = currentRow.find("td:eq(1)").html();
-        $("#MemberId").val(data);
-        $("#exampleModal").modal();
+        var memberId = currentRow.find("td:eq(0)").find("input[name='hdnMemberId']").val();
+        var isChecked = currentRow.find("td:eq(0)")
+                        .find("input[name='chkSelectMember']").is(':checked');
+
+        $(".btn-member-list").prop('disabled', true);
+        if (isChecked == true) {
+            $("#hdnMemberIdFromSelection").val(memberId);
+            $.each($('input[name="chkSelectMember"]'), function () {
+                this.checked = false;
+            })
+            $(".btn-member-list").prop('disabled', false);
+            currentRow.find("td:eq(0)").find("input[name='chkSelectMember']").prop('checked', true);
+        }
     });
 
-    $("#dataTable").on('click', '#btnReject', function () {
-        var currentRow = $(this).closest("tr");
-        var data = currentRow.find("td:eq(1)").html();
-        $("#MemberId1").val(data);
-        $("#rejectModal").modal();
-    });
+    var memberId = 0;
+    $("#btnEditMember").click(function (evt) {
+        var check = checkMemberSelection();
+        if (check == false)
+            return false;
+        window.location.href = "/ModifyMember/" + memberId;
+    })
+
+    $("#btnEditMemberApprove").click(function (evt) {
+        var check = checkMemberSelection();
+        if (check == false)
+            return false;
+        window.location.href = "/ModifyApprovedMember/" + memberId;
+    })
+
+    $("#btnApproveMember").click(function () {
+        var check = checkMemberSelection();
+        if (check == false)
+            return false;
+
+        swal({
+            text: getApproveConfirmationMessage(),
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Member/Approve',
+                        data: { MemberId: memberId },
+                        success: function (resp) {
+                            showResultMessage(resp, getCurrentUrl())
+                        },
+                        error: function (resp) {
+                            showResultMessage(resp)
+                        }
+                    });
+                }
+            });
+    })
+
+    $("#btnRejectMember").click(function () {
+        var check = checkMemberSelection();
+        if (check == false)
+            return false;
+
+        swal({
+            text: getRejectConfirmationMessage(),
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $("#hdnRejectMemberId").val(memberId);
+                    $("#mdlRejectMember").modal();
+                }
+            });
+    })
+
+    $("#btnAddToShareholder").click(function () {
+        var check = checkMemberSelection();
+        if (check == false)
+            return false;
+
+        swal({
+            text: "Are you sure you want to add this member to shareholder??",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Member/AddMemberToShareholder',
+                        data: { MemberId: memberId },
+                        success: function (resp) {
+                            showResultMessage(resp, getCurrentUrl())
+                        },
+                        error: function (resp) {
+                            showResultMessage(resp)
+                        }
+                    });
+                }
+            });
+    })
+
+    function checkMemberSelection() {
+        memberId = $("#hdnMemberIdFromSelection").val();
+        if (memberId == null || memberId == '' || memberId == undefined || memberId == 0) {
+            var resp = {
+                messageType: "error",
+                message: "Please select member"
+            };
+            showMessage_Only(resp);
+            return false;
+        }
+        return true;
+    }
+
+    $("#mdlBtnSaveRejectMember").click(function (evt) {
+        evt.preventDefault();
+        var rejectRemarks = $("#txtmdlRejectRemarks").val();
+        if (!rejectRemarks.length) {
+            highlightElement("#txtmdlRejectRemarks");
+            return false;
+        }
+        $("#mdlBtnSaveRejectMember").html('Saving....')
+        $("#mdlBtnSaveRejectMember").prop('disabled', true);
+        $.ajax({
+            type: 'post',
+            url: '/Member/Reject',
+            data: { memberId: memberId, remarks: rejectRemarks },
+            success: function (resp) {
+                $("#mdlBtnSaveRejectMember").html('Save')
+                $("#mdlBtnSaveRejectMember").prop('disabled', false);
+                showResultMessage(resp, getCurrentUrl());
+            },
+            error: function (resp) {
+                $("#mdlBtnSaveRejectMember").html('Save')
+                $("#mdlBtnSaveRejectMember").prop('disabled', false);
+                showResultMessage(resp);
+            }
+        })
+    })
 
     $("#dataTable").on('click', '#btnAddMemberToShareholder', function () {
         var currentRow = $(this).closest("tr");
@@ -326,95 +449,21 @@
         if (parseInt(appliedKitta) > 0) {
             $("#txtAppliedKitta").val(appliedKitta);
         }
-        
+
 
         $("#ddlShareTypeId1").val(shareTypeId);
         $("#addMemberToShareholder").modal();
     });
 
-    function SaveData(evt) {
-        evt.preventDefault();
-        var MemberId = $("#MemberId").val();
-        var AccountHeadId = $("#AccountHeadId").val();
-        var ShareTypeId = $("#ShareTypeId").val();
-        if (AccountHeadId.length == 0) {
-            showMessage_Only({ messageType: "error", message: "Account Head is required"});
-            return false;
-        }
-
-        if (ShareTypeId.length == 0) {
-            showMessage_Only({ messageType: "error", message: "Share Type is required" });
-            return false;
-        }
-        $("#btnSave").prop('disabled', true)
-        $("#btnSave span").html('Saving...')
-
-        $.ajax({
-            type: "POST",
-            url: '/Member/ApproveMember',
-            data: { MemberId: MemberId, AccountHeadId: AccountHeadId, ShareTypeId: ShareTypeId },
-            success: function (message) {
-                showResultMessage(message, getCurrentUrl())
-
-                $("#btnSave").prop('disabled', false)
-                $("#btnSave span").html('Save')
-            },
-            error: function (message) {
-                showResultMessage(message, getCurrentUrl());
-                $("#btnSave").prop('disabled', false)
-                $("#btnSave span").html('Save')
-            }
-        })
-    }
-
-    function SaveRejectData(evt) {
-        debugger;
-        evt.preventDefault();
-        $("#btnSave").prop('disabled', true)
-        $("#btnSave span").html('Saving...')
-        var MemberId = $("#MemberId1").val();
-        var Remarks = $("#Remarks").val();
-        if (Remarks.length == 0) {
-            ShowErrorMessage("Remarks is required");
-            return false;
-            $("#btnSave").prop('disabled', false)
-            $("#btnSave span").html('Save')
-        }
-        $.ajax({
-            type: "POST",
-            url: '/Member/RejectMember',
-            data: { MemberId: MemberId, remarks: Remarks },
-            success: function (message) {
-                showResultMessage(message, getCurrentUrl());
-            },
-            error: function (message) {
-                showResultMessage(message, getCurrentUrl());
-            }
-        })
-    }
-
-    function SendMemberApproveEmail(id) {
-        $.ajax({
-            type: 'post',
-            url: '/Member/SendEmailOnApprove',
-            data: { MemberId: id },
-            success: function (resp) {
-
-            },
-            error: function (resp) {
-
-            }
-        })
-    }
-
     function getCurrentUrl() {
         var ApprovalStatus = '@ViewBag.ApprovalStatus';
-        var FormStatus = '@ViewBag.FormStatus';
         var ReferenceId = '@ViewBag.ReferenceId';
         var ShareTypeId = '@ViewBag.ShareTypeId';
         var AgentId = '@ViewBag.ShareTypeId';
+        var SearchQuery = '@ViewBag.SearchQuery';
+        var SellerMemberId = '@ViewBag.SellerMemberId';
 
-        var url = "/MemberList?ApprovalStatus=" + ApprovalStatus + "&FormStatus=" + FormStatus + "&ReferenceId=" + ReferenceId + "&ShareTypeId=" + ShareTypeId + "&AgentId=" + AgentId;
+        var url = "/MemberList?ApprovalStatus=" + ApprovalStatus + "&ReferenceId=" + ReferenceId + "&ShareTypeId=" + ShareTypeId + "&AgentId=" + AgentId + "&SearchQuery=" + SearchQuery + "&SellerMemberId=" + SellerMemberId;
         return url;
 
     }
@@ -444,3 +493,4 @@
 
     })
 </script>
+
