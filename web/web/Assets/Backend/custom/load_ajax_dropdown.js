@@ -140,7 +140,7 @@ function LoadShareTypes(id, element = null, not_include = null) {
     LoadAjax($ajax_param, not_include);
 }
 
-function LoadShareTypesWithDetails(id, element = null, $element_price = null) {
+function LoadShareTypesWithDetails(id, element = null,$element_price = null) {
     if (element == null || element == '')
         element = "#ShareTypeId";
 
@@ -163,6 +163,7 @@ function LoadShareTypesWithDetails(id, element = null, $element_price = null) {
                 if (index == 0 && id == 0) {
                     $($element_price).val(parseFloat(row.Value1).toFixed(2));
                 }
+
                 if ($ajax_param.id == row.Key) {
                     $($ajax_param.element).append("<option value=" + row.Key + " selected='selected'> " + row.Value + " </option>");
                     $($element_price).val(parseFloat(row.Value1).toFixed(2));
@@ -170,11 +171,51 @@ function LoadShareTypesWithDetails(id, element = null, $element_price = null) {
                 else {
                     $($ajax_param.element).append("<option value=" + row.Key + "> " + row.Value + " </option>");
                 }
+                
             })
             $share_tye_list = resp;
         }
     })
 }
+
+function LoadIsPrimaryShareTypesWithDetails(id, element = null, $element_price = null) {
+    if (element == null || element == '')
+        element = "#ShareTypeId";
+
+    if ($element_price == null || $element_price == '')
+        $element_price = "#SharePricePerKitta";
+
+    var $ajax_param = {
+        element: element,
+        id: id,
+        type: "is_primary_share_type_detail_list"
+    };
+    $.ajax({
+        type: "post",
+        url: "/Ajax/Index",
+        data: $ajax_param,
+        success: function (resp) {
+            debugger;
+            $($ajax_param.element).empty();
+            $.each(resp, function (index, row) {
+                if (index == 0 && id == 0) {
+                    $($element_price).val(parseFloat(row.Value1).toFixed(2));
+                }
+
+                if ($ajax_param.id == row.Key) {
+                    $($ajax_param.element).append("<option value=" + row.Key + " selected='selected'> " + row.Value + " </option>");
+                    $($element_price).val(parseFloat(row.Value1).toFixed(2));
+                }
+                else {
+                    $($ajax_param.element).append("<option value=" + row.Key + "> " + row.Value + " </option>");
+                }
+
+            })
+            $share_tye_list = resp;
+        }
+    })
+}
+
 
 function LoadAgentStatus(id, element = null) {
     if (element == null || element == '')

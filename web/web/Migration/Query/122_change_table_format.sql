@@ -384,7 +384,7 @@ BEGIN
 	end
 	else
 	begin
-		SELECT map.*,@RoleName as RoleName,u.FullName
+		SELECT map.*,@UserId as UserId,@RoleName as RoleName,u.FullName
 		FROM
 			dbo.MenuAccessPermission map
 		INNER JOIN 

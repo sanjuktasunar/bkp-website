@@ -45,8 +45,8 @@ namespace web.Controllers.User
         [HttpGet]
         public async Task<ActionResult> FilterMemberList(int? ApprovalStatus, int? ReferenceId, int? ShareTypeId = null, int? AgentId = null,string SearchQuery=null, int ? SellerMemberId=null)
         {
-            if (!menu.ReadAccess)
-                return Redirect(Logout_Url);
+            //if (!menu.ReadAccess)
+            //    return Redirect(Logout_Url);
 
             ViewBag.ApprovalStatus = ApprovalStatus;
             ViewBag.ReferenceId = ReferenceId;
@@ -68,7 +68,7 @@ namespace web.Controllers.User
             return PartialView("FilterMemberList", obj);
         }
 
-        [Route("~/AddNewMember")]
+        [Route("~/AddMember")]
         public ActionResult AddNewMember()
         {
             if (!menu.WriteAccess)

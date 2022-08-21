@@ -30,6 +30,7 @@ namespace web.Web.Services.Services
         IEnumerable<DropdownDto> GetReferenceAgentList();
         IEnumerable<DropdownDto> GetReferenceMemberList();
         IEnumerable<DropdownDto> GetShareholderList();
+        IEnumerable<DropdownDto> GetDropDownIsPrimaryShareTypesWithDetails();
     }
 
     public class DropDownService:IDropDownService
@@ -276,20 +277,44 @@ namespace web.Web.Services.Services
         public IEnumerable<DropdownDto> GetDropDownShareTypesWithDetails()
         {
             var data = new List<DropdownDto>();
-            if (HttpRuntime.Cache[CacheCodes.SHARE_TYPE_LIST] == null)
+            if (HttpRuntime.Cache[CacheCodes.SHARE_TYPE_DETAIL_LIST] == null)
             {
                 data = _repository.Query<DropdownDto>
                         (
                             "select ShareTypeId as [Key]," +
-                            "ShareTypeName as [Value],PricePerKitta as [Value1] " +
+                            "ShareTypeName as [Value],PricePerKitta as [Value1]," +
+                            "IsPrimary as [Value2] " +
                             "from dbo.[ShareTypes] " +
                             "where [Status]=1 order by IsPrimary desc"
                         ).ToList();
-                HttpRuntime.Cache[CacheCodes.SHARE_TYPE_LIST] = data;
+                HttpRuntime.Cache[CacheCodes.SHARE_TYPE_DETAIL_LIST] = data;
             }
             else
             {
-                data = HttpRuntime.Cache[CacheCodes.SHARE_TYPE_LIST] as List<DropdownDto>;
+                data = HttpRuntime.Cache[CacheCodes.SHARE_TYPE_DETAIL_LIST] as List<DropdownDto>;
+            }
+            return data;
+        }
+
+        public IEnumerable<DropdownDto> GetDropDownIsPrimaryShareTypesWithDetails()
+        {
+            var data = new List<DropdownDto>();
+            if (HttpRuntime.Cache[CacheCodes.IS_PRIMARY_SHARE_TYPE_DETAIL_LIST] == null)
+            {
+                data = _repository.Query<DropdownDto>
+                        (
+                            "select ShareTypeId as [Key]," +
+                            "ShareTypeName as [Value],PricePerKitta as [Value1]," +
+                            "IsPrimary as [Value2] " +
+                            "from dbo.[ShareTypes] " +
+                            "where [Status]=1 and [IsPrimary]=1 " +
+                            "order by IsPrimary desc"
+                        ).ToList();
+                HttpRuntime.Cache[CacheCodes.IS_PRIMARY_SHARE_TYPE_DETAIL_LIST] = data;
+            }
+            else
+            {
+                data = HttpRuntime.Cache[CacheCodes.IS_PRIMARY_SHARE_TYPE_DETAIL_LIST] as List<DropdownDto>;
             }
             return data;
         }
@@ -408,7 +433,7 @@ namespace web.Web.Services.Services
                         (
                            query
                         ).ToList();
-                HttpContext.Current.Cache[CacheCodes.SHAREHOLDER_LIST] = data;
+                //HttpContext.Current.Cache[CacheCodes.SHAREHOLDER_LIST] = data;
             }
             else
             {
