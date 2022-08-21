@@ -2322,7 +2322,6 @@
     <Content Include="Migration\Query\120_change_in_db_structure.sql" />
     <Content Include="Migration\Query\121_add_modify_table_procs.sql" />
     <Content Include="Migration\Query\122_change_table_format.sql" />
-    <Content Include="Migration\Query\custom_query.sql" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
