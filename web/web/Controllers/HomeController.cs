@@ -13,6 +13,18 @@ namespace web.Controllers
             return View();
         }
 
+        [Route("~/news")]
+        public ActionResult News()
+        {
+            return View();
+        }
+
+        [Route("~/news-detail/{id}")]
+        public ActionResult NewsDetail(int id)
+        {
+            return View();
+        }
+
         [Route("~/action-plan")]
         public ActionResult ActionPlan()
         {
